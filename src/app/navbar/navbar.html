@@ -1,0 +1,22 @@
+<nav class="navbar">
+  <div class="logo">EduSmart</div>
+ 
+  <ul class="menu">
+    <li *ngIf="role === 'admin'">
+      <a routerLink="/admin" routerLinkActive="active">Admin</a>
+    </li>
+ 
+    <li *ngIf="role === 'instructor'">
+      <a routerLink="/instructor" routerLinkActive="active">Instructor</a>
+    </li>
+ 
+    <li *ngIf="role === 'student'">
+      <a routerLink="/student" routerLinkActive="active">Student</a>
+    </li>
+  </ul>
+ 
+  <div class="right-actions">
+    <button class="theme-btn" (click)="toggleTheme()">🌙 Dark Mode</button>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</nav>

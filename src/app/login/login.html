@@ -1,0 +1,29 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>EduSmart Login</h2>
+ 
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" placeholder="Enter username">
+    </div>
+ 
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" placeholder="Enter password">
+    </div>
+ 
+    <div class="btn-group">
+<button type="button" class="student-btn" (click)="loginStudent()">
+  Login as Student
+</button>
+ 
+<button type="button" class="instructor-btn" (click)="loginInstructor()">
+  Login as Instructor
+</button>
+ 
+<button type="button" class="admin-btn" (click)="loginAdmin()">
+  Login as Admin
+</button>
+    </div>
+  </div>
+</div>

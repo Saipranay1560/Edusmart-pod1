@@ -1,0 +1,51 @@
+<app-navbar></app-navbar>
+ 
+<div class="container">
+  <h2>Instructor Dashboard</h2>
+ 
+  <h3>My Courses</h3>
+  <ul>
+    <li *ngFor="let course of courses">
+      {{ course }}
+    </li>
+  </ul>
+ 
+  <h3 style="margin-top:30px;">Enrolled Students</h3>
+ 
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Course</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+ 
+    <tr *ngFor="let student of students; let i = index">
+  <td>{{ student.name }}</td>
+  <td>{{ student.course }}</td>
+  <td>
+  <span
+    [ngClass]="{
+      'status-active': student.status === 'Active',
+      'status-completed': student.status === 'Completed'
+    }">
+    {{ student.status }}
+  </span>
+</td>
+  <td>
+    <button
+      class="approve-btn"
+      (click)="approveStudent(student)"
+      [disabled]="student.status === 'Completed'">
+      Approve
+    </button>
+ 
+    <button
+      class="remove-btn"
+      (click)="removeStudent(i)">
+      Remove
+    </button>
+  </td>
+</tr>
+  </table>
+</div>

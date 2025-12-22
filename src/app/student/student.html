@@ -1,0 +1,20 @@
+<app-navbar></app-navbar>
+ 
+<div class="container">
+  <h2>Student Dashboard</h2>
+  <p class="subtitle">Available Courses</p>
+ 
+  <div class="courses">
+    <div class="card" *ngFor="let course of courses">
+      <h3>{{ course.name }}</h3>
+      <p>Instructor: {{ course.instructor }}</p>
+      <p>Duration: {{ course.duration }}</p>
+ 
+      <button
+        (click)="enroll(course)"
+        [disabled]="course.enrolled">
+        {{ course.enrolled ? 'Enrolled' : 'Enroll' }}
+      </button>
+    </div>
+  </div>
+</div>

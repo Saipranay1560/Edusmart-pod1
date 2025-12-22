@@ -1,0 +1,55 @@
+.navbar {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1f3c88;
+  padding: 0 24px;
+}
+ 
+.logo {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+ 
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+ 
+.menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+}
+ 
+.menu a.active {
+  border-bottom: 2px solid white;
+}
+ 
+.right-actions {
+  display: flex;
+  gap: 10px;
+}
+ 
+.theme-btn {
+  background: #2c5cc5;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+ 
+.logout-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}

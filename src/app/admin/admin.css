@@ -1,0 +1,32 @@
+.container {
+  padding: 20px;
+}
+ 
+table {
+  width: 60%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+ 
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+ 
+th {
+  background-color: #1e293b;
+  color: white;
+}
+ 
+ul {
+  margin-top: 10px;
+}
+ 
+li {
+  margin: 6px 0;
+}
+button{
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
