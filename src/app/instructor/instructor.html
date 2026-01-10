@@ -1,51 +1,28 @@
-<app-navbar></app-navbar>
+<!-- Top Bar -->
+<header class="topbar">
+  <button class="menu-btn" (click)="toggleSidebar()">☰</button>
+  <span class="title">Instructor Dashboard</span>
+</header>
  
-<div class="container">
-  <h2>Instructor Dashboard</h2>
+<!-- Sidebar Drawer -->
+<nav class="sidebar" [class.open]="sidebarOpen">
+  <h2 class="logo">EduSmart</h2>
  
-  <h3>My Courses</h3>
-  <ul>
-    <li *ngFor="let course of courses">
-      {{ course }}
-    </li>
-  </ul>
+  <a routerLink="/instructor/dashboard" (click)="closeSidebar()">Dashboard</a>
+  <a routerLink="/instructor/students" (click)="closeSidebar()">Students</a>
+  <a routerLink="/instructor/attendance" (click)="closeSidebar()">Attendance</a>
+  <a routerLink="/instructor/assignments" (click)="closeSidebar()">Assignments</a>
+  <a routerLink="/instructor/marks" (click)="closeSidebar()">Marks</a>
+  <a routerLink="/instructor/courses">Courses</a>
+  <a routerLink="/instructor/leave-requests" (click)="closeSidebar()">Leave Requests</a>
  
-  <h3 style="margin-top:30px;">Enrolled Students</h3>
+  <button class="logout">Logout</button>
+</nav>
  
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Course</th>
-      <th>Status</th>
-      <th>Action</th>
-    </tr>
+<!-- Dark Overlay -->
+<div class="overlay" *ngIf="sidebarOpen" (click)="closeSidebar()"></div>
  
-    <tr *ngFor="let student of students; let i = index">
-  <td>{{ student.name }}</td>
-  <td>{{ student.course }}</td>
-  <td>
-  <span
-    [ngClass]="{
-      'status-active': student.status === 'Active',
-      'status-completed': student.status === 'Completed'
-    }">
-    {{ student.status }}
-  </span>
-</td>
-  <td>
-    <button
-      class="approve-btn"
-      (click)="approveStudent(student)"
-      [disabled]="student.status === 'Completed'">
-      Approve
-    </button>
- 
-    <button
-      class="remove-btn"
-      (click)="removeStudent(i)">
-      Remove
-    </button>
-  </td>
-</tr>
-  </table>
-</div>
+<!-- Main Page -->
+<main class="main">
+  <router-outlet></router-outlet>
+</main>

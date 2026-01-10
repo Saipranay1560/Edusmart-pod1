@@ -1,0 +1,61 @@
+<h2 class="title">Assignment Management</h2>
+ 
+<div class="assignment-form">
+  <h3>Create Assignment</h3>
+ 
+  <input
+    type="text"
+    placeholder="Assignment Title"
+    [(ngModel)]="assignment.title"
+  />
+ 
+  <select [(ngModel)]="assignment.course">
+    <option value="">Select Course</option>
+    <option *ngFor="let course of courses" [value]="course">
+      {{ course }}
+    </option>
+  </select>
+ 
+  <input
+    type="date"
+    [(ngModel)]="assignment.dueDate"
+  />
+ 
+  <textarea
+    rows="4"
+    placeholder="Enter assignment questions"
+    [(ngModel)]="assignment.questions">
+  </textarea>
+ 
+  <button class="publish-btn" (click)="publishAssignment()">
+    Publish Assignment
+  </button>
+</div>
+ 
+<hr />
+ 
+<h3>Published Assignments</h3>
+ 
+<table class="assignment-table" *ngIf="assignmentsList.length > 0">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Course</th>
+      <th>Due Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+ 
+  <tbody>
+    <tr *ngFor="let a of assignmentsList">
+      <td>{{ a.title }}</td>
+      <td>{{ a.course }}</td>
+      <td>{{ a.dueDate }}</td>
+      <td class="published">{{ a.status }}</td>
+    </tr>
+  </tbody>
+</table>
+ 
+<p *ngIf="assignmentsList.length === 0">
+  No assignments published yet.
+</p>

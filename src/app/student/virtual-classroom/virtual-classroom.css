@@ -1,0 +1,81 @@
+.page {
+  padding: 20px;
+}
+ 
+.page-header {
+  margin-bottom: 20px;
+}
+ 
+.muted {
+  color: #666;
+  font-size: 14px;
+}
+ 
+/* Class Card */
+.class-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 24px;
+}
+ 
+.class-card h3 {
+  margin-bottom: 10px;
+}
+ 
+.status.live {
+  color: #16a34a;
+  font-weight: 600;
+}
+ 
+/* Join button */
+.join-btn {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 10px 16px;
+  background: #2563eb;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+}
+ 
+.join-btn:hover {
+  background: #1e40af;
+}
+ 
+/* Materials */
+.materials {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+ 
+.materials h3 {
+  margin-bottom: 12px;
+}
+ 
+.materials ul {
+  list-style: none;
+  padding: 0;
+}
+ 
+.materials li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+ 
+.materials li:last-child {
+  border-bottom: none;
+}
+ 
+.tag {
+  background: #e5e7eb;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}

@@ -1,0 +1,46 @@
+<div class="profile-page">
+ 
+  <div class="profile-header">
+    <h2>My Profile</h2>
+    <p class="muted">Personal and academic information</p>
+  </div>
+ 
+  <div class="profile-card">
+ 
+    <div class="avatar">
+      <span>{{ student.name.charAt(0) }}</span>
+    </div>
+ 
+    <h3>{{ student.name }}</h3>
+    <p class="roll">{{ student.rollNo }}</p>
+ 
+    <div class="details">
+      <div class="row">
+        <span>Email</span>
+        <strong>{{ student.email }}</strong>
+      </div>
+ 
+      <div class="row">
+        <span>Phone</span>
+        <strong>{{ student.phone }}</strong>
+      </div>
+ 
+      <div class="row">
+        <span>Department</span>
+        <strong>{{ student.department }}</strong>
+      </div>
+ 
+      <div class="row">
+        <span>Year</span>
+        <strong>{{ student.year }}</strong>
+      </div>
+ 
+      <div class="row">
+        <span>College</span>
+        <strong>{{ student.college }}</strong>
+      </div>
+    </div>
+ 
+  </div>
+ 
+</div>

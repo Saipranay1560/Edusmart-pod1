@@ -1,0 +1,101 @@
+.page-title {
+  font-size: 26px;
+  margin-bottom: 4px;
+}
+ 
+.subtitle {
+  color: #666;
+  margin-bottom: 20px;
+}
+ 
+.card {
+  background: #ffffff;
+  padding: 20px;
+  margin-bottom: 24px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+ 
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+}
+ 
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+ 
+textarea {
+  resize: vertical;
+}
+ 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+ 
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+ 
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+ 
+.status.draft {
+  background: #ffeaa7;
+  color: #8a6d00;
+}
+ 
+.status.published {
+  background: #c8f7c5;
+  color: #1e7e34;
+}
+ 
+.status.archived {
+  background: #f5c6cb;
+  color: #721c24;
+}
+ 
+.btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  margin-right: 6px;
+}
+ 
+.btn.primary {
+  background: #007bff;
+  color: white;
+}
+ 
+.btn.success {
+  background: #28a745;
+  color: white;
+}
+ 
+.btn.danger {
+  background: #dc3545;
+  color: white;
+}
+.course-link{
+  color:#1976d2;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+.course-link:hover{
+  text-decoration:underline;
+}

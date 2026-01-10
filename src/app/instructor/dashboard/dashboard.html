@@ -1,0 +1,63 @@
+<div class="dashboard-container">
+ 
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h1>Instructor Dashboard</h1>
+    <p class="subtitle">
+      Manage courses, students, attendance, assignments, marks, and leave requests.
+    </p>
+  </div>
+ 
+  <!-- STATS CARDS -->
+  <div class="stats-grid">
+ 
+    <div class="stat-card blue clickable" (click)="goTo('students')">
+      <div class="stat-title">Total Students</div>
+      <div class="stat-value">{{ stats.students }}</div>
+    </div>
+ 
+    <div class="stat-card teal clickable" (click)="goTo('attendance')">
+      <div class="stat-title">Attendance</div>
+      <div class="stat-value">{{ attendancePercent }}%</div>
+    </div>
+ 
+    <div class="stat-card orange clickable" (click)="goTo('leave-requests')">
+      <div class="stat-title">Pending Approvals</div>
+      <div class="stat-value">{{ stats.pendingApprovals }}</div>
+    </div>
+ 
+    <div class="stat-card green clickable" (click)="goTo('assignments')">
+      <div class="stat-title">Active Assignments</div>
+      <div class="stat-value">{{ stats.assignments }}</div>
+    </div>
+ 
+  </div>
+ 
+  <!-- ATTENDANCE OVERVIEW -->
+  <div class="section-card">
+    <h2>Attendance Overview</h2>
+ 
+    <div class="progress-bar">
+      <div
+        class="progress-fill"
+        [style.width.%]="attendancePercent">
+      </div>
+    </div>
+ 
+    <p class="progress-text">
+      {{ attendancePercent }}% Students Present
+    </p>
+  </div>
+ 
+  <!-- RECENT ACTIVITY -->
+  <div class="section-card">
+    <h2>Recent Activity</h2>
+ 
+    <ul class="activity-list">
+      <li *ngFor="let activity of activities">
+        {{ activity }}
+      </li>
+    </ul>
+  </div>
+ 
+</div>

@@ -1,0 +1,20 @@
+<h2>Student Management</h2>
+ 
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Course</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+ 
+  <tr *ngFor="let s of students">
+    <td>{{ s.name }}</td>
+    <td>{{ s.course }}</td>
+    <td>{{ s.status }}</td>
+    <td>
+      <button *ngIf="s.status === 'Pending'" (click)="approve(s)">Approve</button>
+      <button (click)="reject(s)">Reject</button>
+    </td>
+  </tr>
+</table>

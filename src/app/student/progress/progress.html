@@ -1,0 +1,42 @@
+<div class="page">
+ 
+  <div class="page-header">
+    <h2>My Progress</h2>
+    <p class="muted">
+      Track your course completion and performance
+    </p>
+  </div>
+ 
+  <div class="progress-grid">
+ 
+    <div class="progress-card" *ngFor="let c of courses">
+ 
+      <h3>{{ c.title }}</h3>
+ 
+      <div class="progress-info">
+        <span>Status:</span>
+        <strong
+          [class.completed]="c.status === 'Completed'"
+          [class.inprogress]="c.status === 'In Progress'"
+        >
+          {{ c.status }}
+        </strong>
+      </div>
+ 
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          [style.width.%]="c.completion"
+        ></div>
+      </div>
+ 
+      <div class="progress-stats">
+        <span>Completion: {{ c.completion }}%</span>
+        <span>Score: {{ c.score }}%</span>
+      </div>
+ 
+    </div>
+ 
+  </div>
+ 
+</div>

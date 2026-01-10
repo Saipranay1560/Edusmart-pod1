@@ -1,0 +1,101 @@
+<div class="course-details">
+ 
+  <button class="back-btn" (click)="goBack()">← Back to Courses</button>
+ 
+  <h1>{{ course.title }}</h1>
+  <p class="description">{{ course.description }}</p>
+ 
+  <!-- Publish -->
+  <div class="publish-box">
+    <span>Status:
+      <strong [class.published]="course.published"
+              [class.draft]="!course.published">
+        {{ course.published ? 'Published' : 'Draft' }}
+      </strong>
+    </span>
+    <button (click)="togglePublish()">
+      {{ course.published ? 'Unpublish' : 'Publish Course' }}
+    </button>
+  </div>
+ 
+  <!-- Tabs -->
+  <div class="tabs">
+    <button (click)="activeTab='content'" [class.active]="activeTab==='content'">Content</button>
+    <button (click)="activeTab='assignments'" [class.active]="activeTab==='assignments'">Assignments</button>
+    <button (click)="activeTab='resources'" [class.active]="activeTab==='resources'">Resources</button>
+    <button (click)="activeTab='progress'" [class.active]="activeTab==='progress'">Progress</button>
+    <button (click)="activeTab='quiz'" [class.active]="activeTab==='quiz'">Quiz</button>
+  </div>
+ 
+  <!-- CONTENT -->
+  <div *ngIf="activeTab==='content'">
+    <div class="module-card" *ngFor="let module of course.modules; let i=index">
+      <div class="module-header" (click)="toggleModule(i)">
+        <h3>{{ module.name }}</h3>
+        <span>{{ openModuleIndex===i ? '−' : '+' }}</span>
+      </div>
+ 
+      <ul *ngIf="openModuleIndex===i">
+        <li *ngFor="let lesson of module.lessons">{{ lesson }}</li>
+      </ul>
+    </div>
+  </div>
+ 
+  <!-- ASSIGNMENTS -->
+  <div *ngIf="activeTab==='assignments'">
+    <button class="add-btn" (click)="addAssignment()">+ Add Assignment</button>
+ 
+    <div class="card" *ngFor="let a of assignments">
+      <h4>{{ a.title }}</h4>
+      <p>Due: {{ a.dueDate }}</p>
+      <span>Status: {{ a.status }}</span>
+    </div>
+  </div>
+ 
+  <!-- ✅ RESOURCES (REAL FILE UPLOAD — FIXED) -->
+  <div *ngIf="activeTab==='resources'">
+ 
+    <!-- Hidden inputs -->
+    <input
+      id="pdfUpload"
+      type="file"
+      accept="application/pdf"
+      (change)="onPdfSelected($event)"
+      hidden
+    />
+ 
+    <input
+      id="videoUpload"
+      type="file"
+      accept="video/*"
+      (change)="onVideoSelected($event)"
+      hidden
+    />
+ 
+    <!-- LABELS trigger file picker -->
+    <label for="pdfUpload" class="add-btn">Upload PDF</label>
+    <label for="videoUpload" class="add-btn">Upload Video</label>
+ 
+    <div class="card" *ngFor="let r of resources">
+      <strong>{{ r.name }}</strong> — {{ r.type }}
+    </div>
+  </div>
+ 
+  <!-- PROGRESS -->
+  <div *ngIf="activeTab==='progress'">
+    <h3>Course Progress</h3>
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progress"></div>
+    </div>
+    <p>{{ progress }}% completed</p>
+  </div>
+ 
+  <!-- QUIZ -->
+  <div *ngIf="activeTab==='quiz'">
+    <h3>{{ quiz.title }}</h3>
+    <ul>
+      <li *ngFor="let q of quiz.questions">{{ q }}</li>
+    </ul>
+  </div>
+ 
+</div>

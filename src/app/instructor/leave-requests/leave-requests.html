@@ -1,0 +1,46 @@
+<h2>Leave Requests</h2>
+ 
+<table class="table">
+  <thead>
+    <tr>
+      <th>Student</th>
+      <th>Reason</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+ 
+  <tbody>
+    <tr *ngFor="let req of leaveRequests">
+      <td>{{ req.student }}</td>
+      <td>{{ req.reason }}</td>
+ 
+      <td>
+        <span
+          [ngClass]="{
+            'status-pending': req.status === 'Pending',
+            'status-approved': req.status === 'Approved',
+            'status-rejected': req.status === 'Rejected'
+          }">
+          {{ req.status }}
+        </span>
+      </td>
+ 
+      <td>
+        <button
+          class="approve"
+          (click)="approve(req)"
+          [disabled]="req.status !== 'Pending'">
+          Approve
+        </button>
+ 
+        <button
+          class="reject"
+          (click)="reject(req)"
+          [disabled]="req.status !== 'Pending'">
+          Reject
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

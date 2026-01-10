@@ -1,0 +1,37 @@
+<h2 class="title">Attendance Management</h2>
+ 
+<table class="attendance-table">
+  <thead>
+    <tr>
+      <th>Student</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+ 
+  <tbody>
+    <tr *ngFor="let student of students">
+      <td>{{ student.name }}</td>
+ 
+      <td>
+        <span
+          [class.present]="student.status === 'Present'"
+          [class.absent]="student.status === 'Absent'"
+          [class.pending]="student.status === 'Pending'">
+          {{ student.status }}
+        </span>
+      </td>
+ 
+      <td>
+        <button class="btn-present" (click)="markPresent(student)">
+          Present
+        </button>
+ 
+        <button class="btn-absent" (click)="markAbsent(student)">
+          Absent
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+ 

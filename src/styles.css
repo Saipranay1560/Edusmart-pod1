@@ -27,3 +27,32 @@ body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
 }
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+ 
+.table th,
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+ 
+.approve {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+ 
+.reject {
+  background: #c0392b;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}

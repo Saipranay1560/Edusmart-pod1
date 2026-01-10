@@ -1,0 +1,18 @@
+<div class="card" *ngIf="course">
+  <h2>{{ course.title }}</h2>
+ 
+  <p><strong>Mode:</strong> {{ course.mode }}</p>
+  <p><strong>Credits:</strong> {{ course.credits }}</p>
+  <p>{{ course.description }}</p>
+ 
+  <h3>Schedule</h3>
+  <ul>
+    <li *ngFor="let s of course.schedule">
+      {{ s.day }} - {{ s.time }}
+    </li>
+  </ul>
+ 
+  <a class="btn btn-outline" routerLink="/student/courses">
+    Back to Courses
+  </a>
+</div>

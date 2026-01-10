@@ -1,0 +1,28 @@
+<div class="page">
+ 
+  <div class="page-header">
+    <h2>Subjects</h2>
+    <p class="muted">Subjects you are enrolled in</p>
+  </div>
+ 
+  <div class="subjects-grid">
+ 
+    <div class="subject-card" *ngFor="let s of subjects">
+      <h3>{{ s.name }}</h3>
+ 
+      <p class="desc">{{ s.description }}</p>
+ 
+      <div class="footer">
+        <span>{{ s.courses }} Course(s)</span>
+        <a
+          class="btn"
+          routerLink="/student/courses"
+        >
+          View Courses
+        </a>
+      </div>
+    </div>
+ 
+  </div>
+ 
+</div>

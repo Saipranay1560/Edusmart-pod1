@@ -1,0 +1,18 @@
+<h2>Assessments</h2>
+ 
+<div class="grid">
+  <div class="card" *ngFor="let a of assessments">
+    <h3>{{ a.subject }}</h3>
+ 
+    <p><strong>{{ a.title }}</strong></p>
+    <p>{{ a.marks }} Marks</p>
+    <p>{{ a.attempts }} Attempt(s)</p>
+ 
+    <button
+      class="btn btn-primary"
+      [routerLink]="['/student/assessment-quiz', a.id]"
+    >
+      Take Assessment
+    </button>
+  </div>
+</div>

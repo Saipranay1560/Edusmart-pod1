@@ -1,0 +1,66 @@
+<h1 class="page-title">Course Management</h1>
+<p class="subtitle">Create and manage your courses</p>
+ 
+<!-- CREATE COURSE -->
+<div class="card">
+  <h3>Create New Course</h3>
+ 
+  <label>Course Title</label>
+  <input type="text" [(ngModel)]="newCourse.title" placeholder="Enter course title" />
+ 
+  <label>Description</label>
+  <textarea [(ngModel)]="newCourse.description" placeholder="Enter course description"></textarea>
+ 
+  <button class="btn primary" (click)="addCourse()">Add Course</button>
+</div>
+ 
+<!-- COURSE LIST -->
+<div class="card">
+  <h3>Your Courses</h3>
+ 
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+ 
+    <tbody>
+      <tr *ngFor="let course of courses">
+        <td>
+           <a
+              class="course-link"
+                  [routerLink]="['/instructor/course-details', course.id]"
+          >
+            {{ course.title }}
+          </a>
+        </td>
+        <td>{{ course.description }}</td>
+        <td>
+          <span class="status" [ngClass]="course.status.toLowerCase()">
+            {{ course.status }}
+          </span>
+        </td>
+        <td>
+          <button
+            class="btn success"
+            *ngIf="course.status === 'Draft'"
+            (click)="publishCourse(course)">
+            Publish
+          </button>
+ 
+          <button
+            class="btn danger"
+            *ngIf="course.status !== 'Archived'"
+            (click)="archiveCourse(course)">
+            Archive
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

@@ -1,0 +1,24 @@
+<h2>Marks Management</h2>
+ 
+<table class="table">
+  <thead>
+    <tr>
+      <th>Student</th>
+      <th>Course</th>
+      <th>Marks</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let s of students">
+      <td>{{ s.name }}</td>
+      <td>{{ s.course }}</td>
+      <td>
+        <input
+          type="number"
+          [(ngModel)]="s.marks"
+          (change)="updateMarks(s, s.marks)"
+        />
+      </td>
+    </tr>
+  </tbody>
+</table>

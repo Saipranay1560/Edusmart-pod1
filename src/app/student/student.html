@@ -1,20 +1,29 @@
-<app-navbar></app-navbar>
+<!-- Top Bar -->
+<header class="topbar">
+  <button class="menu-btn" (click)="toggleSidebar()">☰</button>
+  <span class="title">Student Dashboard</span>
+</header>
  
-<div class="container">
-  <h2>Student Dashboard</h2>
-  <p class="subtitle">Available Courses</p>
+<!-- Sidebar Drawer -->
+<nav class="sidebar" [class.open]="sidebarOpen">
+  <h2 class="logo">EduSmart</h2>
  
-  <div class="courses">
-    <div class="card" *ngFor="let course of courses">
-      <h3>{{ course.name }}</h3>
-      <p>Instructor: {{ course.instructor }}</p>
-      <p>Duration: {{ course.duration }}</p>
+  <a routerLink="/student/student-profile" (click)="closeSidebar()">Profile</a>
+  <a routerLink="/student/dashboard" (click)="closeSidebar()">Dashboard</a>
+  <a routerLink="/student/courses" (click)="closeSidebar()">Courses</a>
+  <a routerLink="/student/subjects" (click)="closeSidebar()">Subjects</a>
+  <a routerLink="/student/assessments" (click)="closeSidebar()">Assessments</a>
+  <a routerLink="/student/progress" (click)="closeSidebar()">Progress</a>
+  <a routerLink="/student/virtual-classroom" (click)="closeSidebar()">Virtual Classroom</a>
+  <a routerLink="/student/exam-management" (click)="closeSidebar()">Exam Management</a>
  
-      <button
-        (click)="enroll(course)"
-        [disabled]="course.enrolled">
-        {{ course.enrolled ? 'Enrolled' : 'Enroll' }}
-      </button>
-    </div>
-  </div>
-</div>
+  <button class="logout">Logout</button>
+</nav>
+ 
+<!-- Dark Overlay -->
+<div class="overlay" *ngIf="sidebarOpen" (click)="closeSidebar()"></div>
+ 
+<!-- Main Page -->
+<main class="content">
+  <router-outlet></router-outlet>
+</main>

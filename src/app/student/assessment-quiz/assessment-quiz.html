@@ -1,0 +1,22 @@
+<div class="card" *ngIf="quiz">
+  <h2>{{ quiz.title }}</h2>
+ 
+  <div *ngFor="let q of quiz.questions; let i = index" class="question">
+    <p><strong>Q{{ i + 1 }}. {{ q.question }}</strong></p>
+ 
+    <div class="option" *ngFor="let opt of q.options">
+      <label>
+        <input type="radio" name="q{{ i }}">
+        {{ opt }}
+      </label>
+    </div>
+  </div>
+ 
+  <button class="btn btn-primary">Submit</button>
+ 
+  <br /><br />
+ 
+  <button class="btn btn-outline" routerLink="/student/assessments">
+    Back to Assessments
+  </button>
+</div>

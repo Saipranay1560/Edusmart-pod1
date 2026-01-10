@@ -1,0 +1,40 @@
+<div class="page">
+ 
+  <div class="page-header">
+    <h2>Virtual Classroom</h2>
+    <p class="muted">Attend live classes and access materials</p>
+  </div>
+ 
+  <!-- Class Info -->
+  <div class="class-card">
+    <h3>{{ course.title }}</h3>
+ 
+    <p><strong>Instructor:</strong> {{ course.instructor }}</p>
+    <p><strong>Schedule:</strong> {{ course.schedule }}</p>
+    <p>
+      <strong>Status:</strong>
+      <span class="status live" *ngIf="course.status === 'Live'">Live</span>
+    </p>
+ 
+    <a
+      class="btn join-btn"
+      [href]="course.meetingLink"
+      target="_blank"
+    >
+      Join Live Class
+    </a>
+  </div>
+ 
+  <!-- Materials -->
+  <div class="materials">
+    <h3>Class Materials</h3>
+ 
+    <ul>
+      <li *ngFor="let m of materials">
+        <span>{{ m.name }}</span>
+        <span class="tag">{{ m.type }}</span>
+      </li>
+    </ul>
+  </div>
+ 
+</div>

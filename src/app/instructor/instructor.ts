@@ -1,33 +1,23 @@
 import { Component } from '@angular/core';
-import { Navbar } from '../navbar/navbar';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+ 
 @Component({
   selector: 'app-instructor',
   standalone: true,
-  imports: [Navbar,CommonModule],
+  imports: [CommonModule, RouterOutlet,RouterModule],
   templateUrl: './instructor.html',
-  styleUrl: './instructor.css',
+  styleUrls: ['./instructor.css']
 })
 export class Instructor {
-  courses = [
-    'Angular Fundamentals',
-    'Java Basics'
-  ];
  
-  students = [
-    { name: 'Rahul', course: 'Angular Fundamentals', status: 'Active' },
-    { name: 'Sneha', course: 'Java Basics', status: 'Active' },
-    { name: 'Amit', course: 'Angular Fundamentals', status: 'Completed' }
-  ];
-  approveStudent(student: any) {
-  student.status = 'Completed';
-}
- removeStudent(index:number) {
-   const confirmDelete = confirm('Are you sure you want to remove this student?');
+  sidebarOpen = false;
  
-  if (confirmDelete) {
-    this.students.splice(index, 1);
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
   }
- }
+ 
+  closeSidebar() {
+    this.sidebarOpen = false;
+  }
 }

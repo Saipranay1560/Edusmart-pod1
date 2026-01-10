@@ -1,0 +1,39 @@
+<div class="page">
+ 
+  <div class="page-header">
+    <h2>Exam Management</h2>
+    <p class="muted">View your upcoming and completed exams</p>
+  </div>
+ 
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Exam</th>
+          <th>Date</th>
+          <th>Duration</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+ 
+      <tbody>
+        <tr *ngFor="let exam of exams">
+          <td>{{ exam.subject }}</td>
+          <td>{{ exam.examName }}</td>
+          <td>{{ exam.date }}</td>
+          <td>{{ exam.duration }}</td>
+          <td>
+            <span
+              class="status"
+              [class.upcoming]="exam.status === 'Upcoming'"
+              [class.completed]="exam.status === 'Completed'">
+              {{ exam.status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ 
+</div>

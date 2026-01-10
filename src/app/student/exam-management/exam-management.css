@@ -1,0 +1,66 @@
+.page {
+  padding: 20px;
+}
+ 
+.page-header {
+  margin-bottom: 20px;
+}
+ 
+.page-header h2 {
+  margin: 0;
+}
+ 
+.muted {
+  color: #666;
+  font-size: 14px;
+}
+ 
+/* Table */
+.table-wrapper {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+ 
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+ 
+thead {
+  background: #f5f7fa;
+}
+ 
+th, td {
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+}
+ 
+th {
+  font-weight: 600;
+}
+ 
+tr:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+ 
+/* Status badges */
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+ 
+.status.upcoming {
+  background: #fff3cd;
+  color: #856404;
+}
+ 
+.status.completed {
+  background: #d4edda;
+  color: #155724;
+}
+ 

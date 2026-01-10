@@ -1,0 +1,15 @@
+h2{
+    margin-bottom:16px;
+}
+.table{
+    width:100%;
+    border-collapse:collapse;
+}
+th,td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+input{
+    width:70px;
+    padding:6px;
+}
