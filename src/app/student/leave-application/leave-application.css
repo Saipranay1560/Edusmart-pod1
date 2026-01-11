@@ -1,0 +1,6 @@
+.leave-container { max-width: 500px; margin: auto; padding: 20px; }
+.leave-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+.btn-submit { background-color: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; }
+.alert-success { text-align: center; padding: 30px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; color: #166534; }
+.check-icon { font-size: 3rem; display: block; margin-bottom: 10px; }

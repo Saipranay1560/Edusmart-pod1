@@ -17,12 +17,13 @@ import { Progress } from './student/progress/progress';
 import { StudentProfile } from './student/student-profile/student-profile';
 import { Subjects } from './student/subjects/subjects';
 import { VirtualClassroom } from './student/virtual-classroom/virtual-classroom';
+import { LeaveApplication } from './student/leave-application/leave-application';
 
- 
+
 export const routes: Routes = [
-  { path: '', component: Home },        
-  { path: 'login', component: Login },  
- 
+  { path: '', component: Home },
+  { path: 'login', component: Login },
+
   {
     path: 'student',
     component: Student,
@@ -39,7 +40,8 @@ export const routes: Routes = [
       { path: 'subjects', component:Subjects},
       { path:'virtual-classroom',component:VirtualClassroom},
       { path: 'courses',loadComponent: ()=> import('./student/courses/courses').then(m => m.Courses)},
-      { path: 'course-detail/:id',loadComponent:()=> import('./student/course-detail/course-detail').then(m=>m.CourseDetail)}
+      { path: 'course-detail/:id',loadComponent:()=> import('./student/course-detail/course-detail').then(m=>m.CourseDetail)},
+      { path: 'leave-application', component: LeaveApplication },
     ]
   },
   {
@@ -58,7 +60,7 @@ export const routes: Routes = [
 
   ]
 },
- 
+
   {
     path: 'admin',
     component: Admin,
