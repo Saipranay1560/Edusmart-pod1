@@ -1,0 +1,62 @@
+<div class="page-container">
+<!-- Page Header -->
+<div class="page-header">
+<h2>Assessments</h2>
+<p>Monitor quizzes & exams created by instructors</p>
+</div>
+<!-- Assessments Table -->
+<div class="card">
+<table class="assessment-table">
+<thead>
+<tr>
+<th>Assessment</th>
+<th>Course</th>
+<th>Type</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>Max Score</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let a of assessments">
+<td>
+<strong>{{ a.title }}</strong>
+<div class="sub-text">{{ a.createdBy }}</div>
+</td>
+<td>{{ a.course }}</td>
+<td>
+<span class="badge" [class.quiz]="a.type === 'QUIZ'"
+                              [class.exam]="a.type === 'EXAM'">
+             {{ a.type }}
+</span>
+</td>
+<td>{{ a.startDate | date }}</td>
+<td>{{ a.endDate | date:'mediumDate' }}</td>
+<td>{{ a.maxScore }}</td>
+<td>
+<span class="status"
+                 [class.draft]="a.status === 'DRAFT'"
+                 [class.published]="a.status === 'PUBLISHED'"
+                 [class.closed]="a.status === 'CLOSED'">
+             {{ a.status }}
+</span>
+</td>
+<td class="actions">
+<button *ngIf="a.status === 'DRAFT'"
+                   class="btn publish"
+                   (click)="publish(a.assessmentId)">
+             Publish
+</button>
+<button *ngIf="a.status === 'PUBLISHED'"
+                   class="btn close"
+                   (click)="close(a.assessmentId)">
+             Close
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>

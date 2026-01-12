@@ -1,0 +1,28 @@
+<div class="page-container">
+<h2>Course Review</h2>
+<p class="subtitle">Review and approve instructor-created courses</p>
+<div class="course-grid">
+<div class="course-card" *ngFor="let course of courses">
+<div class="card-header">
+<h3>{{ course.title }}</h3>
+<span class="status" [ngClass]="course.status.toLowerCase()">
+         {{ course.status }}
+</span>
+</div>
+<p class="category">{{ course.category }}</p>
+<div class="details">
+<p><strong>Instructor:</strong> {{ course.instructor }}</p>
+<p><strong>Duration:</strong> {{ course.duration }}</p>
+</div>
+<p class="description">{{ course.description }}</p>
+<div class="actions" *ngIf="course.status === 'PENDING'">
+<button class="approve" (click)="approveCourse(course)">
+         Approve
+</button>
+<button class="reject" (click)="rejectCourse(course)">
+         Reject
+</button>
+</div>
+</div>
+</div>
+</div>

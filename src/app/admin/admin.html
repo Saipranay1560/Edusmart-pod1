@@ -1,32 +1,89 @@
-<app-navbar></app-navbar>
- 
-<div class="container">
-  <h2>Admin Dashboard</h2>
- 
-  <h3>Users</h3>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Role</th>
-      <th>Status</th>
-      <th>Action</th>
-    </tr>
- 
-    <tr *ngFor="let user of users;let i=index">
-  <td>{{ user.name }}</td>
-  <td>{{ user.role }}</td>
-  <td>{{ user.status }}</td>
-  <td>
-    <button class="remove-btn" (click)="removeUser(i)">
-  Remove
-</button>
-  </td>
-  </tr>
-  </table>
-  <h3 style="margin-top:30px;">Courses</h3>
-  <ul>
-    <li *ngFor="let course of courses">
-      {{ course }}
-    </li>
-  </ul>
+<div class="app-container">
+<!-- SIDEBAR -->
+<aside class="sidebar" [class.closed]="!isSidebarOpen">
+<div class="sidebar-header">
+<div class="hamburger"
+        (click)="toggleSidebar(); $event.stopPropagation()">
+     ☰
 </div>
+<span class="logo-text" *ngIf="isSidebarOpen">
+     EduSmart
+</span>
+</div>
+<nav>
+<a routerLink="/admin/dashboard" routerLinkActive="active" class="menu-item">
+<i class="fa-solid fa-gauge"></i>
+<span *ngIf="isSidebarOpen">Home</span>
+</a>
+<a routerLink="/admin/courses" routerLinkActive="active" class="menu-item">
+<i class="fa-solid fa-book"></i>
+<span *ngIf="isSidebarOpen">Courses</span>
+</a>
+<a routerLink="/admin/enrollments" routerLinkActive="active" class="menu-item">
+<i class="fa-solid fa-user-graduate"></i>
+<span *ngIf="isSidebarOpen">Enrollments</span>
+</a>
+<a routerLink="/admin/assessments" routerLinkActive="active" class="menu-item">
+<i class="fa-solid fa-clipboard-check"></i>
+<span *ngIf="isSidebarOpen">Assessments</span>
+</a>
+<a routerLink="/admin/reports" routerLinkActive="active" class="menu-item">
+<i class="fa-solid fa-chart-line"></i>
+<span *ngIf="isSidebarOpen">Reports</span>
+</a>
+</nav>
+</aside>
+<!-- MAIN CONTENT -->
+<div class="main-content">
+<!-- HEADER -->
+<header class="header" (click)="closeDropdown()">
+<!-- LEFT -->
+<div class="header-left">
+
+<span class="title" ><b><i>ADMIN DASHBOARD</i></b></span>
+</div>
+<!-- RIGHT -->
+<div class="profile-container">
+<div class="profile-icon"
+            (click)="toggleDropdown($event)">
+         {{ user?.name?.charAt(0) }}
+</div>
+<!-- DROPDOWN -->
+<div class="dropdown" *ngIf="isDropdownOpen">
+<div class="profile-info">
+<div class="avatar">
+             {{ user?.name?.charAt(0) }}
+</div>
+<div>
+<h4>{{ user?.name }}</h4>
+<p>{{ user?.email }}</p>
+<span>{{ user?.role }}</span>
+</div>
+</div>
+<hr />
+<div class="dropdown-item">My Profile</div>
+<div class="dropdown-item">Settings</div>
+<div class="dropdown-item logout"
+              (click)="logout()">
+           Logout
+</div>
+</div>
+</div>
+</header>
+<!-- PAGE CONTENT -->
+<div class="page-content">
+<router-outlet></router-outlet>
+<h2 class="page-title">Overview</h2>
+<div class="dashboard-grid">
+<div class="card">Card 1</div>
+<div class="card">Card 2</div>
+<div class="card">Card 3</div>
+</div>
+</div>
+<!-- FOOTER -->
+<footer class="footer">
+     © 2025 EduSmart | Digital Learning & Assessment System
+</footer>
+</div>
+</div>
+

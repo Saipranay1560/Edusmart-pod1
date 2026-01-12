@@ -1,0 +1,82 @@
+.page-container {
+ padding: 24px;
+}
+h2 {
+ margin-bottom: 4px;
+}
+.subtitle {
+ color: #6b7280;
+ margin-bottom: 20px;
+}
+.course-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+ gap: 20px;
+}
+.course-card {
+ background: #ffffff;
+ border-radius: 12px;
+ padding: 18px;
+ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.card-header {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+}
+.card-header h3 {
+ margin: 0;
+ font-size: 18px;
+}
+.status {
+ padding: 4px 10px;
+ border-radius: 20px;
+ font-size: 12px;
+ font-weight: 600;
+}
+.status.pending {
+ background: #fef3c7;
+ color: #92400e;
+}
+.status.approved {
+ background: #d1fae5;
+ color: #065f46;
+}
+.status.rejected {
+ background: #fee2e2;
+ color: #991b1b;
+}
+.category {
+ font-size: 14px;
+ color: #2563eb;
+ margin: 6px 0;
+}
+.details p {
+ margin: 4px 0;
+ font-size: 14px;
+}
+.description {
+ font-size: 14px;
+ color: #374151;
+ margin: 10px 0;
+}
+.actions {
+ display: flex;
+ gap: 10px;
+ margin-top: 14px;
+}
+button {
+ padding: 8px 14px;
+ border-radius: 6px;
+ border: none;
+ cursor: pointer;
+ font-weight: 500;
+}
+button.approve {
+ background: #2563eb;
+ color: #fff;
+}
+button.reject {
+ background: #e5e7eb;
+ color: #374151;
+}

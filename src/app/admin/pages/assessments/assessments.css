@@ -1,0 +1,82 @@
+.page-container {
+ padding: 24px;
+ background: #f5f7fb;
+}
+.page-header {
+ margin-bottom: 20px;
+ h2 {
+   font-weight: 600;
+   color: #1f2937;
+ }
+ p {
+   color: #6b7280;
+ }
+}
+.card {
+ background: #ffffff;
+ border-radius: 12px;
+ padding: 20px;
+ box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.assessment-table {
+ width: 100%;
+ border-collapse: collapse;
+ th {
+   text-align: left;
+   padding: 12px;
+   font-size: 13px;
+   color: #6b7280;
+   border-bottom: 1px solid #e5e7eb;
+ }
+ td {
+   padding: 14px 12px;
+   border-bottom: 1px solid #f1f5f9;
+   color: #374151;
+ }
+}
+.sub-text {
+ font-size: 12px;
+ color: #9ca3af;
+}
+.badge {
+ padding: 4px 10px;
+ border-radius: 12px;
+ font-size: 12px;
+ font-weight: 500;
+}
+.quiz {
+ background: #e0f2fe;
+ color: #0369a1;
+}
+.exam {
+ background: #fef3c7;
+ color: #92400e;
+}
+.status {
+ font-weight: 600;
+ font-size: 13px;
+}
+.draft {
+ color: #6b7280;
+}
+.published {
+ color: #16a34a;
+}
+.closed {
+ color: #dc2626;
+}
+.actions .btn {
+ padding: 6px 14px;
+ border-radius: 8px;
+ border: none;
+ font-size: 12px;
+ cursor: pointer;
+}
+.publish {
+ background: #2563eb;
+ color: #fff;
+}
+.close {
+ background: #dc2626;
+ color: #fff;
+}

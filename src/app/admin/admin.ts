@@ -1,33 +1,64 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Navbar } from '../navbar/navbar';
- 
+import {
+ Router,
+ RouterLink,
+ RouterLinkActive,
+ RouterOutlet
+} from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../auth.service';
 @Component({
-  selector: 'app-admin',
-  standalone: true,
-  imports: [CommonModule, Navbar],
-  templateUrl: './admin.html',
-  styleUrl: './admin.css'
+ selector: 'app-admin',
+ standalone: true,
+ imports: [
+   CommonModule,
+   FormsModule,
+   RouterOutlet,
+   RouterLink,
+   RouterLinkActive
+ ],
+ templateUrl: './admin.html',
+ styleUrls: ['./admin.css'],
+ encapsulation: ViewEncapsulation.None
 })
 export class Admin {
  
-  users = [
-    { name: 'Rahul', role: 'Student', status: 'Active' },
-    { name: 'Anita', role: 'Instructor', status: 'Active' },
-    { name: 'Admin', role: 'Admin', status: 'Active' }
-  ];
+ isSidebarOpen = true;
+ isDropdownOpen = false;
+
+ user: { name: string; email: string; role: string } | null = {
+   name: 'RAJINIKANTH',
+   email: 'demo@example.com',
+   role: 'ADMIN'
+ };
+ constructor(
+   private router: Router,
+   private authService: AuthService
+ ) {}
  
-  courses = [
-    'Angular Fundamentals',
-    'Java Basics',
-    'Python for Beginners'
-  ];
+ toggleSidebar(): void {
+   this.isSidebarOpen = !this.isSidebarOpen;
+ }
+ 
+ toggleDropdown(event: MouseEvent): void {
+   event.stopPropagation();
+   this.isDropdownOpen = !this.isDropdownOpen;
+ }
+ 
+ closeDropdown(): void {
+   this.isDropdownOpen = false;
+ }
+
+ logout(): void {
+   
+   localStorage.clear();
+   sessionStorage.clear();
   
-removeUser(index: number) {
-  const confirmDelete = confirm('Are you sure you want to remove this user?');
- 
-  if (confirmDelete) {
-    this.users.splice(index, 1);
-  }
-}
+   if (this.authService?.logout) {
+     this.authService.logout();
+   }
+   
+   this.router.navigate(['/login']);
+ }
 }
