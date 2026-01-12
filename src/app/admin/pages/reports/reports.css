@@ -1,0 +1,112 @@
+.page-container {
+ padding: 24px;
+ background: #f4f6f9;
+ min-height: 100vh;
+}
+.page-header {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ margin-bottom: 20px;
+}
+.page-header h2 {
+ font-size: 22px;
+ font-weight: 600;
+}
+.page-header p {
+ color: #6b7280;
+}
+/* Download button */
+.download-btn {
+ background: #2563eb;
+ color: #fff;
+ border: none;
+ padding: 10px 16px;
+ border-radius: 8px;
+ cursor: pointer;
+ font-size: 14px;
+}
+.download-btn:hover {
+ background: #1e4fd8;
+}
+/* Card */
+.card {
+ background: #ffffff;
+ border-radius: 12px;
+ padding: 20px;
+ box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+/* Table */
+.report-table {
+ width: 100%;
+ border-collapse: collapse;
+}
+.report-table th {
+ text-align: left;
+ padding: 12px;
+ font-size: 14px;
+ border-bottom: 1px solid #e5e7eb;
+}
+.report-table td {
+ padding: 12px;
+ font-size: 14px;
+ border-bottom: 1px solid #e5e7eb;
+}
+/* Grades */
+.grade {
+ padding: 4px 10px;
+ border-radius: 999px;
+ font-size: 12px;
+ font-weight: 600;
+}
+.grade.a {
+ background: #dcfce7;
+ color: #166534;
+}
+.grade.b {
+ background: #e0e7ff;
+ color: #3730a3;
+}
+.grade.c {
+ background: #fee2e2;
+ color: #991b1b;
+}
+/* Empty state */
+.empty {
+ text-align: center;
+ padding: 20px;
+ color: #9ca3af;
+}
+.chart-card {
+ margin-bottom: 24px;
+}
+.chart-card h3 {
+ margin-bottom: 12px;
+ font-weight: 600;
+}
+.report-table {
+ width: 100%;
+ border-collapse: collapse;
+}
+.report-table th,
+.report-table td {
+ padding: 12px;
+ text-align: left;
+}
+.grade {
+ padding: 4px 10px;
+ border-radius: 12px;
+ font-weight: 600;
+}
+.grade.a {
+ background: #bbf7d0;
+ color: #065f46;
+}
+.grade.b {
+ background: #dbeafe;
+ color: #1e40af;
+}
+.grade.c {
+ background: #fecaca;
+ color: #7f1d1d;
+}

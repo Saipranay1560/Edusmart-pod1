@@ -17,6 +17,11 @@ import { Progress } from './student/progress/progress';
 import { StudentProfile } from './student/student-profile/student-profile';
 import { Subjects } from './student/subjects/subjects';
 import { VirtualClassroom } from './student/virtual-classroom/virtual-classroom';
+import {  CoursesComponent } from './admin/pages/courses/courses';
+import { EnrollmentsComponent } from './admin/pages/enrollments/enrollments';
+import { AssessmentsComponent } from './admin/pages/assessments/assessments';
+import { Reports } from './admin/pages/reports/reports';
+import { DashboardComponent } from './admin/pages/dashboard/dashboard';
 import { LeaveApplication } from './student/leave-application/leave-application';
 
 
@@ -47,6 +52,7 @@ export const routes: Routes = [
   {
   path: 'instructor',
   component: Instructor,
+  
   children: [
     { path: 'dashboard', component: Dashboard },
     { path: 'students', component: Students },
@@ -64,7 +70,17 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: Admin,
-    canActivate: [authGuard],
-    data: { role: 'admin' }
+    
+    
+    children:[
+      
+ { path: 'dashboard', component: DashboardComponent },
+ { path: 'courses', component: CoursesComponent },
+ { path: 'enrollments', component: EnrollmentsComponent },
+ { path: 'assessments', component: AssessmentsComponent },
+ { path: 'reports', component: Reports },
+ { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      
+    ]
   }
 ];

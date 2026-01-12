@@ -1,0 +1,111 @@
+<div class="dashboard">
+<!-- Top Stats Cards -->
+<div class="stats-cards">
+<div class="stat-card users">
+<div class="icon">👥</div>
+<div class="info">
+<p class="label">Total Users</p>
+<h2>1,245</h2>
+<span>Students & Instructors</span>
+</div>
+</div>
+<div class="stat-card courses">
+<div class="icon">📚</div>
+<div class="info">
+<p class="label">Total Courses</p>
+<h2>86</h2>
+<span>Active Courses</span>
+</div>
+</div>
+<div class="stat-card enrollments">
+<div class="icon">🎓</div>
+<div class="info">
+<p class="label">Active Enrollments</p>
+<h2>3,420</h2>
+<span>Currently Learning</span>
+</div>
+</div>
+<div class="stat-card assessments">
+<div class="icon">📝</div>
+<div class="info">
+<p class="label">Assessments</p>
+<h2>312</h2>
+<span>Quizzes & Exams</span>
+</div>
+</div>
+</div>
+
+<!-- QUICK ADMIN ACTIONS -->
+ <div
+ class="quick-action-card"
+ routerLink="/courses"
+ role="button"
+ tabindex="0"
+>
+<section class="quick-actions-container">
+<h3 class="section-title">Quick Actions</h3>
+<div class="quick-actions-grid">
+<!-- Create Course -->
+<button class="quick-action-card" [routerLink]="['/admin/courses']" aria-label="Review Course">
+<h4>Review Courses</h4>
+<p>Approve or reject instructor courses</p>
+</button>
+
+<!-- Create Assessment -->
+<button class="quick-action-card" [routerLink]="['/admin/assessments']"  aria-label="Create Assessment">
+<h4>Assessments</h4>
+<p>Monitor & manage quizzes and exams</p>
+</button>
+
+<!-- Manage Users -->
+<button class="quick-action-card" [routerLink]="['/admin/enrollments']" aria-label="Manage Users">
+<h4>Manage Users</h4>
+<p>Students & instructors</p>
+</button>
+
+
+<!-- View Reports -->
+<button class="quick-action-card" [routerLink]="['/admin/reports']"  aria-label="View Reports">
+<h4>View Reports</h4>
+<p>Performance analytics</p>
+</button>
+
+ 
+</div>
+</section>
+ </div>
+<!-- Recent Tickets Table -->
+<div class="table-section">
+<h3>Recent Tickets</h3>
+<table>
+<thead>
+<tr>
+<th>Activity</th>
+<th>User</th>
+<th>Status</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>New Enrollment</td>
+<td>John Doe</td>
+<td><span class="status done">Completed</span></td>
+<td>12 Jan 2026</td>
+</tr>
+<tr>
+<td>Assessment Created</td>
+<td>Admin</td>
+<td><span class="status progress">active</span></td>
+<td>11 Jan 2026</td>
+</tr>
+<tr>
+<td>Grades Published</td>
+<td>Instructor</td>
+<td><span class="status hold">Published</span></td>
+<td>10 Jan 2026</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
