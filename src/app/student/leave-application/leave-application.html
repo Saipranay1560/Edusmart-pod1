@@ -1,0 +1,25 @@
+<div class="leave-container">
+  <h2>Apply for Leave</h2>
+
+  <div *ngIf="!isSubmitted; else successMessage" class="leave-card">
+    <div class="form-group">
+      <label for="leaveDate">Select Date:</label>
+      <input type="date" id="leaveDate" [(ngModel)]="leaveDate" [min]="today" class="form-control">
+    </div>
+
+    <div class="form-group mt-3">
+      <label for="reason">Reason for Leave:</label>
+      <textarea id="reason" [(ngModel)]="reason" class="form-control" rows="4" placeholder="Enter reason here..."></textarea>
+    </div>
+
+    <button (click) ="onSubmit()" class="btn-submit mt-3">Submit Application</button>
+  </div>
+
+  <ng-template #successMessage>
+    <div class="alert-success">
+      <span class="check-icon">✔</span>
+      <p>Your leave request has been sent to the instructor.</p>
+      <button (click)="isSubmitted = false; leaveDate=''; reason=''" class="btn-back">Apply for another date</button>
+    </div>
+  </ng-template>
+</div>

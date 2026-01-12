@@ -22,12 +22,13 @@ import { EnrollmentsComponent } from './admin/pages/enrollments/enrollments';
 import { AssessmentsComponent } from './admin/pages/assessments/assessments';
 import { Reports } from './admin/pages/reports/reports';
 import { DashboardComponent } from './admin/pages/dashboard/dashboard';
+import { LeaveApplication } from './student/leave-application/leave-application';
 
- 
+
 export const routes: Routes = [
-  { path: '', component: Home },        
-  { path: 'login', component: Login },  
- 
+  { path: '', component: Home },
+  { path: 'login', component: Login },
+
   {
     path: 'student',
     component: Student,
@@ -44,7 +45,8 @@ export const routes: Routes = [
       { path: 'subjects', component:Subjects},
       { path:'virtual-classroom',component:VirtualClassroom},
       { path: 'courses',loadComponent: ()=> import('./student/courses/courses').then(m => m.Courses)},
-      { path: 'course-detail/:id',loadComponent:()=> import('./student/course-detail/course-detail').then(m=>m.CourseDetail)}
+      { path: 'course-detail/:id',loadComponent:()=> import('./student/course-detail/course-detail').then(m=>m.CourseDetail)},
+      { path: 'leave-application', component: LeaveApplication },
     ]
   },
   {
@@ -64,7 +66,7 @@ export const routes: Routes = [
 
   ]
 },
- 
+
   {
     path: 'admin',
     component: Admin,

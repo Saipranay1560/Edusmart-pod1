@@ -3,27 +3,28 @@
   <button class="menu-btn" (click)="toggleSidebar()">☰</button>
   <span class="title">Student Dashboard</span>
 </header>
- 
+
 <!-- Sidebar Drawer -->
-<nav class="sidebar" [class.open]="sidebarOpen">
+<nav class="sidebar" [class.open]="sidebarOpen" (click)="closeSidebar()">
   <h2 class="logo">EduSmart</h2>
- 
-  <a routerLink="/student/student-profile" (click)="closeSidebar()">Profile</a>
-  <a routerLink="/student/dashboard" (click)="closeSidebar()">Dashboard</a>
-  <a routerLink="/student/courses" (click)="closeSidebar()">Courses</a>
-  <a routerLink="/student/subjects" (click)="closeSidebar()">Subjects</a>
-  <a routerLink="/student/assessments" (click)="closeSidebar()">Assessments</a>
-  <a routerLink="/student/progress" (click)="closeSidebar()">Progress</a>
-  <a routerLink="/student/virtual-classroom" (click)="closeSidebar()">Virtual Classroom</a>
-  <a routerLink="/student/exam-management" (click)="closeSidebar()">Exam Management</a>
- 
+
+  <a routerLink="/student/student-profile" >Profile</a>
+
+  <a routerLink="/student/courses" >Courses</a>
+  <a routerLink="/student/subjects" >Subjects</a>
+  <a routerLink="/student/assessments" >Assessments</a>
+  <a routerLink="/student/progress" >Progress</a>
+  <a routerLink="/student/virtual-classroom">Virtual Classroom</a>
+  <a routerLink="/student/exam-management" >Exam Management</a>
+  <a routerLink="/student/leave-application" >Leave Request</a>
+
   <button class="logout">Logout</button>
 </nav>
- 
-<!-- Dark Overlay -->
+
+
 <div class="overlay" *ngIf="sidebarOpen" (click)="closeSidebar()"></div>
- 
-<!-- Main Page -->
+
+
 <main class="content">
   <router-outlet></router-outlet>
 </main>
