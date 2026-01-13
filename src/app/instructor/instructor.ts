@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
- 
+
 @Component({
   selector: 'app-instructor',
   standalone: true,
@@ -10,14 +10,19 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./instructor.css']
 })
 export class Instructor {
- 
+
   sidebarOpen = false;
- 
+
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
   }
- 
+
   closeSidebar() {
     this.sidebarOpen = false;
+  }
+
+constructor(private router: Router) {}
+  logout() {
+    this.router.navigate(['/login']);
   }
 }

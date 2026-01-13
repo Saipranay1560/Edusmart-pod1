@@ -1,7 +1,10 @@
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
- 
+import { DataService } from '../../student/services/data';
+import { Course, Subject } from '../../student/shared';
+
 @Component({
   selector: 'app-courses',
   standalone: true,
@@ -10,35 +13,26 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./courses.css']
 })
 export class Courses {
- 
-  courses = [
-    {
-      id: 1,
-      title: 'Angular Fundamentals',
-      subject: 'Angular',
-      mode: 'Instructor-led',
-      credits: 4,
-      enrolled: false
-    },
-    {
-      id: 2,
-      title: 'Java Basics',
-      subject: 'Java',
-      mode: 'Self-paced',
-      credits: 3,
-      enrolled: true
-    },
-    {
-      id: 3,
-      title: 'Python for Beginners',
-      subject: 'Python',
-      mode: 'Self-paced',
-      credits: 5,
-      enrolled: false
-    }
-  ];
- 
-  toggleEnroll(course: any) {
-    course.enrolled = !course.enrolled;
+  subjects: Subject[] = [];
+  courses: Course[] = [];
+  subjectNameById: Record<string, string> = {};
+
+  constructor(private data: DataService) {
+    this.subjects = data.getSubjects();
+    this.subjectNameById = this.subjects.reduce((acc, s) => {
+      acc[s.id] = s.name;
+      return acc;
+    }, {} as Record<string, string>);
+
+    this.refreshCourses();
+  }
+
+  toggleEnroll(course: Course) {
+    this.data.toggleEnroll(course.id, !course.enrolled);
+    this.refreshCourses();
+  }
+
+  private refreshCourses() {
+    this.courses = this.subjects.flatMap(s => this.data.getCoursesBySubject(s.id));
   }
 }

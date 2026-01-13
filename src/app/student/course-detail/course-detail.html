@@ -1,18 +1,17 @@
+
 <div class="card" *ngIf="course">
   <h2>{{ course.title }}</h2>
- 
-  <p><strong>Mode:</strong> {{ course.mode }}</p>
-  <p><strong>Credits:</strong> {{ course.credits }}</p>
-  <p>{{ course.description }}</p>
- 
-  <h3>Schedule</h3>
-  <ul>
-    <li *ngFor="let s of course.schedule">
-      {{ s.day }} - {{ s.time }}
-    </li>
-  </ul>
- 
-  <a class="btn btn-outline" routerLink="/student/courses">
-    Back to Courses
-  </a>
-</div>
+  <p class="muted">Mode: <strong>{{ course.mode }}</strong> • Credits: {{ course.credits }}</p>
+
+  <div *ngIf="course.schedule?.length">
+    <h3>Schedule</h3>
+    <ul>
+      <li *ngFor="let s of course.schedule">
+        {{ s.day }} • {{ s.time }}
+        <a class="btn btn-primary" [routerLink]="['/virtual-classroom', course.id]">Join</a>
+      </li>
+    </ul>
+  </div>
+
+  <div style="margin-top: 12px;">
+    <a class="btn btn-outline" routerLink="/portal/subjects">Back to Subjects

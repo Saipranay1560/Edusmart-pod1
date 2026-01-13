@@ -1,25 +1,48 @@
-<div class="leave-container">
-  <h2>Apply for Leave</h2>
-
-  <div *ngIf="!isSubmitted; else successMessage" class="leave-card">
-    <div class="form-group">
-      <label for="leaveDate">Select Date:</label>
-      <input type="date" id="leaveDate" [(ngModel)]="leaveDate" [min]="today" class="form-control">
-    </div>
-
-    <div class="form-group mt-3">
-      <label for="reason">Reason for Leave:</label>
-      <textarea id="reason" [(ngModel)]="reason" class="form-control" rows="4" placeholder="Enter reason here..."></textarea>
-    </div>
-
-    <button (click) ="onSubmit()" class="btn-submit mt-3">Submit Application</button>
+<div class="leave-application-wrapper">
+  <div class="page-header">
+    <h2 class="page-title">Leave Request</h2>
+    <p class="page-subtitle">Submit your absence request for review by the academic department.</p>
   </div>
 
-  <ng-template #successMessage>
-    <div class="alert-success">
-      <span class="check-icon">✔</span>
-      <p>Your leave request has been sent to the instructor.</p>
-      <button (click)="isSubmitted = false; leaveDate=''; reason=''" class="btn-back">Apply for another date</button>
+  <div class="content-container">
+    <div *ngIf="!isSubmitted; else successMessage" class="application-card">
+      <div class="form-body">
+        <div class="form-section">
+          <label class="input-label" for="leaveDate">Proposed Leave Date</label>
+          <div class="input-wrapper">
+            <input type="date" id="leaveDate" [(ngModel)]="leaveDate" [min]="today" class="custom-input">
+            <small class="input-hint">Select the first day of your absence.</small>
+          </div>
+        </div>
+
+        <div class="form-section mt-4">
+          <label class="input-label" for="reason">Justification / Reason</label>
+          <textarea id="reason" [(ngModel)]="reason" class="custom-textarea" rows="5"
+                    placeholder="Provide a brief explanation for your absence..."></textarea>
+        </div>
+
+        <div class="form-footer">
+          <button (click)="onSubmit()" class="primary-submit-btn">
+            Submit Application
+          </button>
+        </div>
+      </div>
     </div>
-  </ng-template>
+
+    <ng-template #successMessage>
+      <div class="success-card">
+        <div class="success-icon-circle">
+          <span class="material-icons">check</span>
+        </div>
+        <h3 class="success-title">Application Received</h3>
+        <p class="success-text">Your request for <strong>{{ leaveDate | date:'mediumDate' }}</strong> has been logged. You will be notified once the instructor reviews it.</p>
+
+        <div class="success-footer">
+          <button (click)="isSubmitted = false; leaveDate=''; reason=''" class="secondary-btn">
+            Create New Request
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
 </div>

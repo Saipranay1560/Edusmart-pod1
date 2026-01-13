@@ -3,11 +3,11 @@
   <button class="menu-btn" (click)="toggleSidebar()">☰</button>
   <span class="title">Instructor Dashboard</span>
 </header>
- 
+
 <!-- Sidebar Drawer -->
 <nav class="sidebar" [class.open]="sidebarOpen">
   <h2 class="logo">EduSmart</h2>
- 
+
   <a routerLink="/instructor/dashboard" (click)="closeSidebar()">Dashboard</a>
   <a routerLink="/instructor/students" (click)="closeSidebar()">Students</a>
   <a routerLink="/instructor/attendance" (click)="closeSidebar()">Attendance</a>
@@ -15,13 +15,13 @@
   <a routerLink="/instructor/marks" (click)="closeSidebar()">Marks</a>
   <a routerLink="/instructor/courses">Courses</a>
   <a routerLink="/instructor/leave-requests" (click)="closeSidebar()">Leave Requests</a>
- 
-  <button class="logout">Logout</button>
+
+  <button class="logout" (click)="logout()">Logout</button>
 </nav>
- 
+
 <!-- Dark Overlay -->
 <div class="overlay" *ngIf="sidebarOpen" (click)="closeSidebar()"></div>
- 
+
 <!-- Main Page -->
 <main class="main">
   <router-outlet></router-outlet>

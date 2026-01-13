@@ -1,23 +1,23 @@
+
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
- 
+import { UserProfile } from '../../student/shared';
+import { DataService } from '../../student/services/data';
+
 @Component({
-  selector: 'app-student-profile',
+  selector: 'app-student-portal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './student-profile.html',
   styleUrls: ['./student-profile.css']
 })
 export class StudentProfile {
- 
-  student = {
-    name: 'Rahul',
-    rollNo: 'STU101',
-    email: 'rahul@student.com',
-    phone: '+91 9876543210',
-    department: 'Computer Science',
-    year: 'Final Year',
-    college: 'EduSmart University'
-  };
- 
-}
+
+user?: UserProfile;
+
+  constructor(private data: DataService) {
+    this.user = this.data.getUser();
+  }
+
+ }

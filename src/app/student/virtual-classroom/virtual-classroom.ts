@@ -1,6 +1,10 @@
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
- 
+import { ActivatedRoute } from '@angular/router';
+import { DataService } from '../../student/services/data';
+import { Course } from '../../student/shared';
+
 @Component({
   selector: 'app-virtual-classroom',
   standalone: true,
@@ -9,19 +13,10 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./virtual-classroom.css']
 })
 export class VirtualClassroom {
- 
-  course = {
-    title: 'Angular Fundamentals',
-    instructor: 'Mr. Kumar',
-    meetingLink: 'https://meet.google.com/demo-link',
-    schedule: 'Mon & Wed - 10:00 AM',
-    status: 'Live'
-  };
- 
-  materials = [
-    { name: 'Angular Introduction.pdf', type: 'PDF' },
-    { name: 'Components & Templates.mp4', type: 'Video' },
-    { name: 'Assignment 1.pdf', type: 'PDF' }
-  ];
- 
+  course?: Course;
+
+  constructor(private route: ActivatedRoute, private data: DataService) {
+    const id = this.route.snapshot.paramMap.get('courseId')!;
+    this.course = data.getCourse(id);
+  }
 }

@@ -1,18 +1,32 @@
-<h2>Assessments</h2>
- 
-<div class="grid">
-  <div class="card" *ngFor="let a of assessments">
-    <h3>{{ a.subject }}</h3>
- 
-    <p><strong>{{ a.title }}</strong></p>
-    <p>{{ a.marks }} Marks</p>
-    <p>{{ a.attempts }} Attempt(s)</p>
- 
-    <button
-      class="btn btn-primary"
-      [routerLink]="['/student/assessment-quiz', a.id]"
-    >
-      Take Assessment
-    </button>
+<div class="assessment-container">
+  <div class="assessment-grid">
+    <div class="subject-card" *ngFor="let s of subjects">
+      <div class="subject-header">
+        <h3 class="subject-name">{{ s.name }}</h3>
+        <span class="assessment-count">{{ assessmentsBySubject[s.id]?.length || 0 }} Tasks</span>
+      </div>
+
+      <div class="assessment-list">
+        <div class="assessment-item" *ngFor="let a of assessmentsBySubject[s.id]">
+          <div class="assessment-info">
+            <span class="assessment-title">{{ a.title }}</span>
+            <div class="assessment-meta">
+              <span class="meta-badge">
+                <i class="icon-marks"></i> Max {{ a.maxMarks }} marks
+              </span>
+              <span class="meta-badge">
+                <i class="icon-attempts"></i> {{ a.attempts }} attempt(s)
+              </span>
+            </div>
+          </div>
+
+          <div class="assessment-action">
+            <a class="action-btn" [routerLink]="['/portal/assessments/quiz', a.id]">
+              Take Assessment
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
