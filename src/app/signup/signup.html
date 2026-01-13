@@ -1,0 +1,64 @@
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()" >
+ 
+  <h2>Student Registration</h2>
+ 
+  <div>
+    <input type="text" placeholder="Full Name" formControlName="name">
+    <small *ngIf="submitted && signupForm.get('fullname')?.hasError('fullname')">Name is required</small>
+   
+<small *ngIf="submitted && signupForm.get('name')?.hasError('required')">
+  Name is required
+</small>
+
+ </div>
+ 
+  <div>
+    <input type="email" placeholder="Email" formControlName="email">
+    <small *ngIf="submitted && signupForm.get('email')?.hasError('email')">
+  
+    </small>
+<small *ngIf="submitted && signupForm.get('email')?.hasError('required')">
+  Email is required
+</small>
+<small *ngIf="submitted && signupForm.get('email')?.hasError('email')">
+  Enter a valid email address
+</small>
+
+    
+
+ </div>
+ 
+  <div>
+    <input type="password" placeholder="Password" formControlName="password">
+   <small *ngIf="submitted && signupForm.get('password')?.hasError('required')">
+  Password is required
+</small>
+ 
+  </div>
+ 
+  <div>
+     
+
+
+
+<div>
+  <input type="password" placeholder="Confirm Password" formControlName="confirmPassword" />
+
+  <!-- Required error -->
+  <small *ngIf="submitted && signupForm.get('confirmPassword')?.hasError('required')">
+    Confirm Password is required
+  </small>
+
+  <!-- Password mismatch error -->
+  <small *ngIf="submitted && signupForm.hasError('passwordMismatch')">
+    Passwords do not match
+  </small>
+</div>
+
+
+
+  </div>
+ 
+  <button type="submit">Sign Up</button>
+ 
+</form>

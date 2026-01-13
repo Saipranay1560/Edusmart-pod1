@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { Home } from './home/home';
-import { Login } from './login/login';
+
 import { Student } from './student/student';
 import { Instructor } from './instructor/instructor';
 import { Admin } from './admin/admin';
@@ -22,16 +22,18 @@ import { AssessmentsComponent } from './admin/pages/assessments/assessments';
 import { Reports } from './admin/pages/reports/reports';
 import { DashboardComponent } from './admin/pages/dashboard/dashboard';
 import { LeaveApplication } from './student/leave-application/leave-application';
+import { LoginComponent } from './login/login';
+import { Signup } from './signup/signup';
 
 
 export const routes: Routes = [
   { path: '', component: Home },
-  { path: 'login', component: Login },
+  { path: 'login', component:LoginComponent},
+  { path: 'signup', component:Signup},
 
   {
     path: 'student',
     component: Student,
-    canActivate: [authGuard],
     data: { role: 'student' },
     children:[
       { path:'', redirectTo:'student-profile',pathMatch:'full'},
@@ -80,5 +82,5 @@ export const routes: Routes = [
  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 
     ]
-  }
+  }  
 ];
