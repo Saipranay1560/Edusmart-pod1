@@ -1,29 +1,116 @@
+
 <div class="login-container">
-  <div class="login-card">
-    <h2>EduSmart Login</h2>
+  <div class="login-wrapper">
+    <!-- Left Panel -->
+    <div class="left-panel">
+      <div class="logo">EduSmart</div>
+      <div class="tagline">Digital Learning &amp; Assessment Management System</div>
+
+      <!-- Illustration -->
+      <div class="illustration-box">
+          <img src="assets/images/login.jpeg" alt="EduSmart Login Illustration" />
+      </div>
+         <!-- Right Panel -->
+    <div class="right-panel">
+      <h2>Welcome Back!</h2>
+      <p class="sub-text">
+        Login to access your <span class="highlight">EduSmart</span> account
+      </p>
+        
+      <!-- Role Selector -->
+<div class="role-selector" role="tablist" aria-label="Select role">
  
-    <div class="form-group">
-      <label>Username</label>
-      <input type="text" placeholder="Enter username">
-    </div>
+  <button
+    type="button"
+    class="role-btn"
+    [class.active]="selectedRole === 'admin'"
+    (click)="selectRole('admin')"
+    aria-pressed="{{ selectedRole === 'admin' }}">
+    ADMIN
+  </button>
  
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" placeholder="Enter password">
-    </div>
+  <button
+    type="button"
+    class="role-btn"
+    [class.active]="selectedRole === 'instructor'"
+    (click)="selectRole('instructor')"
+    aria-pressed="{{ selectedRole === 'instructor' }}">
+    INSTRUCTOR
+  </button>
  
-    <div class="btn-group">
-<button type="button" class="student-btn" (click)="loginStudent()">
-  Login as Student
-</button>
+  <button
+    type="button"
+    class="role-btn"
+    [class.active]="selectedRole === 'student'"
+    (click)="selectRole('student')"
+    aria-pressed="{{ selectedRole === 'student' }}">
+    STUDENT
+  </button>
  
-<button type="button" class="instructor-btn" (click)="loginInstructor()">
-  Login as Instructor
-</button>
- 
-<button type="button" class="admin-btn" (click)="loginAdmin()">
-  Login as Admin
-</button>
+</div>
+
+      <!-- Reactive Form -->
+      <form [formGroup]="form" (ngSubmit)="onLogin()" novalidate>
+        <!-- Email -->
+        <div class="input-group">
+          <label for="email">Email / User ID</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Enter your ID"
+            [attr.aria-invalid]="hasError('email')"
+          />
+          <small class="error" *ngIf="hasError('email', 'required')">
+            Email / User ID is required
+          </small>
+          <small class="error" *ngIf="hasError('email', 'email')">
+            Enter a valid email address
+          </small>
+        </div>
+
+        <!-- Password -->
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="Enter Password"
+            [attr.aria-invalid]="hasError('password')"
+          />
+          <small class="error" *ngIf="hasError('password', 'required')">
+            Password is required
+          </small>
+          <small class="error" *ngIf="hasError('password', 'minlength')">
+            Minimum 6 characters
+          </small>
+        </div>
+
+        <!-- Options -->
+        <div class="options">
+          <label>
+            <input type="checkbox" formControlName="rememberMe" />
+            Remember Me
+          </label>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="login-submit-btn"
+          [disabled]="form.invalid || loading"
+        >
+          {{ loading ? 'Logging in…' : 'LOGIN' }}
+        </button>
+
+        <!-- Footer -->
+        <div class="footer-link">
+          Don’t have an account?
+          <a (click)="goToSignup()">Sign Up</a>
+        </div>
+      </form>
     </div>
   </div>
 </div>
+``
