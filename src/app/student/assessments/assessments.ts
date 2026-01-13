@@ -1,7 +1,10 @@
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
- 
+import { DataService } from '../../student/services/data';
+import { Assessment, Subject } from '../../student/shared';
+
 @Component({
   selector: 'app-assessments',
   standalone: true,
@@ -10,28 +13,13 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./assessments.css']
 })
 export class Assessments {
- 
-  assessments = [
-    {
-      id: 1,
-      subject: 'Angular',
-      title: 'Angular Basics Quiz',
-      marks: 20,
-      attempts: 2
-    },
-    {
-      id: 2,
-      subject: 'Angular',
-      title: 'Components Test',
-      marks: 30,
-      attempts: 2
-    },
-    {
-      id: 3,
-      subject: 'Java',
-      title: 'Java Fundamentals',
-      marks: 25,
-      attempts: 1
+  subjects: Subject[] = [];
+  assessmentsBySubject: Record<string, Assessment[]> = {};
+
+  constructor(private data: DataService) {
+    this.subjects = data.getSubjects();
+    for (const s of this.subjects) {
+      this.assessmentsBySubject[s.id] = data.getAssessmentsBySubject(s.id);
     }
-  ];
+  }
 }

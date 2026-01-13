@@ -1,39 +1,48 @@
-<div class="page">
- 
-  <div class="page-header">
-    <h2>Exam Management</h2>
-    <p class="muted">View your upcoming and completed exams</p>
+<div class="exam-management-container">
+  <div class="info-section">
+    <h2>Secure Exam Management</h2>
+    <p class="subtitle">Enter a restricted environment with active monitoring and automated timers to ensure academic integrity.</p>
   </div>
- 
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>Subject</th>
-          <th>Exam</th>
-          <th>Date</th>
-          <th>Duration</th>
-          <th>Status</th>
-        </tr>
-      </thead>
- 
-      <tbody>
-        <tr *ngFor="let exam of exams">
-          <td>{{ exam.subject }}</td>
-          <td>{{ exam.examName }}</td>
-          <td>{{ exam.date }}</td>
-          <td>{{ exam.duration }}</td>
-          <td>
-            <span
-              class="status"
-              [class.upcoming]="exam.status === 'Upcoming'"
-              [class.completed]="exam.status === 'Completed'">
-              {{ exam.status }}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
+  <div class="management-grid">
+    <div class="control-card" [class.active-mode]="secure">
+      <div class="card-header">
+        <div class="status-indicator">
+          <span class="pulse" *ngIf="secure"></span>
+          {{ secure ? 'Secure Environment Active' : 'System Ready' }}
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="timer-display" *ngIf="secure">
+          <span class="timer-label">Time Remaining</span>
+          <h1 class="countdown">{{ remaining }}<small>s</small></h1>
+        </div>
+
+        <div class="placeholder-text" *ngIf="!secure">
+          <p>Secure mode will restrict navigation and track tab-switching during your assessment.</p>
+        </div>
+
+        <div class="action-group">
+          <button class="btn-start" (click)="start()" *ngIf="!secure">
+            Start Secure Mode (15 min)
+          </button>
+
+          <div class="active-actions" *ngIf="secure">
+            <a class="btn-proceed" routerLink="/portal/assessments">Go to Assessments</a>
+            <button class="btn-end" (click)="end()">End Session Early</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="instructions-card">
+      <h3>Proctoring Rules</h3>
+      <ul class="rules-list">
+        <li><span>Timer:</span> Automatically submits after 15 minutes.</li>
+        <li><span>Leave Warning:</span> Navigation outside this window is logged.</li>
+        <li><span>Full Screen:</span> System recommends full-screen mode.</li>
+      </ul>
+    </div>
   </div>
- 
 </div>

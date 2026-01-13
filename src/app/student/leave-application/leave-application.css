@@ -1,6 +1,156 @@
-.leave-container { max-width: 500px; margin: auto; padding: 20px; }
-.leave-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-.form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
-.btn-submit { background-color: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; }
-.alert-success { text-align: center; padding: 30px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; color: #166534; }
-.check-icon { font-size: 3rem; display: block; margin-bottom: 10px; }
+/* Container and Wrapper */
+.leave-application-wrapper {
+  max-width: 650px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0;
+}
+
+.page-subtitle {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-top: 6px;
+}
+
+/* Form Card */
+.application-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.form-body {
+  padding: 32px;
+}
+
+/* Input Styling */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #334155;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.custom-input, .custom-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #1e293b;
+  transition: all 0.2s ease;
+  background: #f8fafc;
+}
+
+.custom-input:focus, .custom-textarea:focus {
+  outline: none;
+  border-color: #0d4d4d; /* Theme Teal */
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(13, 77, 77, 0.1);
+}
+
+.input-hint {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+/* Buttons */
+.form-footer {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.primary-submit-btn {
+  background-color: #1215b3; /* Matching Sidebar */
+  color: #ffffff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.primary-submit-btn:hover {
+  background-color:blue;
+  transform: translateY(-1px);
+}
+
+/* Success Card */
+.success-card {
+  background: white;
+  padding: 48px 32px;
+  text-align: center;
+  border-radius: 12px;
+  border: 1px solid #bbf7d0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.success-icon-circle {
+  width: 64px;
+  height: 64px;
+  background: #dcfce7;
+  color: #166534;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 32px;
+}
+
+.success-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1930a4;
+  margin-bottom: 12px;
+}
+
+.success-text {
+  color: #475569;
+  line-height: 1.6;
+}
+
+.success-footer {
+  margin-top: 32px;
+}
+
+.secondary-btn {
+  background: white;
+  border: 1.5px solid #e2e8f0;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: #64748b;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.secondary-btn:hover {
+  border-color: #94a3b8;
+  color: #1e293b;
+  background: #f8fafc;
+}

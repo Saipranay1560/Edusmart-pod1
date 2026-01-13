@@ -1,42 +1,42 @@
-<div class="page">
- 
-  <div class="page-header">
-    <h2>My Progress</h2>
-    <p class="muted">
-      Track your course completion and performance
-    </p>
-  </div>
- 
-  <div class="progress-grid">
- 
-    <div class="progress-card" *ngFor="let c of courses">
- 
-      <h3>{{ c.title }}</h3>
- 
-      <div class="progress-info">
-        <span>Status:</span>
-        <strong
-          [class.completed]="c.status === 'Completed'"
-          [class.inprogress]="c.status === 'In Progress'"
-        >
-          {{ c.status }}
-        </strong>
-      </div>
- 
-      <div class="progress-bar">
-        <div
-          class="progress-fill"
-          [style.width.%]="c.completion"
-        ></div>
-      </div>
- 
-      <div class="progress-stats">
-        <span>Completion: {{ c.completion }}%</span>
-        <span>Score: {{ c.score }}%</span>
-      </div>
- 
+<div class="progress-container">
+  <div class="header-card">
+    <div class="header-content">
+      <h2>Progress Dashboard</h2>
+      <p class="subtitle">Track your academic journey and assessment completion.</p>
     </div>
- 
   </div>
- 
+
+  <div class="overall-card" *ngIf="overall">
+    <div class="overall-info">
+      <div>
+        <span class="label">Total Completion</span>
+        <h3 class="stats">{{ overall.totalCompleted }} <small>/ {{ overall.totalAssessments }}</small></h3>
+      </div>
+      <div class="percentage-badge">
+        {{ overall.overallPercentage }}%
+      </div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill main-fill" [style.width.%]="overall.overallPercentage"></div>
+    </div>
+  </div>
+
+  <div class="subject-grid">
+    <div class="subject-progress-card" *ngFor="let sp of subjectProgress">
+      <div class="card-top">
+        <h4 class="subject-title">{{ subjectNameById[sp.subjectId] }}</h4>
+        <span class="percentage-text">{{ sp.percentage }}%</span>
+      </div>
+
+      <div class="progress-track-sm">
+        <div class="progress-fill-sm" [style.width.%]="sp.percentage"></div>
+      </div>
+
+      <div class="card-bottom">
+        <span class="count-text">
+          <strong>{{ sp.completedAssessments }}</strong> of {{ sp.totalAssessments }} assessments
+        </span>
+      </div>
+    </div>
+  </div>
 </div>

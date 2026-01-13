@@ -1,6 +1,9 @@
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
- 
+import { DataService } from '../../student/services/data';
+import { SubjectProgress, OverallProgress, Subject } from '../../student/shared';
+
 @Component({
   selector: 'app-progress',
   standalone: true,
@@ -9,28 +12,22 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./progress.css']
 })
 export class Progress {
- 
-  studentName = 'Rahul';
- 
-  courses = [
-    {
-      title: 'Angular Fundamentals',
-      completion: 75,
-      score: 82,
-      status: 'In Progress'
-    },
-    {
-      title: 'Java Basics',
-      completion: 100,
-      score: 88,
-      status: 'Completed'
-    },
-    {
-      title: 'Python for Beginners',
-      completion: 40,
-      score: 65,
-      status: 'In Progress'
-    }
-  ];
- 
+  subjects: Subject[] = [];
+  subjectNameById: Record<string, string> = {};
+  subjectProgress: SubjectProgress[] = [];
+  overall?: OverallProgress;
+
+  constructor(private data: DataService) {
+    this.subjects = data.getSubjects();
+    this.subjectNameById = this.subjects.reduce((acc, s) => {
+      acc[s.id] = s.name;
+      return acc;
+    }, {} as Record<string, string>);
+       this.refresh();
+  }
+
+  refresh() {
+    this.subjectProgress = this.data.getSubjectProgress();
+    this.overall = this.data.getOverallProgress();
+  }
 }

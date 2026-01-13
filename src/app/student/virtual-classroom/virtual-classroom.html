@@ -1,40 +1,44 @@
-<div class="page">
- 
-  <div class="page-header">
-    <h2>Virtual Classroom</h2>
-    <p class="muted">Attend live classes and access materials</p>
+<div class="classroom-container">
+  <div class="classroom-header" *ngIf="course">
+    <div class="header-content">
+      <span class="context-label">Virtual Classroom</span>
+      <h2 class="course-title">{{ course.title }}</h2>
+      <p class="subtitle">Access your live learning environment and collaborative resources.</p>
+    </div>
   </div>
- 
-  <!-- Class Info -->
-  <div class="class-card">
-    <h3>{{ course.title }}</h3>
- 
-    <p><strong>Instructor:</strong> {{ course.instructor }}</p>
-    <p><strong>Schedule:</strong> {{ course.schedule }}</p>
-    <p>
-      <strong>Status:</strong>
-      <span class="status live" *ngIf="course.status === 'Live'">Live</span>
-    </p>
- 
-    <a
-      class="btn join-btn"
-      [href]="course.meetingLink"
-      target="_blank"
-    >
-      Join Live Class
-    </a>
+
+  <div class="sessions-wrapper" *ngIf="course">
+    <div class="session-card-header">
+      <h3>Upcoming Live Sessions</h3>
+    </div>
+
+    <div class="sessions-body" *ngIf="course.schedule?.length; else noSchedule">
+      <div class="session-row" *ngFor="let s of course.schedule">
+        <div class="session-time-info">
+          <div class="calendar-icon">
+            <span class="day-abbr">{{ s.day.substring(0,3) }}</span>
+          </div>
+          <div class="time-details">
+            <span class="session-day">{{ s.day }}</span>
+            <span class="session-time">{{ s.time }}</span>
+          </div>
+        </div>
+
+        <div class="session-actions">
+          <a class="join-btn" [href]="s.link" target="_blank">
+            <span class="live-dot"></span>
+            Join Meeting
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noSchedule>
+      <div class="empty-state">
+        <div class="empty-icon">📅</div>
+        <p>No live sessions are currently scheduled.</p>
+        <span class="muted">Please check back later or contact your instructor.</span>
+      </div>
+    </ng-template>
   </div>
- 
-  <!-- Materials -->
-  <div class="materials">
-    <h3>Class Materials</h3>
- 
-    <ul>
-      <li *ngFor="let m of materials">
-        <span>{{ m.name }}</span>
-        <span class="tag">{{ m.type }}</span>
-      </li>
-    </ul>
-  </div>
- 
 </div>
