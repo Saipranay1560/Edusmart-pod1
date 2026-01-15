@@ -14,15 +14,20 @@
               <span class="meta-badge">
                 <i class="icon-marks"></i> Max {{ a.maxMarks }} marks
               </span>
-              <span class="meta-badge">
-                <i class="icon-attempts"></i> {{ a.attempts }} attempt(s)
+              <span class="meta-badge" [class.limit-reached]="data.getAttemptCount(a.id) >= a.attempts">
+                <i class="icon-attempts"></i>
+                {{ data.getAttemptCount(a.id) }} / {{ a.attempts }} attempt(s) used
               </span>
             </div>
           </div>
 
           <div class="assessment-action">
-            <a class="action-btn" [routerLink]="['/student/assessment-quiz', a.id]">
-              Take Assessment
+            <a
+              class="action-btn"
+              [routerLink]="data.getAttemptCount(a.id) < a.attempts ? ['/student/assessment-quiz', a.id] : null"
+              [class.btn-disabled]="data.getAttemptCount(a.id) >= a.attempts"
+            >
+              {{ data.getAttemptCount(a.id) >= a.attempts ? 'Limit Reached' : 'Take Assessment' }}
             </a>
           </div>
         </div>

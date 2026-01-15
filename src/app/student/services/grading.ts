@@ -11,7 +11,7 @@ export class GradingService {
       if (chosen !== null && chosen === q.answerIndex) score += q.marks;
     }
     const percentage = Math.round((score / assessment.maxMarks) * 100);
-    const passed = percentage >= 40; // simple pass rule
+    const passed = percentage >= 40;
     return {
       assessmentId: assessment.id,
       score,

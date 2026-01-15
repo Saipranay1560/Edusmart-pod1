@@ -1,7 +1,7 @@
 
 import { Component, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ExamService } from '../../student/services/exam';
+import { ExamService } from '../../services/exam';
 import { RouterModule } from '@angular/router';
 
 @Component({

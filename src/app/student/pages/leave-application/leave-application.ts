@@ -13,8 +13,6 @@ export class LeaveApplication {
   leaveDate: string = '';
   reason: string = '';
   isSubmitted: boolean = false;
-
-  // Get today's date in YYYY-MM-DD format for the 'min' attribute
   today: string = new Date().toISOString().split('T')[0];
 
   onSubmit() {

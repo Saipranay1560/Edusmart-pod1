@@ -2,10 +2,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { DataService } from '../../student/services/data';
-import { GradingService } from '../../student/services/grading';
-import { Assessment } from '../../student/shared';
-import { ExamService } from '../../student/services/exam';
+import { DataService } from '../../services/data';
+import { GradingService } from '../../services/grading';
+import { Assessment } from '../../shared';
+import { ExamService } from '../../services/exam';
 
 @Component({
   selector: 'app-assessment-quiz',
@@ -50,7 +50,6 @@ export class AssessmentQuiz {
     this.data.recordResult(res);
     this.resultMsg = `Score: ${res.score}/${res.maxMarks} (${res.percentage}%). ${res.passed ? 'Passed ✅' : 'Try again ❌'}`;
     if (this.inSecureMode) this.endSecure();
-    // Navigate back after a short delay
     setTimeout(() => this.router.navigate(['/portal/progress']), 1200);
   }
 }

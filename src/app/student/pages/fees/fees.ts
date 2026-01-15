@@ -1,8 +1,8 @@
 
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DataService } from '../../student/services/data';
-import { FeeItem } from '../../student/shared';
+import { DataService } from '../../services/data';
+import { FeeItem } from '../../shared';
 
 @Component({
   selector: 'app-fees',

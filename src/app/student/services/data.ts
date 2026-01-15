@@ -1,4 +1,3 @@
-
 import { Injectable, signal } from '@angular/core';
 import {
   Assessment,
@@ -22,7 +21,6 @@ interface AppState {
   user: UserProfile;
 }
 
-/** Default user used for migration / first load */
 const DEFAULT_USER: UserProfile = {
   userId: 'STU-2025-0001',
   name: 'Saurabh Mittal',
@@ -66,7 +64,7 @@ function defaultState(): AppState {
         { id: 'q3', text: 'Primary key ensures:', options: ['Uniqueness', 'Nullability', 'Duplication', 'None'], answerIndex: 0, marks: 2 },
       ],
       maxMarks: 6,
-      attempts: 0
+      attempts: 1
     },
     {
       id: 'asm-se-quiz1',
@@ -77,7 +75,7 @@ function defaultState(): AppState {
         { id: 'q2', text: 'UML diagram for system behavior over time:', options: ['Class', 'Sequence', 'Deployment', 'Component'], answerIndex: 1, marks: 2 },
       ],
       maxMarks: 4,
-      attempts: 0
+      attempts: 1
     },
     {
       id: 'asm-os-quiz1',
@@ -88,7 +86,7 @@ function defaultState(): AppState {
         { id: 'q2', text: 'Context switch occurs when:', options: ['Process terminates', 'Interrupt happens', 'I/O completes', 'All of the above'], answerIndex: 3, marks: 2 },
       ],
       maxMarks: 4,
-      attempts: 0
+      attempts: 1
     },
     {
       id: 'asm-em-quiz1',
@@ -99,7 +97,7 @@ function defaultState(): AppState {
         { id: 'q2', text: '∫ x dx equals:', options: ['x', 'x^2/2', 'ln x', '2x'], answerIndex: 1, marks: 2 },
       ],
       maxMarks: 4,
-      attempts: 0
+      attempts: 1
     },
   ];
 
@@ -110,16 +108,12 @@ function defaultState(): AppState {
 export class DataService {
   private state = signal<AppState>(this.loadState());
 
-  /** Load from localStorage and migrate schema if needed */
   private loadState(): AppState {
     try {
       const raw = localStorage.getItem(LS_KEY);
       if (!raw) return defaultState();
-
       const parsed = JSON.parse(raw) as Partial<AppState>;
       const fallback = defaultState();
-
-      // MIGRATION: ensure every field exists (especially `user`)
       const migrated: AppState = {
         subjects: Array.isArray(parsed.subjects) ? parsed.subjects : fallback.subjects,
         courses: Array.isArray(parsed.courses) ? parsed.courses : fallback.courses,
@@ -128,8 +122,6 @@ export class DataService {
         results: Array.isArray(parsed.results) ? parsed.results : [],
         user: parsed.user ? (parsed.user as UserProfile) : DEFAULT_USER,
       };
-
-      // Persist the migrated shape so subsequent refreshes remain stable
       localStorage.setItem(LS_KEY, JSON.stringify(migrated));
       return migrated;
     } catch {
@@ -137,56 +129,66 @@ export class DataService {
     }
   }
 
-  /** Persist the current state value (not the signal itself) */
   private persist() {
     localStorage.setItem(LS_KEY, JSON.stringify(this.state()));
   }
 
-  // ===== Subjects =====
   getSubjects() { return this.state().subjects; }
-
-  // ===== Courses =====
-  getCoursesBySubject(subjectId: string) {
-    return this.state().courses.filter(c => c.subjectId === subjectId);
-  }
   getCourse(id: string) {
     return this.state().courses.find(c => c.id === id);
   }
-  toggleEnroll(courseId: string, enroll: boolean) {
-    const s = this.state();
-    s.courses = s.courses.map(c => c.id === courseId ? { ...c, enrolled: enroll } : c);
-    this.state.set(s); this.persist();
-  }
 
-  // ===== Fees =====
-  getFees() { return this.state().fees; }
-  payFee(id: string) {
-    const s = this.state();
-    s.fees = s.fees.map(f => f.id === id ? { ...f, paid: true } : f);
-    this.state.set(s); this.persist();
-  }
-
-  // ===== Assessments & Results =====
-  getAssessmentsBySubject(subjectId: string) {
-    return this.state().assessments.filter(a => a.subjectId === subjectId);
-  }
   getAssessment(id: string) {
     return this.state().assessments.find(a => a.id === id);
   }
-  recordResult(result: QuizResult) {
-    const s = this.state();
-    s.results.push(result);
-    s.assessments = s.assessments.map(a => a.id === result.assessmentId ? { ...a, attempts: a.attempts + 1 } : a);
-    this.state.set(s); this.persist();
-  }
-  getResults() { return this.state().results; }
 
-  // ===== Progress =====
+  getAttemptCount(assessmentId: string): number {
+    return this.state().results.filter(r => r.assessmentId === assessmentId).length;
+  }
+
+
+  getCoursesBySubject(subjectId: string) {
+    return this.state().courses.filter(c => c.subjectId === subjectId);
+  }
+
+  toggleEnroll(courseId: string, enroll: boolean) {
+    this.state.update(s => ({
+      ...s,
+      courses: s.courses.map(c => c.id === courseId ? { ...c, enrolled: enroll } : c)
+    }));
+    this.persist();
+  }
+
+  getFees() { return this.state().fees; }
+
+  payFee(id: string) {
+    this.state.update(s => ({
+      ...s,
+      fees: s.fees.map(f => f.id === id ? { ...f, paid: true } : f)
+    }));
+    this.persist();
+  }
+
+  getAssessmentsBySubject(subjectId: string) {
+    return this.state().assessments.filter(a => a.subjectId === subjectId);
+  }
+
+  recordResult(result: QuizResult) {
+    this.state.update(s => ({
+      ...s,
+      results: [...s.results, result]
+    }));
+    this.persist();
+  }
+
   getSubjectProgress(): SubjectProgress[] {
     const s = this.state();
     return s.subjects.map(sub => {
-      const total = s.assessments.filter(a => a.subjectId === sub.id).length;
-      const completed = s.results.filter(r => s.assessments.find(a => a.id === r.assessmentId)?.subjectId === sub.id).length;
+      const subjectAssessments = s.assessments.filter(a => a.subjectId === sub.id);
+      const total = subjectAssessments.length;
+      const completed = subjectAssessments.filter(asmt =>
+        s.results.some(r => r.assessmentId === asmt.id)
+      ).length;
       const percentage = total ? Math.round((completed / total) * 100) : 0;
       return { subjectId: sub.id, completedAssessments: completed, totalAssessments: total, percentage };
     });
@@ -195,23 +197,14 @@ export class DataService {
   getOverallProgress(): OverallProgress {
     const s = this.state();
     const totalAssessments = s.assessments.length;
-    const totalCompleted = s.results.length;
+    const uniqueCompletedIds = new Set(s.results.map(r => r.assessmentId));
+    const totalCompleted = uniqueCompletedIds.size;
     const overallPercentage = totalAssessments ? Math.round((totalCompleted / totalAssessments) * 100) : 0;
     return { overallPercentage, totalCompleted, totalAssessments };
   }
 
-  // ===== User =====
-  getUser(): UserProfile {
-    return this.state().user;
-  }
+  getUser(): UserProfile { return this.state().user; }
 
-  setUser(user: UserProfile) {
-    const s = this.state();
-    s.user = user;
-    this.state.set(s); this.persist();
-  }
-
-  /** Dev helper: clear storage and reset to defaults */
   resetStorage() {
     localStorage.removeItem(LS_KEY);
     this.state.set(defaultState());

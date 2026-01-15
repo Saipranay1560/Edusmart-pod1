@@ -2,8 +2,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { DataService } from '../../student/services/data';
-import { Subject, Course } from '../../student/shared';
+import { DataService } from '../../services/data';
+import { Subject, Course } from '../../shared';
 
 @Component({
   selector: 'app-subjects',

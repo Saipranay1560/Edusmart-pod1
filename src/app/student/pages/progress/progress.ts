@@ -1,8 +1,8 @@
 
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DataService } from '../../student/services/data';
-import { SubjectProgress, OverallProgress, Subject } from '../../student/shared';
+import { DataService } from '../../services/data';
+import { SubjectProgress, OverallProgress, Subject } from '../../shared';
 
 @Component({
   selector: 'app-progress',
@@ -27,7 +27,7 @@ export class Progress {
   }
 
   refresh() {
-    this.subjectProgress = this.data.getSubjectProgress();
-    this.overall = this.data.getOverallProgress();
-  }
+  this.subjectProgress = this.data.getSubjectProgress();
+  this.overall = this.data.getOverallProgress();
+}
 }

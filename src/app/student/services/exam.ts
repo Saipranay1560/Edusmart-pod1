@@ -3,7 +3,6 @@ import { Injectable, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class ExamService {
-  // Simple "secure mode" flag and countdown timer (seconds)
   secureMode = signal(false);
   remainingSeconds = signal(0);
   private timerId?: number;
@@ -18,7 +17,6 @@ export class ExamService {
       if (next <= 0) this.endSecureExam();
     }, 1000);
 
-    // Very lightweight "lock": prompt on navigation/close
     window.onbeforeunload = () => 'Secure exam in progress. Are you sure you want to leave?';
     document.body.classList.add('secure-exam');
   }

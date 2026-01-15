@@ -2,8 +2,8 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { UserProfile } from '../../student/shared';
-import { DataService } from '../../student/services/data';
+import { UserProfile } from '../../shared';
+import { DataService } from '../../services/data';
 
 @Component({
   selector: 'app-student-portal',

@@ -11,17 +11,17 @@ import { Assignments } from './instructor/assignments/assignments';
 import { Attendance } from './instructor/attendance/attendance';
 import { Students } from './instructor/students/students';
 import { Dashboard } from './instructor/dashboard/dashboard';
-import { ExamManagement } from './student/exam-management/exam-management';
-import { Fees } from './student/fees/fees';
-import { Progress } from './student/progress/progress';
-import { StudentProfile } from './student/student-profile/student-profile';
-import { Subjects } from './student/subjects/subjects';
+import { ExamManagement } from './student/pages/exam-management/exam-management';
+import { Fees } from './student/pages/fees/fees';
+import { Progress } from './student/pages/progress/progress';
+import { StudentProfile } from './student/pages/student-profile/student-profile';
+import { Subjects } from './student/pages/subjects/subjects';
 import {  CoursesComponent } from './admin/pages/courses/courses';
 import { EnrollmentsComponent } from './admin/pages/enrollments/enrollments';
 import { AssessmentsComponent } from './admin/pages/assessments/assessments';
 import { Reports } from './admin/pages/reports/reports';
 import { DashboardComponent } from './admin/pages/dashboard/dashboard';
-import { LeaveApplication } from './student/leave-application/leave-application';
+import { LeaveApplication } from './student/pages/leave-application/leave-application';
 import { LoginComponent } from './login/login';
 import { Signup } from './signup/signup';
 
@@ -38,14 +38,14 @@ export const routes: Routes = [
     children:[
       { path:'', redirectTo:'student-profile',pathMatch:'full'},
       { path: 'student-profile', component:StudentProfile},
-      { path: 'assessments',loadComponent: ()=> import('./student/assessments/assessments').then(m => m.Assessments)},
-      { path: 'assessment-quiz/:id',loadComponent:()=> import('./student/assessment-quiz/assessment-quiz').then(m=>m.AssessmentQuiz)},
+      { path: 'assessments',loadComponent: ()=> import('./student/pages/assessments/assessments').then(m => m.Assessments)},
+      { path: 'assessment-quiz/:id',loadComponent:()=> import('./student/pages/assessment-quiz/assessment-quiz').then(m=>m.AssessmentQuiz)},
       { path: 'exam-management', component:ExamManagement},
       { path: 'fees', component:Fees},
       { path: 'progress', component:Progress},
       { path: 'subjects', component:Subjects},
-      { path: 'courses',loadComponent: ()=> import('./student/courses/courses').then(m => m.Courses)},
-      { path: 'course-detail/:id',loadComponent:()=> import('./student/course-detail/course-detail').then(m=>m.CourseDetail)},
+      { path: 'courses',loadComponent: ()=> import('./student/pages/courses/courses').then(m => m.Courses)},
+      { path: 'course-detail/:id',loadComponent:()=> import('./student/pages/course-detail/course-detail').then(m=>m.CourseDetail)},
       { path: 'leave-application', component: LeaveApplication },
     ]
   },
@@ -82,5 +82,5 @@ export const routes: Routes = [
  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 
     ]
-  }  
+  }
 ];

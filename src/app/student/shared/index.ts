@@ -1,6 +1,3 @@
-
-// Centralized models for EduSmart
-
 export interface Subject {
   id: string;
   name: string;
