@@ -17,7 +17,8 @@ export class Students {
 approve(student: any) {
   student.status = 'Active';
 }
- 
+
+
 reject(student: any) {
   student.status = 'Rejected';
 }

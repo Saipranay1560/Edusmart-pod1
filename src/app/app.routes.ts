@@ -34,19 +34,20 @@ export const routes: Routes = [
   {
     path: 'student',
     component: Student,
+    canActivate: [authGuard],
     data: { role: 'student' },
     children:[
       { path:'', redirectTo:'student-profile',pathMatch:'full'},
-      { path: 'student-profile', component:StudentProfile},
-      { path: 'assessments',loadComponent: ()=> import('./student/pages/assessments/assessments').then(m => m.Assessments)},
-      { path: 'assessment-quiz/:id',loadComponent:()=> import('./student/pages/assessment-quiz/assessment-quiz').then(m=>m.AssessmentQuiz)},
-      { path: 'exam-management', component:ExamManagement},
-      { path: 'fees', component:Fees},
-      { path: 'progress', component:Progress},
-      { path: 'subjects', component:Subjects},
-      { path: 'courses',loadComponent: ()=> import('./student/pages/courses/courses').then(m => m.Courses)},
-      { path: 'course-detail/:id',loadComponent:()=> import('./student/pages/course-detail/course-detail').then(m=>m.CourseDetail)},
-      { path: 'leave-application', component: LeaveApplication },
+      { path: 'student-profile', canActivate: [authGuard],component:StudentProfile},
+      { path: 'assessments',canActivate: [authGuard],loadComponent: ()=> import('./student/pages/assessments/assessments').then(m => m.Assessments)},
+      { path: 'assessment-quiz/:id',canActivate: [authGuard],loadComponent:()=> import('./student/pages/assessment-quiz/assessment-quiz').then(m=>m.AssessmentQuiz)},
+      { path: 'exam-management',canActivate: [authGuard], component:ExamManagement},
+      { path: 'fees',canActivate: [authGuard], component:Fees},
+      { path: 'progress',canActivate: [authGuard], component:Progress},
+      { path: 'subjects',canActivate: [authGuard], component:Subjects},
+      { path: 'courses',canActivate: [authGuard],loadComponent: ()=> import('./student/pages/courses/courses').then(m => m.Courses)},
+      { path: 'course-detail/:id',canActivate: [authGuard],loadComponent:()=> import('./student/pages/course-detail/course-detail').then(m=>m.CourseDetail)},
+      { path: 'leave-application',canActivate: [authGuard], component: LeaveApplication },
     ]
   },
   {
@@ -54,31 +55,32 @@ export const routes: Routes = [
   component: Instructor,
 
   children: [
-    { path: 'dashboard', component: Dashboard },
-    { path: 'students', component: Students },
-    { path: 'attendance', component: Attendance },
-    { path: 'assignments', component: Assignments },
-    { path: 'marks', component: Marks },
-    { path: 'leave-requests', component: LeaveRequests },
+    { path: 'dashboard',canActivate: [authGuard], component: Dashboard },
+    { path: 'students',canActivate: [authGuard], component: Students },
+    { path: 'attendance',canActivate: [authGuard], component: Attendance },
+    { path: 'assignments',canActivate: [authGuard], component: Assignments },
+    { path: 'marks',canActivate: [authGuard], component: Marks },
+    { path: 'leave-requests',canActivate: [authGuard], component: LeaveRequests },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-    { path: 'courses',loadComponent: ()=> import('./instructor/courses/courses').then(m => m.Courses)},
-    { path: 'course-details/:id',loadComponent:()=> import('./instructor/course-details/course-details').then(m=>m.CourseDetails)}
+    { path: 'courses',canActivate: [authGuard],loadComponent: ()=> import('./instructor/courses/courses').then(m => m.Courses)},
+    { path: 'course-details/:id',canActivate: [authGuard],loadComponent:()=> import('./instructor/course-details/course-details').then(m=>m.CourseDetails)}
 
   ]
 },
 
   {
     path: 'admin',
+    canActivate: [authGuard],
     component: Admin,
 
 
     children:[
 
- { path: 'dashboard', component: DashboardComponent },
- { path: 'courses', component: CoursesComponent },
- { path: 'enrollments', component: EnrollmentsComponent },
- { path: 'assessments', component: AssessmentsComponent },
- { path: 'reports', component: Reports },
+ { path: 'dashboard',canActivate: [authGuard], component: DashboardComponent },
+ { path: 'courses',canActivate: [authGuard], component: CoursesComponent },
+ { path: 'enrollments',canActivate: [authGuard], component: EnrollmentsComponent },
+ { path: 'assessments',canActivate: [authGuard], component: AssessmentsComponent },
+ { path: 'reports',canActivate: [authGuard], component: Reports },
  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 
     ]

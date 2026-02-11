@@ -60,15 +60,17 @@ export class LoginComponent {
 
     this.loading = true;
 
+    localStorage.setItem('role',this.selectedRole);
+
     // TODO: Replace with real auth call: AuthService.login(...)
     setTimeout(() => {
       this.loading = false;
 
       // Navigate based on role AFTER success
       const targetMap: any = {
- admin: '/admin',
- instructor: '/instructor',
- student: '/student'
+ admin: '/admin/dashboard',
+ instructor: '/instructor/dashboard',
+ student: '/student/student-profile'
 };
 const target = targetMap[this.selectedRole];
 if (!target) {
