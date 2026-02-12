@@ -34,9 +34,9 @@ export const routes: Routes = [
     path: 'student',
     component: Student,
     canActivate: [authGuard],
-    data: { role: 'student' },
+    // data: { role: 'student' },
     children: [
-      // CHANGE THIS LINE: Redirect to courses instead of student-profile
+
       { path: '', redirectTo: 'student-profile', pathMatch: 'full' },
 
       { path: 'courses', loadComponent: () => import('./student/pages/courses/courses').then(m => m.Courses) },
