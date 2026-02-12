@@ -67,14 +67,12 @@ export class LoginComponent {
       this.loading = false;
 
       // Navigate based on role AFTER success
-      //this is added to resolve merge conflict
       const targetMap: any = {
  admin: '/admin/dashboard',
  instructor: '/instructor/dashboard',
  student: '/student/student-profile'
 };
 const target = targetMap[this.selectedRole];
-
 if (!target) {
  console.error('Role not selected!');
  return;
@@ -88,4 +86,8 @@ this.router.navigate([target]);
   goToSignup(): void {
     this.router.navigate(['/signup']);
   }
+  abc = 345;
 }
+// shaurya
+
+//comment added in saurabh branch
