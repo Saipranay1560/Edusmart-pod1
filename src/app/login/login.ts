@@ -60,6 +60,8 @@ export class LoginComponent {
 
     this.loading = true;
 
+    localStorage.setItem('role',this.selectedRole);
+
     // TODO: Replace with real auth call: AuthService.login(...)
     setTimeout(() => {
       this.loading = false;
@@ -67,9 +69,9 @@ export class LoginComponent {
       // Navigate based on role AFTER success
       //this is added to resolve merge conflict
       const targetMap: any = {
- admin: '/admin',
- instructor: '/instructor',
- student: '/student'
+ admin: '/admin/',
+ instructor: '/instructor/',
+ student: '/student/'
 };
 const target = targetMap[this.selectedRole];
 
@@ -86,4 +88,9 @@ this.router.navigate([target]);
   goToSignup(): void {
     this.router.navigate(['/signup']);
   }
+
+  abc = 123456;
 }
+// shaurya
+
+//comment added in saurabh branch
