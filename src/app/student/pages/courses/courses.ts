@@ -1,9 +1,8 @@
-
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DataService } from '../../services/data';
-import { Course, Subject } from '../../shared';
+import { Course, Subject, OverallProgress } from '../../shared';
 
 @Component({
   selector: 'app-courses',
@@ -12,27 +11,42 @@ import { Course, Subject } from '../../shared';
   templateUrl: './courses.html',
   styleUrls: ['./courses.css']
 })
-export class Courses {
-  subjects: Subject[] = [];
-  courses: Course[] = [];
-  subjectNameById: Record<string, string> = {};
+export class Courses implements OnInit {
+  availableCourses: Course[] = [];
+  enrolledSubjects: any[] = [];
+  overall?: OverallProgress;
 
-  constructor(private data: DataService) {
-    this.subjects = data.getSubjects();
-    this.subjectNameById = this.subjects.reduce((acc, s) => {
-      acc[s.id] = s.name;
-      return acc;
-    }, {} as Record<string, string>);
+  constructor(private data: DataService) {}
 
-    this.refreshCourses();
+  ngOnInit() {
+    this.refreshDashboard();
   }
+
+  // Inside Courses Component
+refreshDashboard() {
+  this.overall = this.data.getOverallProgress();
+
+  const allCourses = this.data.getSubjects().flatMap(s => this.data.getCoursesBySubject(s.id));
+
+
+  this.availableCourses = allCourses.filter(c => !c.enrolled);
+
+const enrolledIds = new Set(this.data.getSubjects().map(s => s.id));
+
+  this.enrolledSubjects = this.data.getSubjects()
+    .filter(s => enrolledIds.has(s.id))
+    .map(subject => ({
+      ...subject,
+      assessments: this.data.getAssessmentsBySubject(subject.id)
+    }));
+}
 
   toggleEnroll(course: Course) {
     this.data.toggleEnroll(course.id, !course.enrolled);
-    this.refreshCourses();
+    this.refreshDashboard();
   }
 
-  private refreshCourses() {
-    this.courses = this.subjects.flatMap(s => this.data.getCoursesBySubject(s.id));
+  getAttemptCount(asmtId: string): number {
+    return this.data.getAttemptCount(asmtId);
   }
 }

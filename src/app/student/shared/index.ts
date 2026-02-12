@@ -13,6 +13,7 @@ export interface Course {
   mode: LearningMode;
   credits: number;
   enrolled: boolean;
+  status?: 'available' | 'pending' | 'enrolled';
   schedule?: { day: string; time: string; link?: string }[];
 }
 

@@ -151,13 +151,24 @@ export class DataService {
     return this.state().courses.filter(c => c.subjectId === subjectId);
   }
 
-  toggleEnroll(courseId: string, enroll: boolean) {
-    this.state.update(s => ({
-      ...s,
-      courses: s.courses.map(c => c.id === courseId ? { ...c, enrolled: enroll } : c)
-    }));
-    this.persist();
-  }
+  // Inside DataService class
+toggleEnroll(courseId: string, enroll: boolean) {
+  this.state.update(s => ({
+    ...s,
+    courses: s.courses.map(c => {
+      if (c.id === courseId) {
+        return {
+          ...c,
+
+          status: enroll ? 'pending' : 'available',
+          enrolled: !enroll ? false : c.enrolled
+        };
+      }
+      return c;
+    })
+  }));
+  this.persist();
+}
 
   getFees() { return this.state().fees; }
 

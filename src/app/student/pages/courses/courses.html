@@ -1,31 +1,65 @@
-<div class="courses-container">
-  <div class="header-section">
-    <div class="header-text">
-      <h2>Available Courses</h2>
-      <p class="subtitle">Explore self-paced or instructor-led programs to enhance your skills.</p>
+<div class="dashboard-container">
+
+  <header class="overall-stats-card" *ngIf="overall">
+    <div class="stats-info">
+      <div class="stat-group">
+        <span class="stat-label">Total Completion</span>
+        <h2 class="stat-value">
+          {{ overall.totalCompleted }} <small>/ {{ overall.totalAssessments }}</small>
+        </h2>
+        <p class="stat-subtext">Assessments Cleared</p>
+      </div>
+      <div class="percentage-circle">
+        <span class="percentage-number">{{ overall.overallPercentage }}%</span>
+      </div>
     </div>
-  </div>
+    <div class="master-progress-track">
+      <div class="master-progress-fill" [style.width.%]="overall.overallPercentage"></div>
+    </div>
+  </header>
 
-  <div class="course-grid">
-    <div class="course-card" *ngFor="let c of courses">
-      <div class="card-content">
-        <span class="subject-label">{{ subjectNameById[c.subjectId] }}</span>
-        <h3 class="course-title">{{ c.title }}</h3>
+  <section class="learning-section" *ngIf="enrolledSubjects.length > 0">
+    <h3 class="section-title">My Learning Journey</h3>
+    <div class="subject-grid">
+      <div class="subject-card" *ngFor="let s of enrolledSubjects">
+        <div class="subject-header">
+          <h4>{{ s.name }}</h4>
+          <span class="subject-badge">{{ s.code }}</span>
+        </div>
 
-        <div class="meta-row">
-          <span class="badge mode" [ngClass]="c.mode.toLowerCase()">{{ c.mode }}</span>
-          <span class="badge credits">{{ c.credits }} Credits</span>
+        <div class="assessment-hub">
+          <p class="hub-label">Active Assessments</p>
+          <div class="asmt-row" *ngFor="let a of s.assessments">
+            <span class="asmt-title">{{ a.title }}</span>
+            <div class="asmt-action">
+              <a *ngIf="getAttemptCount(a.id) < a.attempts"
+                 [routerLink]="['/student/assessment-quiz', a.id]"
+                 class="btn-action take-btn">Take Now</a>
+              <span *ngIf="getAttemptCount(a.id) >= a.attempts" class="status-badge">Completed</span>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="card-actions">
-        <a class="btn-details" [routerLink]="['/courses', c.id]">View Details</a>
-        <button class="btn-enroll"
-                [class.enrolled]="c.enrolled"
-                (click)="toggleEnroll(c)">
-          {{ c.enrolled ? 'Unenroll' : 'Enroll Now' }}
-        </button>
+  <section class="discovery-section">
+  <h3 class="section-title">Available Programs</h3>
+  <div class="course-grid">
+    <div class="course-item" *ngFor="let c of availableCourses">
+      <div class="course-content">
+        <span class="mode-tag">{{ c.mode }}</span>
+        <h5>{{ c.title }}</h5>
+        <p>{{ c.credits }} Credits</p>
       </div>
+
+      <button class="enroll-btn"
+              [disabled]="c.status === 'pending'"
+              [class.pending-btn]="c.status === 'pending'"
+              (click)="toggleEnroll(c)">
+        {{ c.status === 'pending' ? 'Pending Approval' : 'Enroll Now' }}
+      </button>
     </div>
   </div>
+</section>
 </div>

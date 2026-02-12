@@ -1,145 +1,58 @@
-/* Container Layout */
-.courses-container {
-  padding: 30px;
-  background-color: #f0f7ff; /* Very light blue background */
-  min-height: 100vh;
-}
+.dashboard-container { padding: 2rem; max-width: 1300px; margin: 0 auto; background: #f9fafb; }
 
-.header-section {
-  margin-bottom: 32px;
-}
-
-.header-section h2 {
-  font-size: 2rem;
-  color: #1e3a8a; /* Deep Royal Blue */
-  font-weight: 800;
-  margin: 0;
-}
-
-.subtitle {
-  color: #64748b; /* Slate blue-grey */
-  font-size: 1.1rem;
-  margin-top: 8px;
-}
-
-/* Grid System */
-.course-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
-}
-
-/* Card Styling */
-.course-card {
-  background: #ffffff;
+/* Top Progress Header */
+.overall-stats-card {
+  background: white;
   border-radius: 16px;
-  border: 1px solid #dbeafe; /* Light blue border */
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.05);
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  margin-bottom: 3rem;
+  border: 1px solid #edf2f7;
+}
+.stats-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.stat-label { color: #718096; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+.stat-value { font-size: 2.5rem; margin: 0.5rem 0; color: #1a202c; }
+.stat-value small { font-size: 1rem; color: #a0aec0; }
+.percentage-circle {
+  width: 80px; height: 80px; border: 6px solid #e2e8f0; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border-top-color: #38b2ac; font-weight: 700; color: #38b2ac; font-size: 1.2rem;
+}
+.master-progress-track { height: 12px; background: #edf2f7; border-radius: 10px; overflow: hidden; }
+.master-progress-fill { height: 100%; background: linear-gradient(90deg, #38b2ac, #3182ce); border-radius: 10px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Subject Cards */
+.subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+.subject-card { background: white; border-radius: 12px; padding: 1.5rem; border: 1px solid #e2e8f0; }
+.subject-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.subject-badge { background: #ebf8ff; color: #2b6cb0; padding: 4px 10px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; }
+
+.assessment-hub { background: #f7fafc; border-radius: 8px; padding: 1rem; }
+.hub-label { font-size: 0.8rem; font-weight: 700; color: #4a5568; text-transform: uppercase; margin-bottom: 0.75rem; }
+.asmt-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #edf2f7; }
+.asmt-row:last-child { border-bottom: none; }
+.take-btn { background: #38b2ac; color: white; padding: 6px 16px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+.status-badge { color: #38b2ac; font-weight: 700; font-size: 0.85rem; }
+
+/* Available Courses */
+.course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+.course-item { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.25rem; display: flex; flex-direction: column; }
+.mode-tag { font-size: 0.7rem; background: #805ad5; color: white; padding: 2px 8px; border-radius: 4px; width: fit-content; margin-bottom: 10px; }
+.enroll-btn { margin-top: 1rem; background: transparent; border: 2px solid #3182ce; color: #3182ce; padding: 8px; border-radius: 6px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+.enroll-btn:hover { background: #3182ce; color: white; }
+/* Existing enroll-btn styles... */
+
+.enroll-btn:disabled {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+  color: #a0aec0;
+  cursor: not-allowed;
 }
 
-.course-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.1);
-  border-color: #3b82f6; /* Electric Blue hover border */
-}
-
-.card-content {
-  padding: 24px;
-  flex-grow: 1;
-}
-
-.subject-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #2563eb; /* Primary Blue */
-  letter-spacing: 1px;
-  display: block;
-  margin-bottom: 12px;
-}
-
-.course-title {
-  font-size: 1.3rem;
-  color: #1e293b;
-  margin: 0 0 16px 0;
-  line-height: 1.4;
-}
-
-/* Badges */
-.meta-row {
-  display: flex;
-  gap: 10px;
-}
-
-.badge {
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 20px;
-}
-
-.badge.mode {
-  background: #eff6ff;
-  color: #3b82f6;
-}
-
-.badge.credits {
-  background: #fff4e6; /* Keeping amber for credits as it contrasts well with blue */
-  color: #d9480f;
-}
-
-/* Actions Footer */
-.card-actions {
-  padding: 16px 24px;
-  background: #f8fafc;
-  border-top: 1px solid #e2e8f0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.btn-details {
-  text-decoration: none;
-  font-weight: 600;
-  color: #64748b;
-  font-size: 0.9rem;
-  transition: color 0.2s;
-}
-
-.btn-details:hover {
-  color: #2563eb;
-}
-
-.btn-enroll {
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-  background-color: #2563eb; /* Primary Blue */
-  color: white;
-}
-
-.btn-enroll:hover {
-  background-color: #1d4ed8;
-  transform: scale(1.05);
-}
-
-/* State: Enrolled */
-.btn-enroll.enrolled {
-  background-color: #f1f5f9;
-  color: #475569;
-  border: 1px solid #e2e8f0;
-}
-
-.btn-enroll.enrolled:hover {
-  background-color: #fee2e2; /* Red tint for unenroll intent */
-  color: #dc2626;
-  border-color: #fecaca;
+.pending-btn {
+  background-color: #e9ecef !important;
+  border: 1px solid #ced4da !important;
+  color: #495057 !important;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
