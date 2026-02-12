@@ -75,5 +75,3 @@ export interface UserProfile {
   };
   status: 'Active' | 'Inactive' | 'Suspended';
 }
-
-

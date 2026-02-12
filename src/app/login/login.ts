@@ -86,7 +86,7 @@ this.router.navigate([target]);
   goToSignup(): void {
     this.router.navigate(['/signup']);
   }
-  abc = 345;
+
 }
 // shaurya
 
