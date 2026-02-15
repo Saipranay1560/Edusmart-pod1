@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
- 
+import { AttendanceService } from '../../services/attendance.service';
+import { AttendanceRecord, AttendanceHistory } from '../../models/attendance.model';
+
 @Component({
   selector: 'app-attendance',
   standalone: true,
@@ -9,18 +11,33 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./attendance.css']
 })
 export class Attendance {
- 
-  students = [
-    { name: 'Rahul', status: 'Pending' },
-    { name: 'Sneha', status: 'Pending' },
-    { name: 'Amit', status: 'Pending' }
-  ];
- 
-  markPresent(student: any) {
-    student.status = 'Present';
+  constructor(public attendanceService: AttendanceService) {}
+
+  get students(): AttendanceRecord[] {
+    return this.attendanceService.getCurrentAttendance();
   }
- 
-  markAbsent(student: any) {
-    student.status = 'Absent';
+
+  get history(): AttendanceHistory[] {
+    return this.attendanceService.getAttendanceHistory();
+  }
+
+  markPresent(student: AttendanceRecord) {
+    const idx = this.students.indexOf(student);
+    if (idx !== -1) {
+      const updated: AttendanceRecord = { ...student, status: 'Present' };
+      this.attendanceService.updateAttendance(idx, updated);
+    }
+  }
+
+  markAbsent(student: AttendanceRecord) {
+    const idx = this.students.indexOf(student);
+    if (idx !== -1) {
+      const updated: AttendanceRecord = { ...student, status: 'Absent' };
+      this.attendanceService.updateAttendance(idx, updated);
+    }
+  }
+
+  downloadReport() {
+    this.attendanceService.exportAttendanceToExcel();
   }
 }

@@ -7,7 +7,6 @@ import { Admin } from './admin/admin';
 import { authGuard } from './auth-guard';
 import { LeaveRequests } from './instructor/leave-requests/leave-requests';
 import { Marks } from './instructor/marks/marks';
-import { Assignments } from './instructor/assignments/assignments';
 import { Attendance } from './instructor/attendance/attendance';
 import { Students } from './instructor/students/students';
 import { Dashboard } from './instructor/dashboard/dashboard';
@@ -53,12 +52,11 @@ export const routes: Routes = [
   component: Instructor,
 
   children: [
-    { path: 'dashboard',canActivate: [authGuard], component: Dashboard },
-    { path: 'students',canActivate: [authGuard], component: Students },
-    { path: 'attendance',canActivate: [authGuard], component: Attendance },
-    { path: 'assignments',canActivate: [authGuard], component: Assignments },
-    { path: 'marks',canActivate: [authGuard], component: Marks },
-    { path: 'leave-requests',canActivate: [authGuard], component: LeaveRequests },
+    { path: 'dashboard', component: Dashboard },
+    { path: 'students', component: Students },
+    { path: 'attendance', component: Attendance },
+    { path: 'marks', component: Marks },
+    { path: 'leave-requests', component: LeaveRequests },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'courses',canActivate: [authGuard],loadComponent: ()=> import('./instructor/courses/courses').then(m => m.Courses)},
     { path: 'course-details/:id',canActivate: [authGuard],loadComponent:()=> import('./instructor/course-details/course-details').then(m=>m.CourseDetails)}

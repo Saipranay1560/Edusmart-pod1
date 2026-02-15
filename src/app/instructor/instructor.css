@@ -15,7 +15,8 @@
   align-items: center;
   padding: 0 16px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  z-index: 1000;
+  /* keep topbar above overlay so the hamburger remains clickable */
+  z-index: 1300;
 }
  
 .menu-btn {
@@ -24,6 +25,8 @@
   background: none;
   cursor: pointer;
   margin-right: 16px;
+  position: relative;
+  z-index: 1301; /* keep button above overlay so clicking toggles reliably */
 }
  
 .title {
@@ -51,6 +54,14 @@
  
 .logo {
   margin-bottom: 24px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 8px 0 8px 4px;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
  
 /* Sidebar links */
