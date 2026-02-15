@@ -7,7 +7,6 @@ import { Admin } from './admin/admin';
 import { authGuard } from './auth-guard';
 import { LeaveRequests } from './instructor/leave-requests/leave-requests';
 import { Marks } from './instructor/marks/marks';
-import { Assignments } from './instructor/assignments/assignments';
 import { Attendance } from './instructor/attendance/attendance';
 import { Students } from './instructor/students/students';
 import { Dashboard } from './instructor/dashboard/dashboard';
@@ -55,7 +54,6 @@ export const routes: Routes = [
     { path: 'dashboard', component: Dashboard },
     { path: 'students', component: Students },
     { path: 'attendance', component: Attendance },
-    { path: 'assignments', component: Assignments },
     { path: 'marks', component: Marks },
     { path: 'leave-requests', component: LeaveRequests },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },

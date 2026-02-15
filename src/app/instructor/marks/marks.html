@@ -1,24 +1,46 @@
-<h2>Marks Management</h2>
- 
+<div class="marks-header">
+  <div style="display:flex;align-items:center;gap:12px">
+    <h2>Marks Management</h2>
+    <span class="badge published" *ngIf="published">Published</span>
+  </div>
+  <div class="actions">
+    <label class="file-label">
+      Upload CSV
+      <input type="file" accept="text/csv" (change)="onFileSelected($event)" />
+    </label>
+    <button class="btn" (click)="saveUploaded()">Save Uploaded</button>
+    <button class="btn primary" (click)="publish()">{{ published ? 'Unpublish' : 'Publish' }}</button>
+  </div>
+</div>
+
+<div class="message" *ngIf="message">{{ message }}</div>
+
 <table class="table">
   <thead>
     <tr>
       <th>Student</th>
       <th>Course</th>
-      <th>Marks</th>
+      <th class="marks-col">Marks</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let s of students">
-      <td>{{ s.name }}</td>
-      <td>{{ s.course }}</td>
-      <td>
+      <td class="name">{{ s.name }}</td>
+      <td class="course">{{ s.course }}</td>
+      <td class="marks-col">
         <input
           type="number"
-          [(ngModel)]="s.marks"
-          (change)="updateMarks(s, s.marks)"
+          [value]="s.marks"
+          (change)="updateMarks(s, $any($event.target).value)"
         />
       </td>
     </tr>
   </tbody>
 </table>
+
+<div class="upload-preview" *ngIf="parsed && parsed.length">
+  <h3>Upload Preview ({{ parsed.length }})</h3>
+  <ul>
+    <li *ngFor="let p of parsed">{{ p.name }} — {{ p.course }} — {{ p.marks }}</li>
+  </ul>
+</div>

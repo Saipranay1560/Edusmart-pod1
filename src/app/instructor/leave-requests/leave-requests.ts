@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { LeaveRequestService } from '../../services/leave-request';
  
 @Component({
   selector: 'app-leave-requests',
@@ -9,17 +10,17 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./leave-requests.css']
 })
 export class LeaveRequests {
- 
-  leaveRequests = [
-    { student: 'Rahul', reason: 'Medical', status: 'Pending' },
-    { student: 'Sneha', reason: 'Personal', status: 'Pending' }
-  ];
- 
-  approve(req: any) {
-    req.status = 'Approved';
+  constructor(public leaveRequestService: LeaveRequestService) {}
+
+  get leaveRequests() {
+    return this.leaveRequestService.leaveRequests;
   }
- 
+
+  approve(req: any) {
+    this.leaveRequestService.approve(req);
+  }
+
   reject(req: any) {
-    req.status = 'Rejected';
+    this.leaveRequestService.reject(req);
   }
 }
