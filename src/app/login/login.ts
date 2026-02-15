@@ -68,9 +68,9 @@ export class LoginComponent {
 
       // Navigate based on role AFTER success
       const targetMap: any = {
- admin: '/admin/',
- instructor: '/instructor/',
- student: '/student/'
+ admin: '/admin',
+ instructor: '/instructor',
+ student: '/student'
 };
 const target = targetMap[this.selectedRole];
 if (!target) {

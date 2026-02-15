@@ -30,11 +30,12 @@ export const routes: Routes = [
   { path: '', component: Home },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: Signup },
+
   {
     path: 'student',
     component: Student,
     canActivate: [authGuard],
-    // data: { role: 'student' },
+    data: { role: 'student' },
     children: [
 
       { path: '', redirectTo: 'student-profile', pathMatch: 'full' },
@@ -51,36 +52,38 @@ export const routes: Routes = [
   {
   path: 'instructor',
   component: Instructor,
+  canActivate : [authGuard],
+  data : {role: 'instructor'},
 
   children: [
-    { path: 'dashboard',canActivate: [authGuard], component: Dashboard },
-    { path: 'students',canActivate: [authGuard], component: Students },
-    { path: 'attendance',canActivate: [authGuard], component: Attendance },
-    { path: 'assignments',canActivate: [authGuard], component: Assignments },
-    { path: 'marks',canActivate: [authGuard], component: Marks },
-    { path: 'leave-requests',canActivate: [authGuard], component: LeaveRequests },
+    { path: 'dashboard', component: Dashboard },
+    { path: 'students', component: Students },
+    { path: 'attendance', component: Attendance },
+    { path: 'assignments', component: Assignments },
+    { path: 'marks', component: Marks },
+    { path: 'leave-requests', component: LeaveRequests },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-    { path: 'courses',canActivate: [authGuard],loadComponent: ()=> import('./instructor/courses/courses').then(m => m.Courses)},
-    { path: 'course-details/:id',canActivate: [authGuard],loadComponent:()=> import('./instructor/course-details/course-details').then(m=>m.CourseDetails)}
+    { path: 'courses', loadComponent: ()=> import('./instructor/courses/courses').then(m => m.Courses)},
+    { path: 'course-details/:id', loadComponent:()=> import('./instructor/course-details/course-details').then(m=>m.CourseDetails)}
 
   ]
 },
 
   {
     path: 'admin',
-    canActivate: [authGuard],
     component: Admin,
-
+    canActivate: [authGuard],
+    data : {role: 'admin'},
 
     children:[
 
- { path: 'dashboard',canActivate: [authGuard], component: DashboardComponent },
- { path: 'courses',canActivate: [authGuard], component: CoursesComponent },
- { path: 'enrollments',canActivate: [authGuard], component: EnrollmentsComponent },
- { path: 'assessments',canActivate: [authGuard], component: AssessmentsComponent },
- { path: 'reports',canActivate: [authGuard], component: Reports },
- { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'courses', component: CoursesComponent },
+      { path: 'enrollments', component: EnrollmentsComponent },
+      { path: 'assessments', component: AssessmentsComponent },
+      { path: 'reports', component: Reports },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 
-    ]
+    ]     
   }
 ];

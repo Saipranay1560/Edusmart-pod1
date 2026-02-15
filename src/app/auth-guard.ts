@@ -3,33 +3,42 @@ import { inject } from '@angular/core';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
- 
 
   if (typeof window === 'undefined') {
     return false;
   }
 
   const role = window.localStorage.getItem('role');
+  const expectedRole = route.data['role'];
 
-  // Allowing access to login and signup without a role
+  console.log(`[AuthGuard] Navigating to: ${state.url}`);
+  console.log(`[AuthGuard] User Role: ${role || 'None'}`);
+  console.log(`[AuthGuard] Required Role: ${expectedRole || 'Any'}`);
+
+  // Allow access to login/signup
   if (state.url === '/login' || state.url === '/signup') {
+    console.log('[AuthGuard] Access granted: Public page');
     return true;
   }
 
   if (role) {
-    // Optional: Check if the user's role matches the required role for the route
-    const expectedRole = route.data['role'] || route.parent?.data[role];
-    if (!expectedRole) return true;
-    
-    if(role.toLowerCase() === expectedRole.toLowerCase()){
-      return false
+    // If no specific role is required, allow any logged-in user
+    if (!expectedRole) {
+      console.log('[AuthGuard] Access granted: No specific role required');
+      return true;
     }
-     router.navigate(['/login']);
-      return false;
-    return true;
+
+    // Check if role matches
+    if (role.toLowerCase() === expectedRole.toLowerCase()) {
+      console.log('[AuthGuard] Access granted: Role matches');
+      return true;
+    }
+
+    console.warn('[AuthGuard] Access denied: Role mismatch');
+  } else {
+    console.warn('[AuthGuard] Access denied: No role found in localStorage');
   }
 
-  // If no role and trying to access a protected page, redirect to login
   router.navigate(['/login']);
   return false;
 };
