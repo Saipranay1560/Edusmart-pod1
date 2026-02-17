@@ -29,28 +29,23 @@
  
   <!-- CONTENT -->
   <div *ngIf="activeTab==='content'">
-    <div class="module-card" *ngFor="let module of course.modules; let i=index">
-      <div class="module-header" (click)="toggleModule(i)">
-        <h3>{{ module.name }}</h3>
-        <span>{{ openModuleIndex===i ? '−' : '+' }}</span>
-      </div>
- 
-      <ul *ngIf="openModuleIndex===i">
-        <li *ngFor="let lesson of module.lessons">{{ lesson }}</li>
+    <div *ngFor="let module of course.modules; let i = index" class="module">
+      <h3 (click)="toggleModule(i)" style ="cursor:pointer">{{ module.name }}</h3>
+      <ul>
+        <ng-container *ngIf="expandModuleIndex === i">
+          <li *ngFor="let lesson of module.lessons">{{lesson}}</li>
+        </ng-container>
       </ul>
     </div>
-  </div>
- 
+ </div>
   <!-- ASSIGNMENTS -->
   <div *ngIf="activeTab==='assignments'">
-    <button class="add-btn" (click)="addAssignment()">+ Add Assignment</button>
- 
-    <div class="card" *ngFor="let a of assignments">
-      <h4>{{ a.title }}</h4>
-      <p>Due: {{ a.dueDate }}</p>
-      <span>Status: {{ a.status }}</span>
+    <input type="file"(change)="onAssignmentUpload($event)" accept=".pdf" hidden #fileInput>
+    <button (click)="fileInput.click()">+Add Assignment</button>
+    <ul>
+      <li *ngFor="let assignments of courseDetailsService.assignments">{{assignments.title}}-{{assignments.dueDate}}</li>
+    </ul>
     </div>
-  </div>
  
   <!-- ✅ RESOURCES (REAL FILE UPLOAD — FIXED) -->
   <div *ngIf="activeTab==='resources'">
@@ -76,7 +71,7 @@
     <label for="pdfUpload" class="add-btn">Upload PDF</label>
     <label for="videoUpload" class="add-btn">Upload Video</label>
  
-    <div class="card" *ngFor="let r of resources">
+    <div class="card" *ngFor="let r of courseDetailsService.resources">
       <strong>{{ r.name }}</strong> — {{ r.type }}
     </div>
   </div>
@@ -85,17 +80,34 @@
   <div *ngIf="activeTab==='progress'">
     <h3>Course Progress</h3>
     <div class="progress-bar">
-      <div class="progress-fill" [style.width.%]="progress"></div>
+      <div class="progress-fill" [style.width.%]="courseDetailsService.progress"></div>
     </div>
-    <p>{{ progress }}% completed</p>
+    <p>{{ courseDetailsService.progress }}% completed</p>
   </div>
  
   <!-- QUIZ -->
-  <div *ngIf="activeTab==='quiz'">
-    <h3>{{ quiz.title }}</h3>
-    <ul>
-      <li *ngFor="let q of quiz.questions">{{ q }}</li>
-    </ul>
+  <div *ngIf="activeTab === 'quiz'">
+ 
+  <input type="text" placeholder="Enter Question" [(ngModel)]="newQuestion">
+ 
+  <input type="text" placeholder="Option 1" [(ngModel)]="option1">
+  <input type="text" placeholder="Option 2" [(ngModel)]="option2">
+  <input type="text" placeholder="Option 3" [(ngModel)]="option3">
+  <input type="text" placeholder="Option 4" [(ngModel)]="option4">
+ 
+  <button (click)="addQuizQuestion()">Add Question</button>
+ 
+  <div class="quiz-list">
+    <div *ngFor="let q of courseDetailsService.quiz.questions; let qi = index" class="quiz-question">
+      <div>
+        <strong>Q:</strong> {{ q.split(' | ')[0] }}
+      </div>
+      <div *ngFor="let opt of q.split(' | ')[1]?.split(','); let oi = index">
+        <label>
+          <input type="radio" name="quiz-{{qi}}" [value]="opt.trim()"> {{ opt.trim() }}
+        </label>
+      </div>
+    </div>
   </div>
  
 </div>

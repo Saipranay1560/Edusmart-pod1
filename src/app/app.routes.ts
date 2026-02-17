@@ -6,7 +6,6 @@ import { Admin } from './admin/admin';
 import { authGuard } from './auth-guard';
 import { LeaveRequests } from './instructor/leave-requests/leave-requests';
 import { Marks } from './instructor/marks/marks';
-import { Assignments } from './instructor/assignments/assignments';
 import { Attendance } from './instructor/attendance/attendance';
 import { Students } from './instructor/students/students';
 import { Dashboard } from './instructor/dashboard/dashboard';
@@ -30,8 +29,9 @@ export const routes: Routes = [
     path: 'student',
     component: Student,
     canActivate: [authGuard],
-    data: { role: 'student' },
+    // data: { role: 'student' },
     children: [
+
       { path: '', redirectTo: 'student-profile', pathMatch: 'full' },
       { 
         path: 'courses', 
