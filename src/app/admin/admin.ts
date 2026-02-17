@@ -27,15 +27,14 @@ export class Admin {
  isSidebarOpen = true;
  isDropdownOpen = false;
 
- user: { name: string; email: string; role: string } | null = {
-   name: 'RAJINIKANTH',
-   email: 'demo@example.com',
-   role: 'ADMIN'
- };
+user: { name: string; email: string; role: string } | null = null;
  constructor(
    private router: Router,
    private authService: AuthService
- ) {}
+ ) {
+   // Load user info from AuthService (which reads from localStorage)
+   this.user = this.authService.getUser();
+ }
  
  toggleSidebar(): void {
    this.isSidebarOpen = !this.isSidebarOpen;

@@ -1,30 +1,29 @@
-
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/AuthService'; 
 
 type Role = 'admin' | 'instructor' | 'student';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
 export class LoginComponent {
-  // Default role
   selectedRole: Role = 'student';
-
-  // Reactive form
   form: FormGroup;
-
-  // UI state
   submitted = false;
   loading = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router, 
+    private authService: AuthService
+  ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -32,64 +31,49 @@ export class LoginComponent {
     });
   }
 
-  // Role tabs
   selectRole(role: Role) {
     this.selectedRole = role;
   }
 
-  // Helper to check control errors in template
+  // This helper is what the HTML template is looking for
   hasError(controlName: string, errorCode?: string): boolean {
     const ctrl = this.form.get(controlName);
     if (!ctrl) return false;
-    const show = this.submitted || ctrl.touched;
-    return show && (errorCode ? ctrl.hasError(errorCode) : ctrl.invalid);
+    const show = this.submitted || (ctrl.dirty || ctrl.touched);
+    return errorCode ? (show && ctrl.hasError(errorCode)) : (show && ctrl.invalid);
   }
 
-
-  // Submit handler
   onLogin() {
     this.submitted = true;
-
-    // Mark all as touched to show errors
-    this.form.markAllAsTouched();
-
-    // Block navigation when invalid
-    if (this.form.invalid) {
-      return;
-    }
+    if (this.form.invalid) return;
 
     this.loading = true;
+    
+    const loginPayload = {
+      email: this.form.value.email,
+      password: this.form.value.password,
+      role: this.selectedRole
+    };
 
-    localStorage.setItem('role',this.selectedRole);
-
-    // TODO: Replace with real auth call: AuthService.login(...)
-    setTimeout(() => {
-      this.loading = false;
-
-      // Navigate based on role AFTER success
-      //this is added to resolve merge conflict
-      const targetMap: any = {
- admin: '/admin/',
- instructor: '/instructor/',
- student: '/student/'
-};
-const target = targetMap[this.selectedRole];
-
-if (!target) {
- console.error('Role not selected!');
- return;
-}
-this.router.navigate([target]);
-
-      this.router.navigate([target]);
-    }, 600);
+    this.authService.login(loginPayload).subscribe({
+      next: (response) => {
+        this.loading = false;
+        localStorage.setItem('role', this.selectedRole);
+        const targetMap: Record<string, string> = {
+          admin: '/admin/',
+          instructor: '/instructor/',
+          student: '/student/'
+        };
+        this.router.navigate([targetMap[this.selectedRole]]);
+      },
+      error: (err) => {
+        this.loading = false;
+        alert('Login failed: ' + (err.error?.message || 'Unauthorized'));
+      }
+    });
   }
 
   goToSignup(): void {
     this.router.navigate(['/signup']);
   }
-
 }
-// shaurya
-
-//comment added in saurabh branch
