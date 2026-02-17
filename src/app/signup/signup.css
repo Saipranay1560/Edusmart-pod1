@@ -72,4 +72,45 @@ small {
   margin-top: 5px;
 }
 
+/* Dropdown (role) styling */
+label[for="role"] {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+select[formControlName="role"],
+select#role {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #555 50%),
+                    linear-gradient(135deg, #555 50%, transparent 50%),
+                    linear-gradient(to right, #e9eef8, #e9eef8);
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px), 0 0;
+  background-size: 6px 6px, 6px 6px, 100% 100%;
+  background-repeat: no-repeat;
+}
+
+select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.06);
+  outline: none;
+}
+
+/* Smaller devices: ensure spacing */
+@media (max-width: 480px) {
+  form { padding: 16px; }
+  select[formControlName="role"] { font-size: 13px; }
+}
+
 

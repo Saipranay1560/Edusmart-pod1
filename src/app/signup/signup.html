@@ -23,10 +23,23 @@
 <small *ngIf="submitted && signupForm.get('email')?.hasError('email')">
   Enter a valid email address
 </small>
-
-    
-
- </div>
+    <small *ngIf="submitted && signupForm.hasError('passwordMismatch')">
+      Passwords do not match
+    </small>
+  </div>
+  
+  <div>
+    <label for="role">Select Role</label>
+    <select id="role" formControlName="role">
+      <option value="">-- Choose role --</option>
+      <option value="admin">Admin</option>
+      <option value="student">Student</option>
+      <option value="instructor">Instructor</option>
+    </select>
+    <small *ngIf="submitted && signupForm.get('role')?.hasError('required')">
+      Role is required
+    </small>
+  </div>
  
   <div>
     <input type="password" placeholder="Password" formControlName="password">

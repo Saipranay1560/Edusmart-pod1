@@ -50,23 +50,20 @@
 </div>
 <!-- DROPDOWN -->
 <div class="dropdown" *ngIf="isDropdownOpen">
-<div class="profile-info">
-<div class="avatar">
-             {{ user?.name?.charAt(0) }}
-</div>
-<div>
-<h4>{{ user?.name }}</h4>
-<p>{{ user?.email }}</p>
-<span>{{ user?.role }}</span>
-</div>
-</div>
-<hr />
-<div class="dropdown-item">My Profile</div>
-<div class="dropdown-item">Settings</div>
-<div class="dropdown-item logout"
-              (click)="logout()">
-           Logout
-</div>
+     <div class="profile-info">
+          <div class="avatar">
+               {{ user?.name ? user?.name?.charAt(0) : '?' }}
+          </div>
+          <div>
+               <h4>{{ user?.name || 'Unknown User' }}</h4>
+               <p *ngIf="user?.email">{{ user?.email }}</p>
+               <span *ngIf="user?.role">{{ user?.role }}</span>
+          </div>
+     </div>
+     <hr />
+     <div class="dropdown-item logout" (click)="logout()">
+          Logout
+     </div>
 </div>
 </div>
 </header>

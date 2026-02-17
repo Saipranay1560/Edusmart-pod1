@@ -3,15 +3,22 @@ import { Injectable } from '@angular/core';
  providedIn: 'root'
 })
 export class AuthService {
- private user = {
-   name: 'Admin User',
-   email: 'admin@edusmart.com',
-   role: 'Administrator'
- };
- getUser() {
-   return this.user;
- }
- logout() {
-   alert('Logged out successfully');
- }
+  // Save user info to localStorage after login/signup elsewhere in your app
+
+  getUser() {
+    // Try to get user from localStorage (set after login/signup)
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      try {
+        return JSON.parse(userStr);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  logout() {
+    alert('Logged out successfully');
+  }
 }
