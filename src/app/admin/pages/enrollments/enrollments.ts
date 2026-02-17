@@ -93,11 +93,5 @@ export class EnrollmentsComponent implements OnInit {
  /* ==========================
     Actions
     ========================== */
- deleteEnrollment(index: number): void {
-   if (confirm('Are you sure you want to delete this enrollment?')) {
-     this.enrollments.splice(index, 1);
-     this.loadCourses();
-     this.updateStats();
-   }
- }
+ 
 }

@@ -47,7 +47,7 @@
 <th>Course</th>
 <th>Enrollment Date</th>
 <th>Status</th>
-<th class="action-col">Action</th>
+
 </tr>
 </thead>
 <tbody>
@@ -64,11 +64,7 @@
              {{ e.status }}
 </span>
 </td>
-<td class="action-col">
-<button class="delete-btn" (click)="deleteEnrollment(i)">
-             Delete
-</button>
-</td>
+
 </tr>
 <!-- Empty State -->
 <tr *ngIf="filteredEnrollments().length === 0">

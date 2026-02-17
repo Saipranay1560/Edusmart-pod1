@@ -3,8 +3,8 @@ import { inject } from '@angular/core';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
- 
 
+  // Check if running in a browser environment to access localStorage
   if (typeof window === 'undefined') {
     return false;
   }
@@ -17,19 +17,23 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
 
   if (role) {
-    // Optional: Check if the user's role matches the required role for the route
-    const expectedRole = route.data['role'] || route.parent?.data[role];
+    // Check if the user's role matches the required role for the current route or parent route
+    const expectedRole = route.data['role'] || route.parent?.data['role'];
+    
+    // If no specific role is required for the route, allow access
     if (!expectedRole) return true;
     
-    if(role.toLowerCase() === expectedRole.toLowerCase()){
-      return false
+    // If the user's role matches the expected role (case-insensitive)
+    if (role.toLowerCase() === expectedRole.toLowerCase()) {
+      return true; // Fixed: Allow access if roles match
     }
-     router.navigate(['/login']);
-      return false;
-    return true;
+
+    // Role mismatch: redirect to login
+    router.navigate(['/login']);
+    return false;
   }
 
-  // If no role and trying to access a protected page, redirect to login
+  // If no role is found and trying to access a protected page, redirect to loginnn
   router.navigate(['/login']);
   return false;
 };
