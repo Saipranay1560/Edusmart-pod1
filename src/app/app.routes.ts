@@ -76,10 +76,7 @@ export const routes: Routes = [
       { path: 'dashboard', canActivate: [authGuard], component: Dashboard },
       { path: 'students', canActivate: [authGuard], component: Students },
       { path: 'attendance', canActivate: [authGuard], component: Attendance },
-<<<<<<< HEAD
-=======
-      
->>>>>>> a20cb09c67d9567a09963ec389bc962e49c0e158
+
       { path: 'marks', canActivate: [authGuard], component: Marks },
       { path: 'leave-requests', canActivate: [authGuard], component: LeaveRequests },
       {
