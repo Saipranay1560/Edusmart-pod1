@@ -22,6 +22,7 @@ export class CourseDetails implements OnInit {
   option2='';
   option3='';
   option4='';
+  correctOption='';
  
   constructor(
     private router: Router,

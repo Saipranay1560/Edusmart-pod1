@@ -94,15 +94,17 @@
   <input type="text" placeholder="Option 2" [(ngModel)]="option2">
   <input type="text" placeholder="Option 3" [(ngModel)]="option3">
   <input type="text" placeholder="Option 4" [(ngModel)]="option4">
- 
+  <input type="text" placeholder="Correct Option (1-4)" [(ngModel)]="correctOption">
+
   <button (click)="addQuizQuestion()">Add Question</button>
  
   <div class="quiz-list">
     <div *ngFor="let q of courseDetailsService.quiz.questions; let qi = index" class="quiz-question">
       <div>
-        <strong>Q:</strong> {{ q.split(' | ')[0] }}
+        <strong>Q:</strong> {{ q.split(' || ')?.[0]?.split(' | ')?.[0]||'' }}
       </div>
-      <div *ngFor="let opt of q.split(' | ')[1]?.split(','); let oi = index">
+      <p><strong>Correct Answer:</strong> Option {{ q.split(' || ')?.[1]||''}}</p>
+      <div *ngFor="let opt of (q.split(' || ')[0]?.split(' | ')?.[1]?.split(',')||[]);let oi = index">
         <label>
           <input type="radio" name="quiz-{{qi}}" [value]="opt.trim()"> {{ opt.trim() }}
         </label>
