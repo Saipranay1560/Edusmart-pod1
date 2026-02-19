@@ -1,116 +1,132 @@
+/* Container & Form Styling */
 
-/* Button (same as your original) */
-button[type="submit"] {
+.signup-container {
+  min-height: 100vh;
   width: 100%;
-  padding: 14px 16px;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-600));
-  color: var(--button-text);
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 120ms ease, box-shadow 120ms ease, filter 200ms ease;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Replace URL with your image path */
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+              url("https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2029&auto=format&fit=crop");
+  
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding: 20px;
 }
-
-button[type="submit"]:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(79, 70, 229, 0.35);
-  filter: brightness(1.06);
-}
-
-button[type="submit"]:active {
-  transform: translateY(0);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-}
-
-
-
-
-/* signup.css */
 
 form {
   max-width: 400px;
   margin: 50px auto;
-  padding: 20px;
+  padding: 30px;
   background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
-
+z
 h2 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 25px;
+  color: #1a1a1a;
+  font-weight: 700;
 }
 
 div {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  position: relative;
 }
 
+/* Input Fields */
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
+  padding: 12px 14px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.2s ease;
   box-sizing: border-box;
+  background-color: #f9f9f9;
 }
 
-input:focus {
-  border-color: #007bff;
+input:focus, 
+select:focus {
+  background-color: #ffffff;
+  border-color: #4f46e5; /* Modern Indigo */
   outline: none;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
+/* Error Messages */
 small {
-  color: red;
+  color: #dc2626;
   font-size: 12px;
   display: block;
-  margin-top: 5px;
+  margin-top: 6px;
+  font-weight: 500;
 }
 
-/* Dropdown (role) styling */
+/* Custom Dropdown Styling */
 label[for="role"] {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   font-weight: 600;
-  color: #333;
+  color: #4b5563;
   font-size: 14px;
 }
 
-select[formControlName="role"],
-select#role {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  background: #fff;
-  box-sizing: border-box;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+select {
   appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, #555 50%),
-                    linear-gradient(135deg, #555 50%, transparent 50%),
-                    linear-gradient(to right, #e9eef8, #e9eef8);
-  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px), 0 0;
-  background-size: 6px 6px, 6px 6px, 100% 100%;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
 }
 
-select:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.06);
-  outline: none;
+/* Submit Button */
+button[type="submit"] {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  margin-top: 10px;
 }
 
-/* Smaller devices: ensure spacing */
+button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+  box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
+}
+
+button[type="submit"]:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Loading/Disabled State */
+button[type="submit"]:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Responsive Tweaks */
 @media (max-width: 480px) {
-  form { padding: 16px; }
-  select[formControlName="role"] { font-size: 13px; }
+  form {
+    margin: 20px;
+    padding: 20px;
+  }
 }
-
-
