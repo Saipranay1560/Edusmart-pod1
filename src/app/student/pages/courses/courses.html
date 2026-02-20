@@ -46,11 +46,10 @@
   <section class="discovery-section">
   <h3 class="section-title">Available Programs</h3>
   <div class="course-grid">
-    <div class="course-item" *ngFor="let c of availableCourses">
+    <div class="course-item" *ngFor="let c of availableCourses()">
       <div class="course-content">
-        <span class="mode-tag">{{ c.mode }}</span>
         <h5>{{ c.title }}</h5>
-        <p>{{ c.credits }} Credits</p>
+        <p>{{ c.description }}</p>
       </div>
 
       <button class="enroll-btn"

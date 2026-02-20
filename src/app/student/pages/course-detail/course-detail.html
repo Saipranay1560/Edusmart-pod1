@@ -1,6 +1,6 @@
 <div class="card" *ngIf="course">
   <h2>{{ course.title }}</h2>
-  <p class="muted">Mode: <strong>{{ course.mode }}</strong> • Credits: {{ course.credits }}</p>
+  <p class="muted"> • Credits: {{ course.credits }}</p>
 
   <div *ngIf="course.schedule?.length">
     <h3>Schedule</h3>

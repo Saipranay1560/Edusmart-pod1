@@ -15,7 +15,6 @@
 <th>Start Date</th>
 <th>End Date</th>
 <th>Max Score</th>
-<th>Status</th>
 <th>Actions</th>
 </tr>
 </thead>
@@ -35,24 +34,10 @@
 <td>{{ a.startDate | date }}</td>
 <td>{{ a.endDate | date:'mediumDate' }}</td>
 <td>{{ a.maxScore }}</td>
-<td>
-<span class="status"
-                 [class.draft]="a.status === 'DRAFT'"
-                 [class.published]="a.status === 'PUBLISHED'"
-                 [class.closed]="a.status === 'CLOSED'">
-             {{ a.status }}
-</span>
-</td>
 <td class="actions">
-<button *ngIf="a.status === 'DRAFT'"
-                   class="btn publish"
-                   (click)="publish(a.assessmentId)">
-             Publish
-</button>
-<button *ngIf="a.status === 'PUBLISHED'"
-                   class="btn close"
-                   (click)="close(a.assessmentId)">
-             Close
+<button class="btn view"
+                   (click)="view(a.assessmentId)">
+             View
 </button>
 </td>
 </tr>
