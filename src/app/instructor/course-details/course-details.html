@@ -45,6 +45,25 @@
     <ul>
       <li *ngFor="let assignments of courseDetailsService.assignments">{{assignments.title}}-{{assignments.dueDate}}</li>
     </ul>
+    <!-- Question Input Section -->
+<div style="margin-top:20px;">
+  <input 
+    type="text"
+    [(ngModel)]="newQuestion"
+    placeholder="Enter Assignment Question"
+    style="width:70%; padding:6px;" />
+ 
+  <button (click)="addQuestion()" style="margin-left:10px;">
+    Add Question
+  </button>
+</div>
+ 
+<!-- Display Added Questions -->
+<ul style="margin-top:15px;">
+  <li *ngFor="let question of questions">
+    {{ question }}
+  </li>
+</ul>
     </div>
  
   <!-- ✅ RESOURCES (REAL FILE UPLOAD — FIXED) -->

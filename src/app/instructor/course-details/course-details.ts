@@ -12,12 +12,20 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./course-details.css']
 })
 export class CourseDetails implements OnInit {
+  newQuestion: string = '';
+  questions: string[]=[];
   togglePublish() {
     this.course.published = !this.course.published;
   }
+  addQuestion(){
+    if (this.newQuestion.trim() !== ''){
+      this.questions.push(this.newQuestion);
+      this.newQuestion = '';
+        }
+  }
 
   activeTab='content';
-  newQuestion='';
+
   option1='';
   option2='';
   option3='';
