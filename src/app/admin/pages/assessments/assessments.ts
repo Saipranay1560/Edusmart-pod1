@@ -19,10 +19,14 @@ export class AssessmentsComponent implements OnInit {
      }
    );
  }
- publish(id: number) {
-   this.assessmentService.publishAssessment(id);
- }
- close(id: number) {
-   this.assessmentService.closeAssessment(id);
+ view(id: number) {
+   // View submitted quiz/assignment responses from students
+   console.log('Viewing assessment responses for ID:', id);
+  //  this.assessmentService.getAssessmentResponses(id).subscribe(
+  //    (responses: any[]) => {
+  //      console.log('Assessment responses:', responses);
+  //      // TODO: Open a modal or navigate to a detail page to display responses
+  //    }
+  //  );
  }
 }

@@ -4,15 +4,14 @@
 <div class="course-grid">
 <div class="course-card" *ngFor="let course of courses">
 <div class="card-header">
-<h3>{{ course.title }}</h3>
+<h3>{{ course.name }}</h3>
 <span class="status" [ngClass]="course.status.toLowerCase()">
          {{ course.status }}
 </span>
 </div>
 <p class="category">{{ course.category }}</p>
 <div class="details">
-<p><strong>Instructor:</strong> {{ course.instructor }}</p>
-<p><strong>Duration:</strong> {{ course.duration }}</p>
+
 </div>
 <p class="description">{{ course.description }}</p>
 <div class="actions" *ngIf="course.status === 'PENDING'">
