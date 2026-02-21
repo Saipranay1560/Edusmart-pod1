@@ -1,0 +1,88 @@
+<div class="quiz-create-container">
+  <button class="back-btn" (click)="goBack()">← Back to Course</button>
+
+  <h1>Create Quiz</h1>
+  <p class="subtitle">Add questions to build your quiz</p>
+
+  <!-- Quiz Meta Information -->
+  <div class="card">
+    <h3>Quiz Details</h3>
+
+    <label>Quiz Title</label>
+    <input type="text" [(ngModel)]="quizTitle" placeholder="Enter quiz title" />
+
+    <label>Description (Optional)</label>
+    <textarea [(ngModel)]="quizDescription" placeholder="Enter quiz description"></textarea>
+  </div>
+
+  <!-- Question Form -->
+  <div class="card">
+    <h3>Add Question</h3>
+
+    <label>Question</label>
+    <textarea [(ngModel)]="newQuestion" placeholder="Enter your question here"></textarea>
+
+    <label>Options</label>
+    <div class="options-grid">
+      <input type="text" [(ngModel)]="option1" placeholder="Option 1" />
+      <input type="text" [(ngModel)]="option2" placeholder="Option 2" />
+      <input type="text" [(ngModel)]="option3" placeholder="Option 3" />
+      <input type="text" [(ngModel)]="option4" placeholder="Option 4" />
+    </div>
+
+    <label>Select Correct Answer</label>
+    <div class="radio-group">
+      <label class="radio-label">
+        <input type="radio" name="correctAnswer" [checked]="correctOption === option1.trim()" (change)="correctOption = option1.trim()" />
+        {{ option1 || 'Option 1' }}
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="correctAnswer" [checked]="correctOption === option2.trim()" (change)="correctOption = option2.trim()" />
+        {{ option2 || 'Option 2' }}
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="correctAnswer" [checked]="correctOption === option3.trim()" (change)="correctOption = option3.trim()" />
+        {{ option3 || 'Option 3' }}
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="correctAnswer" [checked]="correctOption === option4.trim()" (change)="correctOption = option4.trim()" />
+        {{ option4 || 'Option 4' }}
+      </label>
+    </div>
+
+    <button class="btn-primary" (click)="addQuestion()" style="margin-top: 16px;">Add Question</button>
+  </div>
+
+  <!-- Questions List -->
+  <div class="card">
+    <h3>Quiz Questions ({{ quizQuestions.length }})</h3>
+
+    <div *ngIf="quizQuestions.length === 0" style="color: #999; padding: 12px;">No questions added yet.</div>
+
+    <div *ngFor="let q of quizQuestions; let i = index" class="question-card">
+      <div class="question-header">
+        <strong>Q{{ i + 1 }}: {{ q.title }}</strong>
+        <button class="btn-delete" (click)="deleteQuestion(i)">Delete</button>
+      </div>
+      <div class="question-body">
+        <div class="options-list">
+          <strong>Options:</strong>
+          <ul>
+            <li *ngFor="let opt of q.options">{{ opt }}</li>
+          </ul>
+        </div>
+        <div class="correct">
+          <strong>Correct Answer:</strong> {{ q.answer }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save -->
+  <div class="card">
+    <div style="display: flex; gap: 12px;">
+      <button class="btn-primary" (click)="saveQuiz()">Save Quiz</button>
+      <button class="btn" (click)="goBack()">Cancel</button>
+    </div>
+  </div>
+</div>
