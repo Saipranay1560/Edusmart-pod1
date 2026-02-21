@@ -8,9 +8,8 @@ export type LearningMode = 'self-paced' | 'instructor-led';
 
 export interface Course {
   id: string;
-  subjectId: string;
   title: string;
-  mode: LearningMode;
+  description: string;
   credits: number;
   enrolled: boolean;
   status?: 'available' | 'pending' | 'enrolled';
