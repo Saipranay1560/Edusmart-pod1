@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { DataService } from '../../services/data';
 import { Course, Subject, OverallProgress } from '../../shared';
 import { CourseService } from '../../../services/course-service';
+import { EnrollmentService } from '../../../services/enrollment.service';
+import { AuthService } from '../../../auth.service';
 
 @Component({
   selector: 'app-courses',
@@ -17,15 +19,20 @@ export class Courses implements OnInit {
   enrolledSubjects: any[] = [];
   overall?: OverallProgress;
 
-  constructor(private data: DataService, private courseService: CourseService) {}
+  constructor(
+    private data: DataService,
+    private courseService: CourseService,
+    private enrollmentService: EnrollmentService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.refreshDashboard();
   }
 
   // Inside Courses Component
-refreshDashboard() {
-  this.overall = this.data.getOverallProgress();
+  refreshDashboard() {
+    this.overall = this.data.getOverallProgress();
 
     // Load approved courses from backend via CourseService
 
@@ -58,11 +65,28 @@ refreshDashboard() {
         ...subject,
         assessments: this.data.getAssessmentsBySubject(subject.id)
       }));
-}
+  }
 
   toggleEnroll(course: Course) {
     this.data.toggleEnroll(course.id, !course.enrolled);
     this.refreshDashboard();
+  }
+
+  enrollInCourse(course: Course) {
+    const user = this.authService.getUser();
+    if (!user || !user.id) {
+      alert('User not found. Please log in again.');
+      return;
+    }
+    this.enrollmentService.requestEnrollment(user.id, course.id).subscribe({
+      next: (res) => {
+        alert('Enrollment request sent!');
+        this.refreshDashboard();
+      },
+      error: (err) => {
+        alert('Failed to enroll: ' + (err.error?.message || err.message));
+      }
+    });
   }
 
   getAttemptCount(asmtId: string): number {

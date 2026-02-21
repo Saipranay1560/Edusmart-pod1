@@ -38,13 +38,13 @@ function defaultState(): AppState {
   ];
 
   const courses: Course[] = [
-    { id: 'c-dbms-101',  description: 'Learn fundamentals of relational databases.', title: 'Relational Databases Fundamentals', credits: 3, enrolled: false },
-    { id: 'c-dbms-201', description: 'Advanced SQL and database optimization techniques.', title: 'Advanced SQL & Optimization', credits: 4, enrolled: true,
+    { id: 101,  description: 'Learn fundamentals of relational databases.', title: 'Relational Databases Fundamentals', credits: 3, enrolled: false },
+    { id: 101, description: 'Advanced SQL and database optimization techniques.', title: 'Advanced SQL & Optimization', credits: 4, enrolled: true,
       schedule: [{ day: 'Mon', time: '10:00-11:30', link: 'https://meet.example.com/dbms' }] },
-    { id: 'c-se-101', description: 'Software requirements and UML modeling.', title: 'Requirements & UML', credits: 3, enrolled: false,
+    { id: 102, description: 'Software requirements and UML modeling.', title: 'Requirements & UML', credits: 3, enrolled: false,
       schedule: [{ day: 'Wed', time: '14:00-15:00', link: 'https://meet.example.com/se' }] },
-    { id: 'c-os-101',  description: 'Core concepts of operating systems.', title: 'Processes, Threads & Scheduling', credits: 3, enrolled: true },
-    { id: 'c-em-101', description: 'Calculus for Engineers.', title: 'Calculus for Engineers', credits: 4, enrolled: false },
+    { id: 100,  description: 'Core concepts of operating systems.', title: 'Processes, Threads & Scheduling', credits: 3, enrolled: true },
+    { id: 101, description: 'Calculus for Engineers.', title: 'Calculus for Engineers', credits: 4, enrolled: false },
   ];
 
   const fees: FeeItem[] = [
@@ -135,7 +135,7 @@ export class DataService {
 
   getSubjects() { return this.state().subjects; }
   getCourse(id: string) {
-    return this.state().courses.find(c => c.id === id);
+    return this.state().courses.find(c => String(c.id) === String(id));
   }
 
   getAssessment(id: string) {
@@ -148,7 +148,7 @@ export class DataService {
 
 
   // Inside DataService class
-toggleEnroll(courseId: string, enroll: boolean) {
+toggleEnroll(courseId: number, enroll: boolean) {
   this.state.update(s => ({
     ...s,
     courses: s.courses.map(c => {
