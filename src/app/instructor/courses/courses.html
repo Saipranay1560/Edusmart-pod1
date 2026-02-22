@@ -1,23 +1,36 @@
 <h1 class="page-title">Course Management</h1>
 <p class="subtitle">Create and manage your courses</p>
- 
-<!-- CREATE COURSE -->
-<div class="card">
-  <h3>Create New Course</h3>
- 
-  <label>Course Title</label>
-  <input type="text" [(ngModel)]="newCourse.title" placeholder="Enter course title" />
- 
-  <label>Description</label>
-  <textarea [(ngModel)]="newCourse.description" placeholder="Enter course description"></textarea>
- 
-  <button class="btn primary" (click)="addCourse()">Add Course</button>
+<!-- New course button (opens popup) -->
+
+
+
+<!-- Create Course Modal -->
+<div class="modal-backdrop" *ngIf="showCreateModal" (click)="closeNewCourse()"></div>
+<div class="modal" *ngIf="showCreateModal" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <button class="modal-close" aria-label="Close" (click)="closeNewCourse()">×</button>
+    <h3>Create New Course</h3>
+
+    <label>Course Title</label>
+    <input type="text" [(ngModel)]="newCourse.title" placeholder="Enter course title" />
+
+    <label>Description</label>
+    <textarea [(ngModel)]="newCourse.description" placeholder="Enter course description"></textarea>
+
+    <div class="modal-actions">
+      <button class="btn primary" (click)="addCourse()">Add Course</button>
+      <button class="btn" (click)="closeNewCourse()">Cancel</button>
+    </div>
+  </div>
 </div>
- 
+
 <!-- COURSE LIST -->
 <div class="card">
-  <h3>Your Courses</h3>
- 
+  <div class="card-header">
+    <h2>Your Courses</h2>
+    <button class="btn primary" (click)="openNewCourse()">+ Create New Course</button>
+  </div>
+
   <table>
     <thead>
       <tr>
@@ -27,7 +40,7 @@
         <th>Actions</th>
       </tr>
     </thead>
- 
+
     <tbody>
       <tr *ngFor="let course of courses">
         <td>
@@ -51,7 +64,7 @@
             (click)="publishCourse(course)">
             Publish
           </button>
- 
+
           <button
             class="btn danger"
             *ngIf="course.status !== 'Archived'"

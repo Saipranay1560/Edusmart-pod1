@@ -8,13 +8,13 @@
     <th>Actions</th>
   </tr>
  
-  <tr *ngFor="let s of students">
-    <td>{{ s.name }}</td>
-    <td>{{ s.course }}</td>
+  <tr *ngFor="let s of students()">
+    <td>{{ s.studentName || s.name }}</td>
+    <td>{{ s.courseName || s.course }}</td>
     <td>{{ s.status }}</td>
     <td>
-      <button *ngIf="s.status === 'Pending'" (click)="approve(s)">Approve</button>
-      <button (click)="reject(s)">Reject</button>
+      <button *ngIf="s.status === 'PENDING' || s.status === 'Pending'" (click)="approve(s)">Approve</button>
+      <button *ngIf="s.status === 'PENDING' || s.status === 'Pending'" (click)="reject(s)">Reject</button>
     </td>
   </tr>
 </table>

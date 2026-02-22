@@ -2,12 +2,19 @@
   font-size: 26px;
   margin-bottom: 4px;
 }
- 
+
 .subtitle {
   color: #666;
   margin-bottom: 20px;
 }
- 
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
 .card {
   background: #ffffff;
   padding: 20px;
@@ -15,59 +22,60 @@
   border-radius: 10px;
   box-shadow: 0 6px 16px rgba(0,0,0,0.08);
 }
- 
+
 label {
   display: block;
   margin-top: 12px;
   font-weight: 600;
 }
- 
+
 input, textarea {
   width: 100%;
+  box-sizing: border-box;
   padding: 10px;
   margin-top: 6px;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
- 
+
 textarea {
   resize: vertical;
 }
- 
+
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 16px;
 }
- 
+
 th, td {
   padding: 12px;
   border-bottom: 1px solid #eee;
   text-align: left;
 }
- 
+
 .status {
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 13px;
   font-weight: 600;
 }
- 
+
 .status.draft {
   background: #ffeaa7;
   color: #8a6d00;
 }
- 
+
 .status.published {
   background: #c8f7c5;
   color: #1e7e34;
 }
- 
+
 .status.archived {
   background: #f5c6cb;
   color: #721c24;
 }
- 
+
 .btn {
   padding: 6px 12px;
   border-radius: 6px;
@@ -75,17 +83,17 @@ th, td {
   cursor: pointer;
   margin-right: 6px;
 }
- 
+
 .btn.primary {
   background: #007bff;
   color: white;
 }
- 
+
 .btn.success {
   background: #28a745;
   color: white;
 }
- 
+
 .btn.danger {
   background: #dc3545;
   color: white;
@@ -98,4 +106,70 @@ th, td {
 }
 .course-link:hover{
   text-decoration:underline;
+}
+
+/* Modal styles for Create Course popup */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 900;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.modal-content {
+  max-width: 720px;
+  background: #ffffff;
+  width: 100%;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  pointer-events: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-actions {
+  margin-top: 16px;
+  text-align: right;
+}
+
+@media (max-width: 600px) {
+  .modal-content { margin: 12px; width: calc(100% - 24px); padding: 16px; }
+  .card { padding: 14px; }
+}
+
+/* Improve spacing inside modal form elements */
+.modal-content label { margin-top: 0; }
+.modal-content input, .modal-content textarea { width: 100%; max-width: 100%; }
+.modal-content textarea { min-height: 120px; }
+
+/* Make table scroll on small screens to avoid overflow */
+@media (max-width: 700px) {
+  table { display: block; width: 100%; overflow-x: auto; }
 }

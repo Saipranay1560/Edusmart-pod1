@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CourseService } from '../../services/course';
-import { Course } from '../../models/courses'; 
+import { Course } from '../../models/courses';
 
- 
+
 @Component({
   selector: 'app-courses',
   standalone: true,
@@ -21,6 +21,7 @@ export class Courses {
     description: '',
     status: 'Draft'
   }
+  showCreateModal: boolean = false;
   constructor(private courseService: CourseService){}
   ngOnInit(){
     this.courses=this.courseService.getCourses();
@@ -36,6 +37,14 @@ export class Courses {
       status:'Draft'
     };
     this.courses=this.courseService.getCourses();
+    this.closeNewCourse();
+  }
+  openNewCourse(){
+    this.showCreateModal = true;
+  }
+  closeNewCourse(){
+    this.showCreateModal = false;
+    // keep current typed values if user cancels? we reset when course is added
   }
   publishCourse(course: Course){
     this.courseService.publishCourse(course);
@@ -43,5 +52,5 @@ export class Courses {
   archiveCourse(course:Course){
     this.courseService.archiveCourse(course);
   }
- 
+
 }

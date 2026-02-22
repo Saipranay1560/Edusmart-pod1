@@ -19,6 +19,6 @@ throw new Error('Method not implemented.');
 
   constructor(private route: ActivatedRoute, private data: DataService) {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.course = data.getCourse(id);
+    // this.course = data.getCourse(id);
   }
 }

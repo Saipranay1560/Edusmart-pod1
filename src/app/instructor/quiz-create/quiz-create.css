@@ -1,0 +1,248 @@
+.quiz-create-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid #d0d5dd;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.back-btn:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+h1 {
+  margin-bottom: 8px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.card {
+  background: #ffffff;
+  padding: 20px;
+  margin-bottom: 24px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  border: 1px solid #e5e7eb;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #111827;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+}
+
+input[type="text"],
+input[type="date"],
+textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+textarea:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+  margin-bottom: 12px;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.btn-primary {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover {
+  background: #1565c0;
+}
+
+.btn {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background: #e5e7eb;
+}
+
+.btn-delete {
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-delete:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.question-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.question-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.options-list {
+  padding: 10px;
+  background: white;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.options-list p {
+  margin: 6px 0 0 0;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.correct {
+  font-size: 13px;
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+  color: #374151;
+}
+
+.radio-label:hover {
+  background: #f3f4f6;
+  border-color: #1976d2;
+}
+
+.radio-label input[type="radio"] {
+  margin: 0;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: #1976d2;
+}
+
+.options-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0 0;
+}
+
+.options-list li {
+  padding: 6px 0;
+  color: #6b7280;
+}
+
+@media (max-width: 700px) {
+  .quiz-create-container {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .question-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

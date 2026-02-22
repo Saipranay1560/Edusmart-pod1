@@ -7,7 +7,7 @@ export interface Subject {
 export type LearningMode = 'self-paced' | 'instructor-led';
 
 export interface Course {
-  id: string;
+  id: number;
   title: string;
   description: string;
   credits: number;

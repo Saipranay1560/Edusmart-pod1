@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CourseDetailsService } from '../../services/course-details';
 import { FormsModule } from '@angular/forms';
- 
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-course-details',
   standalone: true,
@@ -40,7 +41,8 @@ export class CourseDetails implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    public courseDetailsService: CourseDetailsService
+    public courseDetailsService: CourseDetailsService,
+    private sanitizer: DomSanitizer
   ) {}
  
   // ================= INIT =================
@@ -118,6 +120,14 @@ export class CourseDetails implements OnInit {
     } else {
       this.expandModuleIndex = index;
     }
+    const providedTitle = (this.newVideoTitle || '').trim();
+    const title = providedTitle || `Video ${this.contentVideos.length + 1}`;
+    const item = { url, title, description: '', id };
+    this.contentVideos.push(item);
+    // clear modal inputs
+    this.newVideoUrl = '';
+    this.newVideoTitle = '';
+    this.closeContentModal();
   }
  
   // ================= ASSIGNMENT FORM ADD =================

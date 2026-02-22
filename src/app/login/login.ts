@@ -58,6 +58,17 @@ export class LoginComponent {
     this.authService.login(loginPayload).subscribe({
       next: (response) => {
         this.loading = false;
+        // Save user details to localStorage (fallback if backend does not return user)
+        let user = response && response.user;
+        if (!user) {
+          user = {
+            id: response.id || 1, // fallback to 1 if not present
+            name: response.name || this.form.value.email.split('@')[0] || 'Student',
+            email: response.email || this.form.value.email,
+            role: this.selectedRole
+          };
+        }
+        localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('role', this.selectedRole);
         const targetMap: Record<string, string> = {
           admin: '/admin/',

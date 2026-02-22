@@ -6,7 +6,7 @@ import { Observable, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8081/api/auth'; // Match your Spring Boot port
+  private apiUrl = 'http://localhost:1930/api/auth'; // Match your Spring Boot port
 
   constructor(private http: HttpClient) {}
 
