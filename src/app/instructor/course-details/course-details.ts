@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CourseDetailsService } from '../../services/course-details';
 import { QuizService } from '../../services/quiz-service';
+import { ContentService } from '../../services/content-service';
+import { AssignmentService } from '../../services/assignment.service';
+import { CourseService } from '../../services/course-service';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -14,9 +17,18 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrls: ['./course-details.css']
 })
 export class CourseDetails implements OnInit {
-  newQuestion: string = '';
   questions: string[] = [];
   activeTab = 'content';
+
+  // Course data loaded from API
+  course: any = {
+    id: 0,
+    name: '',
+    description: '',
+    status: 'APPROVED',
+    instructor: null,
+    contents: []
+  };
 
   // Quiz reactive state using signals - support multiple quizzes
   quizzesList = signal<Array<{
@@ -29,10 +41,16 @@ export class CourseDetails implements OnInit {
   hasQuizzes = computed(() => this.quizzesList().length > 0);
 
   // Content (YouTube) properties
-  contentVideos: Array<{ url: string; title: string; description?: string; id?: string }> = [];
+  contentVideos: Array<{ url: string; title: string; description?: string; id?: string; contentId?: number }> = [];
   newVideoTitle: string = '';
   newVideoUrl: string = '';
   showContentModal: boolean = false;
+  contentSuccessMessage: string | null = null;
+  contentErrorMessage: string | null = null;
+  isSavingContent: boolean = false;
+
+  // Assignment properties
+  assignments: Array<{ id?: number; title: string; assignmentQuestions: string[]; endDate: string }> = [];
 
   // New Date Properties
   assignmentDueDate: string = '';
@@ -44,12 +62,12 @@ export class CourseDetails implements OnInit {
   // Assignment modal state
   showAssignmentModal: boolean = false;
   editingAssignmentIndex: number | null = null;
-  assignForm: { title: string; dueDate: string; description: string; status: string } = {
+  assignForm: { title: string; endDate: string; assignmentQuestions: string[] } = {
     title: '',
-    dueDate: '',
-    description: '',
-    status: 'Active'
+    endDate: '',
+    assignmentQuestions: []
   };
+  newQuestion: string = '';
 
   option1 = '';
   option2 = '';
@@ -62,26 +80,66 @@ export class CourseDetails implements OnInit {
     private route: ActivatedRoute,
     public courseDetailsService: CourseDetailsService,
     private sanitizer: DomSanitizer,
-    private quizService: QuizService
+    private quizService: QuizService,
+    private contentService: ContentService,
+    private assignmentService: AssignmentService,
+    private courseService: CourseService
   ) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       const courseId = params['id'];
       if (courseId) {
-        this.courseDetailsService.loadCourseById(Number(courseId));
+        // Load course data from API
+        this.loadCourse(Number(courseId));
         // load quiz data for this course from backend
         this.loadQuizzes(Number(courseId));
+        // load content data for this course from API
+        this.loadContent(Number(courseId));
+        // load assignments for this course from API
+        this.loadAssignments(Number(courseId));
       }
     });
-    
-    // Also refresh quiz data when route activates (e.g., after returning from quiz-create)
+
+    // Also refresh all data when route activates (e.g., after returning from quiz-create)
     this.route.queryParams.subscribe(() => {
       const courseId = Number(this.route.snapshot.paramMap.get('id'));
       if (courseId) {
+        this.loadCourse(courseId);
         this.loadQuizzes(courseId);
+        this.loadContent(courseId);
+        this.loadAssignments(courseId);
       }
     });
+  }
+
+  private loadCourse(courseId: number) {
+    this.courseService.getCourseById(courseId).subscribe(
+      (res: any) => {
+        this.course = {
+          id: res.id || 0,
+          name: res.name || res.title || '',
+          description: res.description || '',
+          status: res.status || 'APPROVED',
+          instructor: res.instructor || null,
+          contents: res.contents || [],
+          published: res.status === 'APPROVED'
+        };
+        console.log('Course loaded from API:', this.course);
+      },
+      (err) => {
+        console.error('Failed to load course:', err);
+        this.course = {
+          id: courseId,
+          name: 'Course Not Found',
+          description: 'Unable to load course details',
+          status: 'UNKNOWN',
+          instructor: null,
+          contents: [],
+          published: false
+        };
+      }
+    );
   }
 
   refreshQuizzes() {
@@ -95,7 +153,7 @@ export class CourseDetails implements OnInit {
     this.quizService.getQuizzes(courseId).subscribe(
       (res: any) => {
         const quizzes: any[] = [];
-        
+
         // Normalize response to array of quizzes
         if (!res) {
           this.quizzesList.set([]);
@@ -127,12 +185,76 @@ export class CourseDetails implements OnInit {
     );
   }
 
-  get course() {
-    return this.courseDetailsService.course;
+  private loadContent(courseId: number) {
+    this.contentService.getContentByCourseId(courseId).subscribe(
+      (res: any) => {
+        let content: any[] = [];
+
+        // Normalize response to array of content
+        if (!res) {
+          this.contentVideos = [];
+          return;
+        }
+
+        if (Array.isArray(res)) {
+          content = res;
+        } else if (typeof res === 'object') {
+          content = [res];
+        }
+
+        // Map each content item to expected format
+        const normalizedContent = content.map((item: any) => {
+          const extractedId = this.extractYoutubeId(item.url || item.videoUrl || '');
+          return {
+            url: item.url || item.videoUrl || '',
+            title: item.title || item.videoTitle || 'Video',
+            description: item.description || '',
+            id: extractedId || undefined
+          };
+        }).filter(item => item.id); // Only keep items with valid YouTube IDs
+
+        this.contentVideos = normalizedContent;
+        console.log('Content loaded from API:', this.contentVideos);
+      },
+      (err) => {
+        console.error('Failed to load content for course', courseId, err);
+        this.contentVideos = [];
+      }
+    );
   }
 
-  get quiz() {
-    return this.courseDetailsService.quiz;
+  private loadAssignments(courseId: number) {
+    this.assignmentService.getAssignmentsByCourseId(courseId).subscribe(
+      (res: any) => {
+        let assignmentsData: any[] = [];
+
+        // Normalize response to array of assignments
+        if (!res) {
+          this.assignments = [];
+          return;
+        }
+
+        if (Array.isArray(res)) {
+          assignmentsData = res;
+        } else if (typeof res === 'object') {
+          assignmentsData = [res];
+        }
+
+        // Map each assignment to expected format
+        this.assignments = assignmentsData.map((item: any) => ({
+          id: item.id || item.assignmentId,
+          title: item.title || 'Assignment',
+          assignmentQuestions: Array.isArray(item.assignmentQuestions) ? item.assignmentQuestions : [],
+          endDate: item.endDate || item.end_date || ''
+        }));
+
+        console.log('Assignments loaded from API:', this.assignments);
+      },
+      (err) => {
+        console.error('Failed to load assignments for course', courseId, err);
+        this.assignments = [];
+      }
+    );
   }
 
   togglePublish() {
@@ -152,12 +274,7 @@ export class CourseDetails implements OnInit {
   }
 
   addAssignmentToCourse() {
-    // Logic to save questions to the course list using the selected due date
-    this.courseDetailsService.addAssignment({
-      title: `Assignment ${this.courseDetailsService.assignments.length + 1}`,
-      dueDate: this.assignmentDueDate || new Date().toISOString().split('T')[0], // Uses selected date or today
-      status: 'Active'
-    });
+
 
     this.assignmentSuccessMessage = "Assignment has been added successfully!";
     this.questions = [];
@@ -169,51 +286,166 @@ export class CourseDetails implements OnInit {
   }
 
   deleteAssignment(index: number) {
-    this.courseDetailsService.assignments.splice(index, 1);
+    const assignment = this.assignments[index];
+    if (!assignment || !assignment.id) {
+      console.log('Cannot delete assignment without ID');
+      return;
+    }
+
+    if (confirm('Delete this assignment?')) {
+      this.assignmentService.deleteAssignment(assignment.id).subscribe(
+        () => {
+          console.log('Assignment deleted from API');
+          this.assignments.splice(index, 1);
+          this.assignmentSuccessMessage = 'Assignment deleted successfully!';
+          setTimeout(() => { this.assignmentSuccessMessage = null; }, 3000);
+        },
+        (err) => {
+          console.error('Failed to delete assignment:', err);
+          // Still delete locally as fallback
+          this.assignments.splice(index, 1);
+          this.assignmentSuccessMessage = 'Assignment deleted locally (API delete failed)';
+          setTimeout(() => { this.assignmentSuccessMessage = null; }, 3000);
+        }
+      );
+    }
   }
 
   // Assignment modal handlers
   openAssignmentModal(index?: number) {
     if (typeof index === 'number') {
-      const a = this.courseDetailsService.assignments[index];
+      const a = this.assignments[index];
       if (a) {
         this.editingAssignmentIndex = index;
         this.assignForm = {
           title: a.title || '',
-          dueDate: a.dueDate || '',
-          description: (a as any).description || '',
-          status: a.status || 'Active'
+          endDate: a.endDate || '',
+          assignmentQuestions: [...(a.assignmentQuestions || [])]
         };
       }
     } else {
       this.editingAssignmentIndex = null;
-      this.assignForm = { title: '', dueDate: '', description: '', status: 'Active' };
+      this.assignForm = { title: '', endDate: '', assignmentQuestions: [] };
+      this.newQuestion = '';
     }
     this.showAssignmentModal = true;
+  }
+
+  addQuestionToAssignment() {
+    if (this.newQuestion.trim() !== '') {
+      this.assignForm.assignmentQuestions.push(this.newQuestion.trim());
+      this.newQuestion = '';
+    }
+  }
+
+  removeQuestionFromAssignment(index: number) {
+    this.assignForm.assignmentQuestions.splice(index, 1);
   }
 
   closeAssignmentModal() {
     this.showAssignmentModal = false;
     this.editingAssignmentIndex = null;
+    this.newQuestion = '';
   }
 
   saveAssignment() {
-    const payload = {
-      title: (this.assignForm.title || '').trim() || `Assignment ${this.courseDetailsService.assignments.length + 1}`,
-      dueDate: this.assignForm.dueDate || new Date().toISOString().split('T')[0],
-      description: this.assignForm.description || '',
-      status: this.assignForm.status || 'Active'
+    const courseId = Number(this.route.snapshot.paramMap.get('id'));
+
+    // Extract instructorId from localStorage user object
+    let instructorId = 0;
+    try {
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        instructorId = user.id || 0;
+      }
+    } catch (e) {
+      console.error('Failed to parse user from localStorage:', e);
+    }
+
+    // Validate form
+    if (!this.assignForm.title.trim()) {
+      alert('Please enter assignment title');
+      return;
+    }
+    if (!this.assignForm.endDate) {
+      alert('Please select end date');
+      return;
+    }
+    if (this.assignForm.assignmentQuestions.length === 0) {
+      alert('Please add at least one question');
+      return;
+    }    const payload = {
+      courseId: courseId,
+      instructorId: instructorId,
+      title: this.assignForm.title.trim(),
+      endDate: this.assignForm.endDate,
+      assignmentQuestions: this.assignForm.assignmentQuestions
     };
 
     if (this.editingAssignmentIndex !== null && typeof this.editingAssignmentIndex === 'number') {
-      // update existing
-      this.courseDetailsService.assignments[this.editingAssignmentIndex] = payload;
+      // Update existing assignment
+      const assignmentId = this.assignments[this.editingAssignmentIndex]?.id;
+      if (assignmentId) {
+        this.assignmentService.updateAssignment(assignmentId, payload).subscribe(
+          (response: any) => {
+            console.log('Assignment updated on API:', response);
+            this.assignments[this.editingAssignmentIndex!] = {
+              id: assignmentId,
+              title: payload.title,
+              endDate: payload.endDate,
+              assignmentQuestions: payload.assignmentQuestions
+            };
+            this.assignmentSuccessMessage = 'Assignment updated successfully!';
+            setTimeout(() => { this.assignmentSuccessMessage = null; }, 3000);
+            this.closeAssignmentModal();
+          },
+          (err) => {
+            console.error('Failed to update assignment:', err);
+            // Still update locally as fallback
+            this.assignments[this.editingAssignmentIndex!] = {
+              id: assignmentId,
+              title: payload.title,
+              endDate: payload.endDate,
+              assignmentQuestions: payload.assignmentQuestions
+            };
+            this.assignmentSuccessMessage = 'Assignment updated locally (API update failed)';
+            setTimeout(() => { this.assignmentSuccessMessage = null; }, 3000);
+            this.closeAssignmentModal();
+          }
+        );
+      } else {
+        this.closeAssignmentModal();
+      }
     } else {
-      // add new
-      this.courseDetailsService.assignments.push(payload);
+      // Add new assignment
+      this.assignmentService.addAssignment(payload).subscribe(
+        (response: any) => {
+          console.log('Assignment saved to API:', response);
+          this.assignments.push({
+            id: response.id || response.assignmentId,
+            title: payload.title,
+            endDate: payload.endDate,
+            assignmentQuestions: payload.assignmentQuestions
+          });
+          this.assignmentSuccessMessage = 'Assignment added successfully!';
+          setTimeout(() => { this.assignmentSuccessMessage = null; }, 3000);
+          this.closeAssignmentModal();
+        },
+        (err) => {
+          console.error('Failed to save assignment:', err);
+          // Still add locally as fallback
+          this.assignments.push({
+            title: payload.title,
+            endDate: payload.endDate,
+            assignmentQuestions: payload.assignmentQuestions
+          });
+          this.assignmentSuccessMessage = 'Assignment added locally (API save failed)';
+          setTimeout(() => { this.assignmentSuccessMessage = null; }, 3000);
+          this.closeAssignmentModal();
+        }
+      );
     }
-
-    this.closeAssignmentModal();
   }
 
   // --- Quiz Logic ---
@@ -226,8 +458,6 @@ addQuizQuestion() {
       this.option3 + ', ' +
       this.option4 + ' | Correct: ' + this.correctOption;
 
-    this.courseDetailsService.quiz.questions.push(fullQuestion);
-
     this.newQuestion = '';
     this.option1 = '';
     this.option2 = '';
@@ -238,25 +468,21 @@ addQuizQuestion() {
 }
 
 deleteQuizQuestion(index: number) {
-  this.courseDetailsService.quiz.questions.splice(index, 1);
 }
 
 isQuizAdded: boolean = false;
 
 addQuizToPortal() {
-  if (this.courseDetailsService.quiz.questions.length > 0) {
     this.isQuizAdded = true;
     const message = this.quizDueDate
       ? `Quiz has been successfully added! Last date to submit: ${this.quizDueDate}`
       : 'Quiz has been successfully added to the Course!';
     alert(message);
-  }
 }
 
 // New method to handle "Add New Quiz" button
 resetQuizForm() {
   this.isQuizAdded = false;
-  this.courseDetailsService.quiz.questions = [];
   this.quizDueDate = '';
 }
 
@@ -265,36 +491,89 @@ deleteWholeQuiz() {
     this.resetQuizForm(); // Reuses logic to clear and show form
   }
 }
-  // --- File Uploads (Resources) ---
-  onPdfSelected(event: any) {
-    const file: File = event.target.files[0];
-    this.courseDetailsService.addPdf(file);
-    event.target.value = '';
-  }
 
-  onVideoSelected(event: any) {
-    const file: File = event.target.files[0];
-    this.courseDetailsService.addVideo(file);
-    event.target.value = '';
-  }
 
   // --- Content (YouTube) Logic ---
   addContentVideo() {
+    // Clear previous messages
+    this.contentSuccessMessage = null;
+    this.contentErrorMessage = null;
+
     const url = (this.newVideoUrl || '').trim();
-    if (!url) return;
-    const id = this.extractYoutubeId(url);
-    if (!id) {
-      alert('Please enter a valid YouTube URL.');
+    if (!url) {
+      this.contentErrorMessage = 'Please enter a video URL.';
+      setTimeout(() => { this.contentErrorMessage = null; }, 3000);
       return;
     }
+
+    const id = this.extractYoutubeId(url);
+    if (!id) {
+      this.contentErrorMessage = 'Please enter a valid YouTube URL (youtu.be or youtube.com).';
+      setTimeout(() => { this.contentErrorMessage = null; }, 3000);
+      return;
+    }
+
     const providedTitle = (this.newVideoTitle || '').trim();
     const title = providedTitle || `Video ${this.contentVideos.length + 1}`;
-    const item = { url, title, description: '', id };
-    this.contentVideos.push(item);
-    // clear modal inputs
-    this.newVideoUrl = '';
-    this.newVideoTitle = '';
-    this.closeContentModal();
+    const courseId = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (!courseId) {
+      this.contentErrorMessage = 'Course ID not found.';
+      setTimeout(() => { this.contentErrorMessage = null; }, 3000);
+      return;
+    }
+
+    // Prepare content object to send to API
+    // API expects: { title, courseId, url }
+    const contentData = {
+      title: title,
+      courseId: courseId,
+      url: url
+    };
+    console.log('Adding content with data:', contentData);
+
+    this.isSavingContent = true;
+
+    // Save to API
+    this.contentService.addContent(contentData).subscribe(
+      (response: any) => {
+        this.isSavingContent = false;
+        console.log('Content saved to API:', response);
+
+        const item = {
+          url,
+          title,
+          description: '',
+          id,
+          contentId: response.id || response.contentId // Store content ID from response
+        };
+
+        this.contentVideos.push(item);
+
+        // Clear modal inputs
+        this.newVideoUrl = '';
+        this.newVideoTitle = '';
+        this.closeContentModal();
+
+        this.contentSuccessMessage = 'Video added successfully!';
+        setTimeout(() => { this.contentSuccessMessage = null; }, 3000);
+      },
+      (err) => {
+        this.isSavingContent = false;
+        console.error('Failed to save content:', err);
+
+        // Determine error message
+        let errorMsg = 'Failed to add video';
+        if (err.error?.message) {
+          errorMsg += ': ' + err.error.message;
+        } else if (err.message) {
+          errorMsg += ': ' + err.message;
+        }
+
+        this.contentErrorMessage = errorMsg;
+        setTimeout(() => { this.contentErrorMessage = null; }, 4000);
+      }
+    );
   }
 
   openContentModal() {
@@ -306,7 +585,34 @@ deleteWholeQuiz() {
   }
 
   removeContentVideo(index: number) {
-    this.contentVideos.splice(index, 1);
+    const videoItem = this.contentVideos[index];
+    if (!videoItem) return;
+
+    if (confirm(`Delete video "${videoItem.title}"?`)) {
+      // Delete from API if we have a content ID
+      if (videoItem.contentId) {
+        this.contentService.deleteContent(videoItem.contentId).subscribe(
+          () => {
+            console.log('Video deleted from API');
+            this.contentVideos.splice(index, 1);
+            this.contentSuccessMessage = 'Video deleted successfully!';
+            setTimeout(() => { this.contentSuccessMessage = null; }, 3000);
+          },
+          (err) => {
+            console.error('Failed to delete video from API:', err);
+            // Still delete locally as fallback
+            this.contentVideos.splice(index, 1);
+            this.contentSuccessMessage = 'Video deleted locally (API delete failed)';
+            setTimeout(() => { this.contentSuccessMessage = null; }, 3000);
+          }
+        );
+      } else {
+        // Delete locally if no content ID
+        this.contentVideos.splice(index, 1);
+        this.contentSuccessMessage = 'Video removed';
+        setTimeout(() => { this.contentSuccessMessage = null; }, 3000);
+      }
+    }
   }
 
   getEmbedUrl(urlOrItem: string | { url: string }): SafeResourceUrl {

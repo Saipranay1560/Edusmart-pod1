@@ -41,10 +41,13 @@ export class QuizCreate implements OnInit {
   quizTitle: string = '';
   quizDescription: string = '';
 
+  isSaving: boolean = false;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    public courseDetailsService: CourseDetailsService
   ) {}
 
   ngOnInit() {
@@ -94,42 +97,82 @@ export class QuizCreate implements OnInit {
   }
 
   saveQuiz() {
-    if (this.quizQuestions.length === 0) {
-      alert('Please add at least one question.');
+    // Clear previous messages
+    this.successMessage = null;
+    this.errorMessage = null;
+
+    // Validate quiz title
+    if (!this.quizTitle.trim()) {
+      this.errorMessage = 'Please enter a quiz title.';
+      setTimeout(() => { this.errorMessage = null; }, 4000);
       return;
     }
 
+    // Validate questions
+    if (this.quizQuestions.length === 0) {
+      this.errorMessage = 'Please add at least one question.';
+      setTimeout(() => { this.errorMessage = null; }, 4000);
+      return;
+    }
+
+    // Validate each question has a valid answer
+    for (let i = 0; i < this.quizQuestions.length; i++) {
+      const q = this.quizQuestions[i];
+      if (!q.answer || !q.options.includes(q.answer)) {
+        this.errorMessage = `Question ${i + 1}: Answer must be one of the options.`;
+        setTimeout(() => { this.errorMessage = null; }, 4000);
+        return;
+      }
+    }
+
+    // Build payload matching API format
     const quizData: QuizData = {
-      questionTitle: this.quizTitle.trim() || 'Untitled Quiz',
+      questionTitle: this.quizTitle.trim(),
       description: this.quizDescription.trim() || '',
       questions: this.quizQuestions
     };
 
-    if (this.courseId) {
-      console.log('Saving quiz for course ID:', this.courseId);
-      this.quizService.saveQuiz(quizData,this.courseId).subscribe({
-        next: (value) => {
-          console.log(value)
-          alert('Quiz saved successfully!');
-          // Navigate back after brief delay to ensure backend processes the save
-          setTimeout(() => {
-            this.goBack();
-          }, 500);
-        },
-        error: (err) => {
-          console.error('Error saving quiz:', err);
-          alert('Failed to save quiz: ' + (err.error?.message || err.message));
-        }
-      }
-      )
-    }else {
-      alert('Course ID not found. Quiz cannot be saved without a valid course.');
+    if (!this.courseId) {
+      this.errorMessage = 'Course ID not found. Quiz cannot be saved without a valid course.';
+      setTimeout(() => { this.errorMessage = null; }, 4000);
+      return;
     }
 
-
-
+    this.isSaving = true;
+    console.log('Saving quiz for course ID:', this.courseId);
     console.log('Quiz Data:', JSON.stringify(quizData, null, 2));
-    // alert(`Quiz saved successfully!\n\n${JSON.stringify(quizData, null, 2)}`);
+
+    this.quizService.saveQuiz(quizData, this.courseId).subscribe({
+      next: (response: any) => {
+        this.isSaving = false;
+        this.successMessage = 'Quiz saved successfully!';
+        console.log('Quiz saved:', response);
+
+        // Navigate back after brief delay to ensure backend processes the save
+        setTimeout(() => {
+          this.goBack();
+        }, 1500);
+      },
+      error: (err: any) => {
+        this.isSaving = false;
+        console.error('Error saving quiz:', err);
+
+        // Extract error message from various possible response formats
+        let errorMsg = 'Failed to save quiz';
+        if (err.error?.message) {
+          errorMsg += ': ' + err.error.message;
+        } else if (err.error?.error) {
+          errorMsg += ': ' + err.error.error;
+        } else if (err.message) {
+          errorMsg += ': ' + err.message;
+        } else if (typeof err.error === 'string') {
+          errorMsg += ': ' + err.error;
+        }
+
+        this.errorMessage = errorMsg;
+        setTimeout(() => { this.errorMessage = null; }, 4000);
+      }
+    });
   }
 
 

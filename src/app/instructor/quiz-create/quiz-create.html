@@ -1,4 +1,14 @@
 <div class="quiz-create-container">
+  <!-- Success Message -->
+  <div *ngIf="successMessage" class="alert-success">
+    {{ successMessage }}
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert-error">
+    {{ errorMessage }}
+  </div>
+
   <button class="back-btn" (click)="goBack()">← Back to Course</button>
 
   <h1>Create Quiz</h1>
@@ -81,8 +91,10 @@
   <!-- Save -->
   <div class="card">
     <div style="display: flex; gap: 12px;">
-      <button class="btn-primary" (click)="saveQuiz()">Save Quiz</button>
-      <button class="btn" (click)="goBack()">Cancel</button>
+      <button class="btn-primary" (click)="saveQuiz()" [disabled]="isSaving || quizQuestions.length === 0">
+        {{ isSaving ? 'Saving...' : 'Save Quiz' }}
+      </button>
+      <button class="btn" (click)="goBack()" [disabled]="isSaving">Cancel</button>
     </div>
   </div>
 </div>
