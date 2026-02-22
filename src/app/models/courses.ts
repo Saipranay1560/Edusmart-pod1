@@ -1,6 +1,6 @@
 export interface Course {
     id:number;
-    title:string;
+    name:string;
     description:string;
-    status:'Draft'|'Published'|'Archived';
+    status:'Pending'|'Approved'|'Rejected';
 }

@@ -19,6 +19,7 @@ export class CourseService {
 
   // Use relative path so the dev server proxy (proxy.conf.json) can forward requests and avoid CORS
   private baseUrl = 'http://localhost:1930/api/courses';
+  private baseUrl2 = 'http://localhost:1930/api/enrollments';
 
   constructor(private http: HttpClient) {
     // load initial data
@@ -43,6 +44,24 @@ export class CourseService {
       tap({
         next: (res) => console.log(`getByStatus(${status})`, res),
         error: (err) => console.error(`getByStatus(${status}) failed:`, err)
+      })
+    );
+  }
+
+  getEnrolledCourseById(id: number) {
+    return this.http.get<Course>(`${this.baseUrl2}/student/${id}`).pipe(
+      tap({
+        next: (res) => console.log(`getEnrolledCourseById(${id})`, res),
+        error: (err) => console.error(`getEnrolledCourseById(${id}) failed:`, err)
+      })
+    );
+  }
+
+  getByStatusAndEnrollment(studentId:number) {
+    return this.http.get<Course[]>(`${this.baseUrl}/not-enrolled/${studentId}`).pipe(
+      tap({
+        next: (res) => console.log(`getByStatusAndEnrollment(${studentId})`, res),
+        error: (err) => console.error(`getByStatusAndEnrollment(${studentId}) failed:`, err)
       })
     );
   }

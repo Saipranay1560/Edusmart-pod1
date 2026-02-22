@@ -18,30 +18,21 @@
     </div>
   </header>
 
-  <section class="learning-section" *ngIf="enrolledSubjects.length > 0">
-    <h3 class="section-title">My Learning Journey</h3>
-    <div class="subject-grid">
-      <div class="subject-card" *ngFor="let s of enrolledSubjects">
-        <div class="subject-header">
-          <h4>{{ s.name }}</h4>
-          <span class="subject-badge">{{ s.code }}</span>
-        </div>
-
-        <div class="assessment-hub">
-          <p class="hub-label">Active Assessments</p>
-          <div class="asmt-row" *ngFor="let a of s.assessments">
-            <span class="asmt-title">{{ a.title }}</span>
-            <div class="asmt-action">
-              <a *ngIf="getAttemptCount(a.id) < a.attempts"
-                 [routerLink]="['/student/assessment-quiz', a.id]"
-                 class="btn-action take-btn">Take Now</a>
-              <span *ngIf="getAttemptCount(a.id) >= a.attempts" class="status-badge">Completed</span>
-            </div>
+  <div class="enrolled-courses-subsection" *ngIf="enrolledCourses().length > 0">
+      <h4 class="subsection-title">My Enrolled Courses</h4>
+      <div *ngIf="isLoading()" class="loading-spinner">Loading courses...</div>
+      <div class="course-grid" *ngIf="!isLoading()">
+        <div class="course-item" *ngFor="let c of enrolledCourses()">
+          <div class="course-content">
+            <h5>{{ c.title }}</h5>
+            <p>{{ c.description }}</p>
           </div>
+          <button class="enroll-btn enrolled-btn" (click)="viewEnrolledCourse(c.id)">
+            View Course
+          </button>
         </div>
       </div>
     </div>
-  </section>
 
   <section class="discovery-section">
   <h3 class="section-title">Available Programs</h3>
