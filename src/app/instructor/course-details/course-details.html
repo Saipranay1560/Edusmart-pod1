@@ -1,4 +1,4 @@
-<div class="course-details">
+<div class="course-details" [class.show-progress]="activeTab === 'progress'">
  
   <button class="back-btn" (click)="goBack()">← Back to Courses</button>
  
@@ -39,32 +39,43 @@
     </div>
  </div>
   <!-- ASSIGNMENTS -->
-  <div *ngIf="activeTab==='assignments'">
-    <input type="file"(change)="onAssignmentUpload($event)" accept=".pdf" hidden #fileInput>
-    <button (click)="fileInput.click()">+Add Assignment</button>
-    <ul>
-      <li *ngFor="let assignments of courseDetailsService.assignments">{{assignments.title}}-{{assignments.dueDate}}</li>
-    </ul>
-    <!-- Question Input Section -->
-<div style="margin-top:20px;">
-  <input 
+  <div *ngIf="activeTab === 'assignments'"  style="margin-top:20px;">
+ 
+  <input
     type="text"
-    [(ngModel)]="newQuestion"
+    [(ngModel)]="assignmentTitle"
+    placeholder="Enter Assignment Title"
+    style="width:100%; padding:8px; margin-bottom:10px;"
+  />
+ 
+  <textarea
+    [(ngModel)]="assignmentQuestion"
     placeholder="Enter Assignment Question"
-    style="width:70%; padding:6px;" />
+    style="width:100%; padding:8px; margin-bottom:10px;"
+  ></textarea>
  
-  <button (click)="addQuestion()" style="margin-left:10px;">
-    Add Question
+  <input
+    type="date"
+    [(ngModel)]="assignmentDueDate"
+    style="padding:8px; margin-bottom:10px;"
+  />
+ 
+  <br>
+ 
+  <button (click)="addAssignment()" class="add-btn">
+    Add Assignment
   </button>
-</div>
- 
-<!-- Display Added Questions -->
-<ul style="margin-top:15px;">
-  <li *ngFor="let question of questions">
-    {{ question }}
+  <ul style="margin-top:15px;">
+  <li *ngFor="let a of assignments">
+    <strong>{{ a.title }}</strong><br>
+    {{ a.question }}<br>
+    <small>Due Date: {{ a.dueDate }}</small>
   </li>
 </ul>
-    </div>
+ 
+</div>
+ 
+
  
   <!-- ✅ RESOURCES (REAL FILE UPLOAD — FIXED) -->
   <div *ngIf="activeTab==='resources'">
@@ -107,7 +118,7 @@
   <!-- QUIZ -->
   <div *ngIf="activeTab === 'quiz'">
  
-  <input type="text" placeholder="Enter Question" [(ngModel)]="newQuestion">
+  <input type="text" placeholder="Enter Question" [(ngModel)]="quizQuestion">
  
   <input type="text" placeholder="Option 1" [(ngModel)]="option1">
   <input type="text" placeholder="Option 2" [(ngModel)]="option2">
@@ -122,7 +133,7 @@
       <div>
         <strong>Q:</strong> {{ q.split(' || ')[0].split(' | ')[0]||'' }}
       </div>
-      <p><strong>Correct Answer:</strong> Option {{ q.split(' || ')[1]||''}}</p>
+      <p><strong>Correct Answer:</strong> Option {{ q.split(' || ')[2]||''}}</p>
       <div *ngFor="let opt of (q.split(' || ')[0].split(' | ')[1].split(',')||[])let oi = index">
         <label>
           <input type="radio" name="quiz-{{qi}}" [value]="opt.trim()"> {{ opt.trim() }}

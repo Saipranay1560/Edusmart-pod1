@@ -7,37 +7,43 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-course-details',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './course-details.html',
   styleUrls: ['./course-details.css']
 })
 export class CourseDetails implements OnInit {
-  newQuestion: string = '';
-  questions: string[]=[];
-  togglePublish() {
-    this.course.published = !this.course.published;
-  }
-  addQuestion(){
-    if (this.newQuestion.trim() !== ''){
-      this.questions.push(this.newQuestion);
-      this.newQuestion = '';
-        }
-  }
 
-  activeTab='content';
-
-  option1='';
-  option2='';
-  option3='';
-  option4='';
-  correctOption='';
+  assignmentTitle: string = '';
+  assignmentDueDate: string = '';
+  assignmentQuestion: string = '';
+  // ================= QUIZ =================
+  questions: string[] = [];
+  activeTab: string = 'content';
+ 
+  quizQuestion: string = '';
+  option1: string = '';
+  option2: string = '';
+  option3: string = '';
+  option4: string = '';
+  correctOption: string = '';
+ 
+  // ================= ASSIGNMENT =================
+  newAssignmentTitle: string = '';
+  newAssignmentSubject: string = '';
+  newAssignmentDueDate: string = '';
+ 
+  subjects: string[] = ['Angular', 'Java', 'Spring Boot', 'Database'];
+  assignments: any[] = [];
+ 
+  expandModuleIndex: number | null = null;
  
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     public courseDetailsService: CourseDetailsService
   ) {}
-
+ 
+  // ================= INIT =================
   ngOnInit() {
     this.route.params.subscribe(params => {
       const courseId = params['id'];
@@ -46,50 +52,66 @@ export class CourseDetails implements OnInit {
       }
     });
   }
-
-
+ 
+  // ================= GETTERS =================
   get course() {
     return this.courseDetailsService.course;
   }
+ 
   get quiz() {
     return this.courseDetailsService.quiz;
   }
  
+  // ================= NAVIGATION =================
   goBack() {
     this.router.navigate(['/instructor/courses']);
   }
  
+  togglePublish() {
+    this.course.published = !this.course.published;
+  }
+ 
+  // ================= QUIZ =================
+  addQuizQuestion() {
+ 
+    if (this.quizQuestion) {
+ 
+      const fullQuestion =
+        this.quizQuestion + ' | ' +
+        this.option1 + ', ' +
+        this.option2 + ', ' +
+        this.option3 + ', ' +
+        this.option4;
+ 
+      this.courseDetailsService.quiz.questions.push(fullQuestion);
+ 
+      // reset fields
+      this.quizQuestion = '';
+      this.option1 = '';
+      this.option2 = '';
+      this.option3 = '';
+      this.option4 = '';
+      this.correctOption = '';
+    }
+  }
+  addQuestion(){
+    this.addQuizQuestion();  }
+ 
+  // ================= PDF =================
   onPdfSelected(event: any) {
     const file: File = event.target.files[0];
     this.courseDetailsService.addPdf(file);
     event.target.value = '';
   }
-
-  addQuizQuestion() {
-  if (this.newQuestion) {
-    const fullQuestion =
-      this.newQuestion + ' | ' +
-      this.option1 + ', ' +
-      this.option2 + ', ' +
-      this.option3 + ', ' +
-      this.option4;
  
-    this.courseDetailsService.quiz.questions.push(fullQuestion);
- 
-    this.newQuestion = '';
-    this.option1 = '';
-    this.option2 = '';
-    this.option3 = '';
-    this.option4 = '';
-  }
-}
- 
+  // ================= VIDEO =================
   onVideoSelected(event: any) {
     const file: File = event.target.files[0];
     this.courseDetailsService.addVideo(file);
     event.target.value = '';
   }
-  expandModuleIndex: number | null = null;
+ 
+  // ================= MODULE EXPAND =================
   toggleModule(index: number) {
     if (this.expandModuleIndex === index) {
       this.expandModuleIndex = null;
@@ -97,17 +119,45 @@ export class CourseDetails implements OnInit {
       this.expandModuleIndex = index;
     }
   }
-  onAssignmentUpload(event: any) {
-  const file: File = event.target.files[0];
  
-  if (file) {
-    this.courseDetailsService.addAssignment({
-      title: file.name,
-      dueDate: new Date().toISOString().split('T')[0],
-      status: 'Uploaded'
-    });
+  // ================= ASSIGNMENT FORM ADD =================
+  addAssignment() {
+ 
+  if (
+    !this.assignmentTitle?.trim() ||
+    !this.assignmentQuestion?.trim() ||
+    !this.assignmentDueDate?.trim()
+  ) {
+    alert("Please fill all fields");
+    return;
   }
  
-  event.target.value = '';
+  this.assignments.push({
+    title: this.assignmentTitle,
+    question: this.assignmentQuestion,
+    dueDate: this.assignmentDueDate
+  });
+ 
+  // Clear fields after adding
+  this.assignmentTitle = '';
+  this.assignmentQuestion = '';
+  this.assignmentDueDate = '';
 }
+ 
+  // ================= ASSIGNMENT FILE UPLOAD =================
+  onAssignmentUpload(event: any) {
+    const file: File = event.target.files[0];
+ 
+    if (file) {
+      this.courseDetailsService.addAssignment({
+        title: file.name,
+        dueDate: new Date().toISOString().split('T')[0],
+        status: 'Uploaded',
+         
+      });
+    }
+ 
+    event.target.value = '';
+  }
+ 
 }
