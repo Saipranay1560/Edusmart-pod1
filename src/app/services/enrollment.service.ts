@@ -13,6 +13,6 @@ export class EnrollmentService {
   }
 
   getPendingEnrollments() {
-    return this.http.get<any[]>('/api/enrollments/PENDING');
+    return this.http.get<any[]>('http://localhost:1930/api/enrollments/PENDING');
   }
 }

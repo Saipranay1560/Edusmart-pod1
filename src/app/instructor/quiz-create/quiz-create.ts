@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CourseDetailsService } from '../../services/course-details';
+import { QuizService } from '../../services/quiz-service';
 
 interface QuizQuestion {
   title: string;
@@ -24,6 +25,9 @@ interface QuizData {
   styleUrls: ['./quiz-create.css']
 })
 export class QuizCreate implements OnInit {
+
+  quizService = inject(QuizService);
+
   courseId: number | null = null;
   quizQuestions: QuizQuestion[] = [];
 
@@ -101,12 +105,33 @@ export class QuizCreate implements OnInit {
       questions: this.quizQuestions
     };
 
-    console.log('Quiz Data:', JSON.stringify(quizData, null, 2));
-    alert(`Quiz saved successfully!\n\n${JSON.stringify(quizData, null, 2)}`);
+    if (this.courseId) {
+      console.log('Saving quiz for course ID:', this.courseId);
+      this.quizService.saveQuiz(quizData,this.courseId).subscribe({
+        next: (value) => {
+          console.log(value)
+          alert('Quiz saved successfully!');
+          // Navigate back after brief delay to ensure backend processes the save
+          setTimeout(() => {
+            this.goBack();
+          }, 500);
+        },
+        error: (err) => {
+          console.error('Error saving quiz:', err);
+          alert('Failed to save quiz: ' + (err.error?.message || err.message));
+        }
+      }
+      )
+    }else {
+      alert('Course ID not found. Quiz cannot be saved without a valid course.');
+    }
 
-    // Navigate back to course details
-    this.goBack();
+
+
+    console.log('Quiz Data:', JSON.stringify(quizData, null, 2));
+    // alert(`Quiz saved successfully!\n\n${JSON.stringify(quizData, null, 2)}`);
   }
+
 
   goBack() {
     if (this.courseId) {

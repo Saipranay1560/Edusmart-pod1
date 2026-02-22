@@ -18,6 +18,7 @@ export interface Resource {
 export interface Quiz {
   title: string;
   questions: string[];
+  description?: string;
 }
  
 export interface CourseDetailsModel {

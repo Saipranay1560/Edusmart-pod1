@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CourseDetailsService } from '../../services/course-details';
+import { QuizService } from '../../services/quiz-service';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -16,6 +17,16 @@ export class CourseDetails implements OnInit {
   newQuestion: string = '';
   questions: string[] = [];
   activeTab = 'content';
+
+  // Quiz reactive state using signals - support multiple quizzes
+  quizzesList = signal<Array<{
+    id?: any;
+    title: string;
+    description: string;
+    questions: string[];
+  }>>([]);
+
+  hasQuizzes = computed(() => this.quizzesList().length > 0);
 
   // Content (YouTube) properties
   contentVideos: Array<{ url: string; title: string; description?: string; id?: string }> = [];
@@ -50,7 +61,8 @@ export class CourseDetails implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public courseDetailsService: CourseDetailsService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private quizService: QuizService
   ) {}
 
   ngOnInit() {
@@ -58,8 +70,61 @@ export class CourseDetails implements OnInit {
       const courseId = params['id'];
       if (courseId) {
         this.courseDetailsService.loadCourseById(Number(courseId));
+        // load quiz data for this course from backend
+        this.loadQuizzes(Number(courseId));
       }
     });
+    
+    // Also refresh quiz data when route activates (e.g., after returning from quiz-create)
+    this.route.queryParams.subscribe(() => {
+      const courseId = Number(this.route.snapshot.paramMap.get('id'));
+      if (courseId) {
+        this.loadQuizzes(courseId);
+      }
+    });
+  }
+
+  refreshQuizzes() {
+    const courseId = Number(this.route.snapshot.paramMap.get('id'));
+    if (courseId) {
+      this.loadQuizzes(courseId);
+    }
+  }
+
+  private loadQuizzes(courseId: number) {
+    this.quizService.getQuizzes(courseId).subscribe(
+      (res: any) => {
+        const quizzes: any[] = [];
+        
+        // Normalize response to array of quizzes
+        if (!res) {
+          this.quizzesList.set([]);
+          return;
+        }
+
+        if (Array.isArray(res)) {
+          // Backend returns array of quizzes
+          quizzes.push(...res);
+        } else if (typeof res === 'object') {
+          // Single quiz object
+          quizzes.push(res);
+        }
+
+        // Map each quiz to normalized format
+        const normalizedQuizzes = quizzes.map((quiz: any) => ({
+          id: quiz.id || quiz.quizId,
+          title: quiz.title || quiz.questionTitle || 'Quiz',
+          description: quiz.description || quiz.desc || '',
+          questions: Array.isArray(quiz.questions) ? quiz.questions : []
+        }));
+
+        this.quizzesList.set(normalizedQuizzes);
+      },
+      (err) => {
+        console.error('Failed to load quizzes for course', courseId, err);
+        this.quizzesList.set([]);
+      }
+    );
   }
 
   get course() {
@@ -279,8 +344,55 @@ deleteWholeQuiz() {
     }
   }
 
+  // Helpers used by the template to safely render quiz items which
+  // may come as strings (legacy format) or objects (new API shape).
+  getQuestionText(q: any): string {
+    if (!q && q !== 0) return '';
+    if (typeof q === 'string') {
+      return q.split(' | ')[0] || q;
+    }
+    if (q.question) return q.question;
+    if (q.text) return q.text;
+    // fallback stringify small objects
+    try { return JSON.stringify(q); } catch { return String(q); }
+  }
+
+  getCorrectAnswer(q: any): string {
+    if (!q && q !== 0) return '';
+    if (typeof q === 'string') {
+      const parts = q.split(' | Correct: ');
+      return parts.length > 1 ? parts[1] : '';
+    }
+    if (q.correct) return q.correct;
+    if (q.correctOption) return q.correctOption;
+    if (q.answer) return q.answer;
+    return '';
+  }
+
   expandModuleIndex: number | null = null;
   toggleModule(index: number) {
     this.expandModuleIndex = this.expandModuleIndex === index ? null : index;
+  }
+
+  deleteQuiz(quizId: any) {
+    const courseId = Number(this.route.snapshot.paramMap.get('id'));
+    if (!courseId || !quizId) {
+      alert('No quiz id available to delete.');
+      return;
+    }
+
+    if (!confirm('Delete this quiz? This action cannot be undone.')) return;
+
+    this.quizService.deleteQuiz(courseId, quizId).subscribe(
+      () => {
+        // Remove quiz from list
+        this.quizzesList.update(quizzes => quizzes.filter(q => q.id !== quizId));
+        alert('Quiz deleted');
+      },
+      (err) => {
+        console.error('Failed to delete quiz', err);
+        alert('Failed to delete quiz');
+      }
+    );
   }
 }

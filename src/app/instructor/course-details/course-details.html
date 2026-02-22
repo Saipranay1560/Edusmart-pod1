@@ -145,15 +145,21 @@
     </div>
 
     <div class="card-list">
-      <div *ngIf="courseDetailsService.quiz.questions.length === 0" class="card" style="padding:12px;">No quizzes yet. Click Create New Quiz to add one.</div>
+      <div *ngIf="!hasQuizzes()" class="card" style="padding:12px;">
+        <p class="muted">No quizzes yet. Click Create New Quiz to add one.</p>
+      </div>
 
-      <div *ngFor="let q of courseDetailsService.quiz.questions; let qi = index" class="quiz-row card">
-        <div class="quiz-info">
-          <div class="quiz-title">Q{{ qi + 1 }}: {{ q.split(' | ')[0] }}</div>
-          <div class="quiz-answer"><strong>Correct:</strong> {{ q.split(' | Correct: ')[1] }}</div>
-        </div>
-        <div class="quiz-actions">
-          <button class="btn-delete" (click)="deleteQuizQuestion(qi)">Delete</button>
+      <div *ngFor="let quiz of quizzesList()" class="card" style="padding:16px; margin-bottom:12px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="flex: 1;">
+            <h4 style="margin-top: 0;">{{ quiz.title }}</h4>
+            <p class="muted" style="margin: 8px 0;">{{ quiz.description || 'No description available.' }}</p>
+            <p class="muted" style="margin: 8px 0; font-size: 14px;">Questions: {{ quiz.questions.length }}</p>
+          </div>
+          <div style="display:flex; gap:8px; margin-left: 12px;">
+            <button class="btn primary" (click)="navigateToCreateQuiz()">Edit</button>
+            <button class="btn btn-delete" (click)="deleteQuiz(quiz.id)">Delete</button>
+          </div>
         </div>
       </div>
     </div>
