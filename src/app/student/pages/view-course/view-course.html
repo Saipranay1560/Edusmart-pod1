@@ -1,0 +1,97 @@
+<div class="course-details"> <div *ngIf="assignmentSuccessMessage" class="top-alert-success">
+    {{ assignmentSuccessMessage }}
+  </div>
+
+  <div *ngIf="contentSuccessMessage" class="top-alert-success">
+    {{ contentSuccessMessage }}
+  </div>
+
+  <div *ngIf="contentErrorMessage" class="top-alert-error">
+    {{ contentErrorMessage }}
+  </div>
+
+  <button class="back-btn" (click)="goBack()">← Back to Courses</button>
+
+  <h1>{{ course?.name }}</h1> 
+  <p class="description">{{ course?.description }}</p>
+
+  <div class="publish-box" *ngIf="course?.name"> <span>Status:
+      <strong [class.published]="course?.published" [class.draft]="!course?.published">
+        {{ course?.published ? 'Published' : 'Draft' }}
+      </strong>
+    </span>
+  </div>
+
+  <div class="tabs">
+    <button (click)="activeTab='content'" [class.active]="activeTab==='content'">Content</button>
+    <button (click)="activeTab='assignments'" [class.active]="activeTab==='assignments'">Assignments</button>
+    <button (click)="activeTab='progress'" [class.active]="activeTab==='progress'">Progress</button>
+    <button (click)="activeTab='quiz'" [class.active]="activeTab==='quiz'">Quiz</button>
+  </div>
+
+  <div *ngIf="activeTab==='content'">
+    <div class="card-header">
+      <h3>Course Content</h3>
+    </div>
+    <div class="card-list">
+      <div *ngIf="course?.name && contentVideos.length === 0" class="card" style="padding:12px;">No content yet.</div>
+      
+      <div *ngFor="let v of contentVideos" class="video-item card">
+        <div class="video-row">
+          <div class="thumb">
+            <img [src]="'https://img.youtube.com/vi/' + v.id + '/hqdefault.jpg'" alt="thumbnail">
+          </div>
+          <div class="meta">
+            <div class="video-title"><label>{{ v.title }}</label></div>
+            <div class="video-desc"><small>{{ v.description }}</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="activeTab==='assignments'">
+    <div class="card-header">
+      <h3>Assignments</h3>
+    </div>
+    <div class="card-list">
+      <div *ngIf="course?.name && assignments.length === 0" class="card" style="padding:12px;">No assignments available.</div>
+      <div *ngFor="let assignment of assignments" class="assignment-row card">
+        <div class="assignment-info">
+          <div class="assignment-title">{{ assignment.title }}</div>
+          <div class="assignment-desc">
+            <strong>Questions:</strong>
+            <ul style="margin: 8px 0; padding-left: 20px;">
+              <li *ngFor="let q of assignment.assignmentQuestions">{{ q }}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="assignment-meta">
+          <div class="assignment-date">Due: {{ assignment.endDate }}</div>
+          <button class="take-assignment-btn" (click)="takeAssignment(assignment.id)">Take Assignment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="activeTab === 'quiz'">
+    <div class="card-header">
+      <h3>Quizzes</h3>
+    </div>
+    <div class="card-list">
+      <div *ngIf="course?.name && !hasQuizzes()" class="card" style="padding:12px;">
+        <p class="muted">No quizzes available.</p>
+      </div>
+      <div *ngFor="let quiz of quizzesList()" class="card" style="padding:16px; margin-bottom:12px;">
+        <div style="display: flex; justify-content: space-between;">
+          <div style="flex: 1;">
+            <h4 style="margin-top: 0;">{{ quiz.questionTitle }}</h4>
+            <p >{{ quiz.description || 'No description available.' }}</p>
+            <p style="font-size: 14px;">Questions: {{ quiz.questions?.length || 0 }}</p>
+            <button class="btn btn-primary" (click)="takeQuiz(quiz)">Take Quiz</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

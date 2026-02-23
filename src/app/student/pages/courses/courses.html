@@ -18,38 +18,45 @@
     </div>
   </header>
 
-  <div class="enrolled-courses-subsection" *ngIf="enrolledCourses().length > 0">
-      <h4 class="subsection-title">My Enrolled Courses</h4>
-      <div *ngIf="isLoading()" class="loading-spinner">Loading courses...</div>
-      <div class="course-grid" *ngIf="!isLoading()">
-        <div class="course-item" *ngFor="let c of enrolledCourses()">
-          <div class="course-content">
-            <h5>{{ c.title }}</h5>
-            <p>{{ c.description }}</p>
-          </div>
-          <button class="enroll-btn enrolled-btn" (click)="viewEnrolledCourse(c.id)">
-            View Course
-          </button>
+  <div class="enrolled-courses-subsection">
+    <h4 class="subsection-title">My Enrolled Courses</h4>
+    <div *ngIf="isLoading()" class="loading-spinner">Loading courses...</div>
+    <div class="course-grid" *ngIf="!isLoading() && enrolledCourses().length > 0">
+      <div class="course-item" *ngFor="let c of enrolledCourses()">
+        <div class="course-content">
+          <h5>{{ c.title }}</h5>
+          <p>{{ c.description }}</p>
         </div>
+        <button class="enroll-btn enrolled-btn" (click)="viewEnrolledCourse(c.id)">
+          View Course
+        </button>
       </div>
     </div>
-
-  <section class="discovery-section">
-  <h3 class="section-title">Available Programs</h3>
-  <div class="course-grid">
-    <div class="course-item" *ngFor="let c of availableCourses()">
-      <div class="course-content">
-        <h5>{{ c.title }}</h5>
-        <p>{{ c.description }}</p>
-      </div>
-
-      <button class="enroll-btn"
-              [disabled]="c.status === 'pending'"
-              [class.pending-btn]="c.status === 'pending'"
-              (click)="enrollInCourse(c)">
-        {{ c.status === 'pending' ? 'Pending Approval' : 'Enroll Now' }}
-      </button>
+    <div *ngIf="!isLoading() && enrolledCourses().length === 0" class="empty-message">
+      <p>No enrolled courses yet. Explore available programs below!</p>
     </div>
   </div>
-</section>
+
+  <section class="discovery-section">
+    <h3 class="section-title">Available Programs</h3>
+    <div *ngIf="isLoading()" class="loading-spinner">Loading programs...</div>
+    <div class="course-grid" *ngIf="!isLoading() && availableCourses().length > 0">
+      <div class="course-item" *ngFor="let c of availableCourses()">
+        <div class="course-content">
+          <h5>{{ c.title }}</h5>
+          <p>{{ c.description }}</p>
+        </div>
+
+        <button class="enroll-btn"
+                [disabled]="c.status === 'pending'"
+                [class.pending-btn]="c.status === 'pending'"
+                (click)="enrollInCourse(c)">
+          {{ c.status === 'pending' ? 'Pending Approval' : 'Enroll Now' }}
+        </button>
+      </div>
+    </div>
+    <div *ngIf="!isLoading() && availableCourses().length === 0" class="empty-message">
+      <p>No available programs at this time.</p>
+    </div>
+  </section>
 </div>

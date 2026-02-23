@@ -1,0 +1,22 @@
+<div *ngIf="quiz">
+    <h2>{{ quiz.questionTitle }}</h2>
+    <p>{{ quiz.description }}</p>
+    <div *ngFor="let q of quiz.questions">
+        <h4>{{ q.title }}</h4>
+        <div *ngFor="let opt of q.options">
+            <input
+                type="radio"
+                [name]="'q' + q.id"
+                [value]="opt"
+                [(ngModel)]="userAnswers[q.id]"
+            />{{ opt }}
+        </div>
+    </div>
+    <button (click)="submitQuiz()">Submit Quiz</button>
+</div>
+
+<div *ngIf="score !== null">
+    <h3>Your Score: {{ score }} / {{ quiz.questions.length }}</h3>
+    <h4>Result JSON:</h4>
+    <pre>{{ resultJson | json }}</pre>
+</div>

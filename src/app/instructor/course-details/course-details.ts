@@ -1,7 +1,6 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CourseDetailsService } from '../../services/course-details';
 import { QuizService } from '../../services/quiz-service';
 import { ContentService } from '../../services/content-service';
 import { AssignmentService } from '../../services/assignment.service';
@@ -78,7 +77,6 @@ export class CourseDetails implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    public courseDetailsService: CourseDetailsService,
     private sanitizer: DomSanitizer,
     private quizService: QuizService,
     private contentService: ContentService,
@@ -293,7 +291,7 @@ export class CourseDetails implements OnInit {
     }
 
     if (confirm('Delete this assignment?')) {
-      this.assignmentService.deleteAssignment(assignment.id).subscribe(
+      this.assignmentService.deleteAssignment(this.course.id,assignment.id).subscribe(
         () => {
           console.log('Assignment deleted from API');
           this.assignments.splice(index, 1);

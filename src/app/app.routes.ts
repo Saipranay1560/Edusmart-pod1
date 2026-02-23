@@ -58,6 +58,21 @@ export const routes: Routes = [
         canActivate: [authGuard],
         component: LeaveApplication
       },
+      {
+        path: 'view-course/:id',
+        canActivate: [authGuard],
+        loadComponent: () => import('./student/pages/view-course/view-course').then(m => m.ViewCourse)
+      },
+      {
+        path: 'take-quiz',
+        canActivate: [authGuard],
+        loadComponent: () => import('./student/pages/take-quiz/take-quiz').then(m => m.TakeQuiz)
+      },
+      {
+        path: 'take-assignment/:assignmentId',
+        canActivate: [authGuard],
+        loadComponent: () => import('./student/pages/take-assignment/take-assignment').then(m => m.TakeAssignment)
+      },
     ]
   },
 
