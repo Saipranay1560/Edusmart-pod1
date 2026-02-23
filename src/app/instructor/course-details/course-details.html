@@ -3,9 +3,17 @@
     {{ assignmentSuccessMessage }}
   </div>
 
+  <div *ngIf="contentSuccessMessage" class="top-alert-success">
+    {{ contentSuccessMessage }}
+  </div>
+
+  <div *ngIf="contentErrorMessage" class="top-alert-error">
+    {{ contentErrorMessage }}
+  </div>
+
   <button class="back-btn" (click)="goBack()">← Back to Courses</button>
 
-  <h1>{{ course.title }}</h1>
+  <h1>{{ course.name }}</h1>
   <p class="description">{{ course.description }}</p>
 
   <div class="publish-box">
@@ -75,8 +83,10 @@
         <input type="text" [(ngModel)]="newVideoUrl" placeholder="https://youtu.be/... or https://www.youtube.com/watch?v=..." />
 
         <div class="modal-actions">
-          <button class="btn-primary" (click)="addContentVideo()">Add Video</button>
-          <button class="btn" (click)="closeContentModal()">Cancel</button>
+          <button class="btn-primary" (click)="addContentVideo()" [disabled]="isSavingContent">
+            {{ isSavingContent ? 'Adding...' : 'Add Video' }}
+          </button>
+          <button class="btn" (click)="closeContentModal()" [disabled]="isSavingContent">Cancel</button>
         </div>
       </div>
     </div>
@@ -93,15 +103,20 @@
     </div>
 
     <div class="card-list">
-      <div *ngIf="courseDetailsService.assignments.length === 0" class="card" style="padding:12px;">No assignments yet. Click Add Assignment to create one.</div>
+      <div *ngIf="assignments.length === 0" class="card" style="padding:12px;">No assignments yet. Click Add Assignment to create one.</div>
 
-      <div *ngFor="let assignment of courseDetailsService.assignments; let i = index" class="assignment-row card">
+      <div *ngFor="let assignment of assignments; let i = index" class="assignment-row card">
         <div class="assignment-info">
           <div class="assignment-title">{{ assignment.title }}</div>
-          <div class="assignment-desc">{{ assignment | json | slice:0:1 }}{{ 'description' in assignment ? assignment['description'] : 'No description' }}</div>
+          <div class="assignment-desc">
+            <strong>Questions:</strong>
+            <ul style="margin: 8px 0; padding-left: 20px;">
+              <li *ngFor="let q of assignment.assignmentQuestions">{{ q }}</li>
+            </ul>
+          </div>
         </div>
         <div class="assignment-meta">
-          <div class="assignment-date">Due: {{ assignment.dueDate }}</div>
+          <div class="assignment-date">Due: {{ assignment.endDate }}</div>
           <div class="assignment-actions">
             <button class="btn" (click)="openAssignmentModal(i)">Modify</button>
             <button class="btn-delete" (click)="deleteAssignment(i)">Delete</button>
@@ -120,11 +135,25 @@
         <label>Title</label>
         <input type="text" [(ngModel)]="assignForm.title" placeholder="Assignment title" />
 
-        <label>Description</label>
-        <textarea [(ngModel)]="assignForm.description" placeholder="Short description"></textarea>
+        <label>End Date</label>
+        <input type="date" [(ngModel)]="assignForm.endDate" class="date-picker" />
 
-        <label>Due Date</label>
-        <input type="date" [(ngModel)]="assignForm.dueDate" class="date-picker" />
+        <label>Assignment Questions</label>
+        <div style="margin-bottom: 12px;">
+          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <input type="text" [(ngModel)]="newQuestion" placeholder="Enter a question" />
+            <button class="btn primary" (click)="addQuestionToAssignment()" style="white-space: nowrap;">Add Question</button>
+          </div>
+
+          <div *ngIf="assignForm.assignmentQuestions.length > 0" style="border: 1px solid #ddd; padding: 8px; border-radius: 4px;">
+            <div *ngFor="let q of assignForm.assignmentQuestions; let i = index" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 8px; background: #f5f5f5; border-radius: 3px;">
+              <span>{{ i + 1 }}. {{ q }}</span>
+              <button class="btn-danger" style="padding: 4px 8px; font-size: 12px;" (click)="removeQuestionFromAssignment(i)">Remove</button>
+            </div>
+          </div>
+
+          <p *ngIf="assignForm.assignmentQuestions.length === 0" style="color: #999; font-size: 12px;">No questions added yet</p>
+        </div>
 
         <div class="modal-actions">
           <button class="btn-primary" (click)="saveAssignment()">Save</button>

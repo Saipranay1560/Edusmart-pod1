@@ -48,6 +48,15 @@ export class CourseService {
     );
   }
 
+  getCourseById(courseId: number) {
+    return this.http.get<any>(`${this.baseUrl}/course/${courseId}`).pipe(
+      tap({
+        next: (res) => console.log(`getCourseById(${courseId})`, res),
+        error: (err) => console.error(`getCourseById(${courseId}) failed:`, err)
+      })
+    );
+  }
+
   getEnrolledCourseById(id: number) {
     return this.http.get<Course>(`${this.baseUrl2}/student/${id}`).pipe(
       tap({

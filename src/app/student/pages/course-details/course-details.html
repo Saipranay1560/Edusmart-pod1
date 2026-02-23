@@ -5,17 +5,17 @@
 
   <button class="back-btn" (click)="goBack()">← Back to Courses</button>
 
-  <h1>{{ course.title }}</h1>
-  <p class="description">{{ course.description }}</p>
+  <h1> titke</h1>
+  <p class="description">description</p>
 
   <div class="publish-box">
     <span>Status:
-      <strong [class.published]="course.published" [class.draft]="!course.published">
-        {{ course.published ? 'Published' : 'Draft' }}
+      <strong>
+        {{ 'Published'}}
       </strong>
     </span>
-    <button (click)="togglePublish()">
-      {{ course.published ? 'Unpublish' : 'Publish Course' }}
+    <button>
+      {{ 'Publish Course' }}
     </button>
   </div>
 
@@ -93,18 +93,18 @@
     </div>
 
     <div class="card-list">
-      <div *ngIf="courseDetailsService.assignments.length === 0" class="card" style="padding:12px;">No assignments yet. Click Add Assignment to create one.</div>
+      <div class="card" style="padding:12px;">No assignments yet. Click Add Assignment to create one.</div>
 
-      <div *ngFor="let assignment of courseDetailsService.assignments; let i = index" class="assignment-row card">
+      <div *ngFor="let assignment of [1,2,3,4]; let i = index" class="assignment-row card">
         <div class="assignment-info">
-          <div class="assignment-title">{{ assignment.title }}</div>
-          <div class="assignment-desc">{{ assignment | json | slice:0:1 }}{{ 'description' in assignment ? assignment['description'] : 'No description' }}</div>
+          <div class="assignment-title">Assignment {{ i + 1 }}</div>
+          <div class="assignment-desc">{{ assignment | json | slice:0:1 }}</div>
         </div>
         <div class="assignment-meta">
-          <div class="assignment-date">Due: {{ assignment.dueDate }}</div>
+          <div class="assignment-date"></div>
           <div class="assignment-actions">
             <button class="btn" (click)="openAssignmentModal(i)">Modify</button>
-            <button class="btn-delete" (click)="deleteAssignment(i)">Delete</button>
+            <button class="btn-delete" >Delete</button>
           </div>
         </div>
       </div>
@@ -145,15 +145,15 @@
     </div>
 
     <div class="card-list">
-      <div *ngIf="courseDetailsService.quiz.questions.length === 0" class="card" style="padding:12px;">No quizzes yet. Click Create New Quiz to add one.</div>
+      <div  class="card" style="padding:12px;">No quizzes yet. Click Create New Quiz to add one.</div>
 
-      <div *ngFor="let q of courseDetailsService.quiz.questions; let qi = index" class="quiz-row card">
+      <div *ngFor="let q of [1,2,3,4]; let qi = index" class="quiz-row card">
         <div class="quiz-info">
-          <div class="quiz-title">Q{{ qi + 1 }}: {{ q.split(' | ')[0] }}</div>
-          <div class="quiz-answer"><strong>Correct:</strong> {{ q.split(' | Correct: ')[1] }}</div>
+          <div class="quiz-title">Q{{ qi + 1 }}:</div>
+          <div class="quiz-answer"><strong>Correct:</strong> </div>
         </div>
         <div class="quiz-actions">
-          <button class="btn-delete" (click)="deleteQuizQuestion(qi)">Delete</button>
+          <button class="btn-delete" >Delete</button>
         </div>
       </div>
     </div>

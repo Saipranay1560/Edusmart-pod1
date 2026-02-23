@@ -49,30 +49,17 @@ export class CourseDetails implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    public courseDetailsService: CourseDetailsService,
+    private courseDetailsService: CourseDetailsService,
     private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       const courseId = params['id'];
-      if (courseId) {
-        this.courseDetailsService.loadCourseById(Number(courseId));
-      }
     });
   }
 
-  get course() {
-    return this.courseDetailsService.course;
-  }
 
-  get quiz() {
-    return this.courseDetailsService.quiz;
-  }
-
-  togglePublish() {
-    this.course.published = !this.course.published;
-  }
 
   // --- Assignment Logic ---
   addQuestion() {
@@ -87,12 +74,6 @@ export class CourseDetails implements OnInit {
   }
 
   addAssignmentToCourse() {
-    // Logic to save questions to the course list using the selected due date
-    this.courseDetailsService.addAssignment({
-      title: `Assignment ${this.courseDetailsService.assignments.length + 1}`,
-      dueDate: this.assignmentDueDate || new Date().toISOString().split('T')[0], // Uses selected date or today
-      status: 'Active'
-    });
 
     this.assignmentSuccessMessage = "Assignment has been added successfully!";
     this.questions = [];
@@ -103,27 +84,12 @@ export class CourseDetails implements OnInit {
     }, 3000);
   }
 
-  deleteAssignment(index: number) {
-    this.courseDetailsService.assignments.splice(index, 1);
-  }
 
   // Assignment modal handlers
   openAssignmentModal(index?: number) {
-    if (typeof index === 'number') {
-      const a = this.courseDetailsService.assignments[index];
-      if (a) {
-        this.editingAssignmentIndex = index;
-        this.assignForm = {
-          title: a.title || '',
-          dueDate: a.dueDate || '',
-          description: (a as any).description || '',
-          status: a.status || 'Active'
-        };
-      }
-    } else {
-      this.editingAssignmentIndex = null;
-      this.assignForm = { title: '', dueDate: '', description: '', status: 'Active' };
-    }
+
+    this.editingAssignmentIndex = null;
+    this.assignForm = { title: '', dueDate: '', description: '', status: 'Active' };
     this.showAssignmentModal = true;
   }
 
@@ -134,19 +100,11 @@ export class CourseDetails implements OnInit {
 
   saveAssignment() {
     const payload = {
-      title: (this.assignForm.title || '').trim() || `Assignment ${this.courseDetailsService.assignments.length + 1}`,
+      title: (this.assignForm.title || '').trim(),
       dueDate: this.assignForm.dueDate || new Date().toISOString().split('T')[0],
       description: this.assignForm.description || '',
       status: this.assignForm.status || 'Active'
     };
-
-    if (this.editingAssignmentIndex !== null && typeof this.editingAssignmentIndex === 'number') {
-      // update existing
-      this.courseDetailsService.assignments[this.editingAssignmentIndex] = payload;
-    } else {
-      // add new
-      this.courseDetailsService.assignments.push(payload);
-    }
 
     this.closeAssignmentModal();
   }
@@ -161,7 +119,7 @@ addQuizQuestion() {
       this.option3 + ', ' +
       this.option4 + ' | Correct: ' + this.correctOption;
 
-    this.courseDetailsService.quiz.questions.push(fullQuestion);
+
 
     this.newQuestion = '';
     this.option1 = '';
@@ -172,26 +130,21 @@ addQuizQuestion() {
   }
 }
 
-deleteQuizQuestion(index: number) {
-  this.courseDetailsService.quiz.questions.splice(index, 1);
-}
+
 
 isQuizAdded: boolean = false;
 
 addQuizToPortal() {
-  if (this.courseDetailsService.quiz.questions.length > 0) {
     this.isQuizAdded = true;
     const message = this.quizDueDate
       ? `Quiz has been successfully added! Last date to submit: ${this.quizDueDate}`
       : 'Quiz has been successfully added to the Course!';
     alert(message);
-  }
 }
 
 // New method to handle "Add New Quiz" button
 resetQuizForm() {
   this.isQuizAdded = false;
-  this.courseDetailsService.quiz.questions = [];
   this.quizDueDate = '';
 }
 
@@ -200,19 +153,6 @@ deleteWholeQuiz() {
     this.resetQuizForm(); // Reuses logic to clear and show form
   }
 }
-  // --- File Uploads (Resources) ---
-  onPdfSelected(event: any) {
-    const file: File = event.target.files[0];
-    this.courseDetailsService.addPdf(file);
-    event.target.value = '';
-  }
-
-  onVideoSelected(event: any) {
-    const file: File = event.target.files[0];
-    this.courseDetailsService.addVideo(file);
-    event.target.value = '';
-  }
-
   // --- Content (YouTube) Logic ---
   addContentVideo() {
     const url = (this.newVideoUrl || '').trim();
