@@ -22,7 +22,7 @@ export class AssignmentService {
     return this.http.put(`${this.apiurl}/update/${assignmentId}`, assignment);
   }
 
-  deleteAssignment(assignmentId: number): Observable<any> {
-    return this.http.delete(`${this.apiurl}/delete/${assignmentId}`);
+  deleteAssignment(courseId: number, assignmentId: number): Observable<any> {
+    return this.http.delete(`${this.apiurl}/course/${courseId}/delete/${assignmentId}`, { responseType: 'text' });
   }
 }

@@ -42,6 +42,15 @@ export class Courses implements OnInit {
     const userId = this.authService.getUser();
     const studentId = userId?.id || 0;
 
+    let enrolledLoaded = false;
+    let availableLoaded = false;
+
+    const checkLoadingComplete = () => {
+      if (enrolledLoaded && availableLoaded) {
+        this.isLoading.set(false);
+      }
+    };
+
     if (studentId) {
       this.courseService.getEnrolledCourseById(studentId).subscribe({
         next: (course: any) => {
@@ -62,18 +71,21 @@ export class Courses implements OnInit {
 
           this.enrolledCourses.set(mappedCourses);
           console.log('Enrolled courses loaded for student:', mappedCourses);
-          this.isLoading.set(false);
+          enrolledLoaded = true;
+          checkLoadingComplete();
         },
         error: (err) => {
           console.error('Failed to load enrolled courses:', err);
           this.enrolledCourses.set([]);
-          this.isLoading.set(false);
+          enrolledLoaded = true;
+          checkLoadingComplete();
         }
       });
-            }else{
-              console.warn('No student ID found. Skipping enrolled courses load.');
-              this.isLoading.set(false);
-            }
+    } else {
+      console.warn('No student ID found. Skipping enrolled courses load.');
+      enrolledLoaded = true;
+    }
+
     this.courseService.getByStatusAndEnrollment(this.authService.getUser()?.id || 0).subscribe({
       next: (list: any[]) => {
         // Map backend course shape to student Course interface
@@ -89,10 +101,14 @@ export class Courses implements OnInit {
 
         this.availableCourses.set(mappedCourses);
         console.log('Approved courses loaded for student:', mappedCourses);
+        availableLoaded = true;
+        checkLoadingComplete();
       },
       error: () => {
         // fallback: show all not-enrolled courses from local DataService
         this.availableCourses.set([]);
+        availableLoaded = true;
+        checkLoadingComplete();
       }
     });
 
@@ -133,7 +149,7 @@ export class Courses implements OnInit {
 
   viewEnrolledCourse(courseId: number) {
     // navigate to course details page for enrolled course
-    this.router.navigate(['/student/course-details', courseId]);
-    console.log('Navigating to course details for course ID:', courseId);
+    this.router.navigate(['/student/view-course', courseId]);
+    console.log('Navigating to view course for course ID:', courseId);
   }
 }

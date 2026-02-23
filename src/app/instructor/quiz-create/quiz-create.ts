@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { CourseDetailsService } from '../../services/course-details';
 import { QuizService } from '../../services/quiz-service';
 
 interface QuizQuestion {

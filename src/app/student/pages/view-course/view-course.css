@@ -1,0 +1,176 @@
+/* Container Layout */
+.course-details {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Header & Typography */
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Buttons */
+.back-btn {
+  background: none;
+  border: none;
+  color: #3498db;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+  margin-bottom: 20px;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+/* Status Labels */
+.publish-box {
+  margin-bottom: 30px;
+  font-size: 0.9rem;
+}
+
+.published {
+  color: #27ae60;
+  background: #eafaf1;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.draft {
+  color: #e67e22;
+  background: #fdf5e6;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* Tabs Navigation */
+.tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 25px;
+}
+
+.tabs button {
+  padding: 12px 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #95a5a6;
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+
+.tabs button.active {
+  color: #3498db;
+  border-bottom: 3px solid #3498db;
+}
+
+/* Card Styling */
+.card {
+  background: #fff;
+  border: 1px solid #e1e4e8;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.card-header h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  border-left: 4px solid #3498db;
+  padding-left: 15px;
+}
+
+/* Video Items */
+.video-item {
+  transition: transform 0.2s;
+}
+
+.video-item:hover {
+  transform: translateY(-2px);
+}
+
+.video-row {
+  display: flex;
+  gap: 20px;
+}
+
+.thumb img {
+  width: 180px;
+  border-radius: 8px;
+  display: block;
+}
+
+.video-title label {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #2c3e50;
+}
+
+.video-desc {
+  margin-top: 8px;
+  color: #7f8c8d;
+}
+
+/* Assignment Specifics */
+.assignment-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.assignment-meta {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px dashed #eee;
+  text-align: right;
+}
+
+.assignment-date {
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+/* Alerts */
+.top-alert-success {
+  background: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.top-alert-error {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+/* Muted text for empty states */
+.muted {
+  color: #bdc3c7;
+  text-align: center;
+  font-style: italic;
+}
