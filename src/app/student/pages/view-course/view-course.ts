@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin } from 'rxjs';
+import { forkJoin, from } from 'rxjs';
 
 @Component({
   selector: 'app-view-course',
@@ -43,7 +43,7 @@ export class ViewCourse implements OnInit {
 
   loadAllCourseData(id: string) {
     const courseUrl = `http://localhost:1930/api/courses/course/${id}`;
-    const quizUrl = `http://localhost:1930/api/quizzes/course/${id}`;
+    const quizUrl = `http://localhost:1930/api/quizzes/course/${id}/unsolved?studentId=${JSON.parse(localStorage.getItem('user') || '{}').id}`;
     const assignUrl = `http://localhost:1930/api/assignments/course/${id}`;
 
     // forkJoin fetches all 3 APIs at once
