@@ -69,7 +69,7 @@ export const routes: Routes = [
         loadComponent: () => import('./student/pages/take-quiz/take-quiz').then(m => m.TakeQuiz)
       },
       {
-        path: 'take-assignment/:assignmentId',
+        path: 'take-assignment',
         canActivate: [authGuard],
         loadComponent: () => import('./student/pages/take-assignment/take-assignment').then(m => m.TakeAssignment)
       },

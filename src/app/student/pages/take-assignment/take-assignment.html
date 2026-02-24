@@ -2,51 +2,39 @@
   <div *ngIf="loading" class="alert alert-info text-center">Loading Questions...</div>
   <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
-  <div *ngIf="!loading && quizzes.length > 0">
-    <div *ngFor="let quiz of quizzes" class="card mb-4 shadow-sm">
-      
+  <div *ngIf="!loading && assignment">
+    <div class="card shadow">
       <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
         <div>
-          <h3 class="mb-0">{{ quiz.questionTitle }}</h3>
-          <small>{{ quiz.description }}</small>
+          <h3 class="mb-0">{{ assignment.title }}</h3>
+          <small>End Date: {{ assignment.endDate }}</small>
         </div>
-        <button class="btn btn-sm btn-light" (click)="goBack()">Cancel</button>
       </div>
 
       <div class="card-body">
-        <div *ngFor="let question of quiz.questions; let i = index" class="mb-4 border-bottom pb-3">
+        <div *ngFor="let question of assignment.questions; let i = index" class="mb-4 border-bottom pb-3">
           <h5 class="question-title">
             <span class="badge bg-secondary me-2">Q{{ i + 1 }}</span>
-            {{ question.title }}
+            {{ question }}
           </h5>
-          
-          <div class="options-group ms-4 mt-2">
-            <div *ngFor="let option of question.options" class="form-check my-2">
-              <input 
-                class="form-check-input" 
-                type="radio" 
-                [name]="'q' + question.id" 
-                [id]="'opt-' + question.id + option"
-                [value]="option" 
-                [(ngModel)]="userAnswers[question.id]">
-              <label class="form-check-label" [for]="'opt-' + question.id + option">
-                {{ option }}
-              </label>
-            </div>
-          </div>
+          <textarea
+            class="form-control"
+            rows="3"
+            placeholder="Type your answer here..."
+            [(ngModel)]="userAnswers[i]">
+          </textarea>
         </div>
       </div>
 
       <div class="card-footer bg-light text-end">
-        <button class="btn btn-success px-4" (click)="submitQuiz(quiz)">
-          Submit Final Answers
+        <button class="btn btn-success px-4" (click)="submitAssignment()">
+          Submit Assignment
         </button>
       </div>
     </div>
   </div>
 
-  <div *ngIf="!loading && quizzes.length === 0 && !error" class="text-center mt-5">
-    <p class="text-muted">No quizzes are available for this course yet.</p>
-    <button class="btn btn-outline-primary" (click)="goBack()">Go Back</button>
+  <div *ngIf="!loading && !assignment && !error" class="text-center mt-5">
+    <p class="text-muted">No Assignment Loaded</p>
   </div>
 </div>

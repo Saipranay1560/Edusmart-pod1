@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { QuizService } from '../../../services/quiz-service';
 
 @Component({
   selector: 'app-take-assignment',
@@ -12,90 +11,56 @@ import { QuizService } from '../../../services/quiz-service';
   templateUrl: './take-assignment.html',
   styleUrl: './take-assignment.css',
 })
-export class TakeAssignment implements OnInit {
-  courseId!: number;
-  quizzes: any[] = [];
+export class TakeAssignment {
+  assignment: any = null;
   loading: boolean = false;
   error: string | null = null;
-  
-  // Stores answers as { questionId: "Selected Option Text" }
-  userAnswers: { [key: number]: string } = {}; 
+
+  // Object to store answers where key is index or question string
+  userAnswers: { [key: number]: string } = {};
 
   constructor(
     private route: ActivatedRoute,
-    private quizService: QuizService,
     private http: HttpClient,
     private router: Router
-  ) {}
-
-  ngOnInit() {
-    // 1. Get Course ID from the URL (e.g., /take-assignment/1)
-    const idParam = this.route.snapshot.paramMap.get('courseId');
-    if (idParam) {
-      this.courseId = +idParam;
-      this.fetchQuizData();
-    } else {
-      this.error = "Invalid Course ID.";
-    }
+  ) {
+    const nav = this.router.getCurrentNavigation();
+    this.assignment = nav?.extras.state?.['assignment'] || null;
+    console.log('Received assignment:', this.assignment);
   }
 
-  fetchQuizData() {
-    this.loading = true;
-    this.quizService.getQuizzes(this.courseId).subscribe({
-      next: (data: any) => {
-        // Backend returns a List, ensure we handle it as an array
-        this.quizzes = Array.isArray(data) ? data : [data];
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error("Fetch error:", err);
-        this.error = "Failed to load quiz. Verify your login session.";
-        this.loading = false;
-      }
+  submitAssignment() {
+    if (!this.assignment) return;
+
+    // Fetch student_id from localStorage user json
+    const userJson = localStorage.getItem('user');
+    const studentId = userJson ? JSON.parse(userJson).id : null;
+
+    // Create questions_answer_pair
+    const questionsAnswerPair = this.assignment.questions.map((q: string, index: number) => {
+      return {
+        question: q,
+        answer: this.userAnswers[index] || ''
+      };
     });
-  }
 
-  submitQuiz(quiz: any) {
-    const studentId = localStorage.getItem('userId');
-    
-    if (!studentId) {
-      alert("Session expired. Please log in again.");
-      return;
-    }
-
-    // 2. Build the payload to match your Java QuizSubmissionDTO
-    const submissionPayload = {
-      courseId: this.courseId,
-      quizId: quiz.id,
-      studentId: +studentId,
-      questionTitle: quiz.questionTitle,
-      description: quiz.description,
-      // Map dictionary to List<AnswerDTO>
-      answers: Object.keys(this.userAnswers).map(qId => ({
-        questionId: +qId,
-        selectedOption: this.userAnswers[+qId]
-      }))
+    // Construct Result JSON
+    const resultJson = {
+      assignment_id: this.assignment.id,
+      assignment_title: this.assignment.title,
+      enddate: this.assignment.endDate,
+      submitteddate: new Date().toISOString().split('T')[0], // Current date (YYYY-MM-DD)
+      questions_answer_pair: questionsAnswerPair,
+      course_id: this.assignment.course.id,
+      student_id: studentId
     };
 
-    if (submissionPayload.answers.length === 0) {
-      alert("Please answer at least one question.");
-      return;
-    }
+    console.log('Submission Result JSON:', resultJson);
 
-    // 3. POST to your QuizSubmissionController
-    this.http.post('http://localhost:1930/api/quizzes/submit', submissionPayload).subscribe({
-      next: (res: any) => {
-        alert(`Quiz submitted! Your Score: ${res.score}`);
-        this.router.navigate(['/student-dashboard']);
-      },
-      error: (err) => {
-        console.error("Submission error:", err);
-        alert("Submission failed. Check backend logs for DTO mismatch.");
-      }
-    });
-  }
+    // Alerting the JSON for verification
+    alert('Assignment Submitted! Check console for Result JSON.');
 
-  goBack() {
-    history.back();
+    // Optional: Call your API here
+    // this.http.post('YOUR_API_ENDPOINT', resultJson).subscribe(...)
   }
 }

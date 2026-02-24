@@ -27,7 +27,7 @@ export class ViewCourse implements OnInit {
   contentErrorMessage: string | null = null;
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router
   ) {}
@@ -81,12 +81,9 @@ export class ViewCourse implements OnInit {
     return this.quizzes;
   }
 
-  takeAssignment(assignmentId: string | number) {
-    if (assignmentId) {
-      // Navigate to take-assignment route with assignmentId
-      window.location.href = `/student/take-assignment/${assignmentId}`;
-      // If you want to use Angular Router, inject Router and use:
-      // this.router.navigate([`/student/take-assignment`, assignmentId]);
+  takeAssignment(assignment: any) {
+    if(assignment){
+      this.router.navigate([`/student/take-assignment`], {state: { assignment }});
     }
   }
 

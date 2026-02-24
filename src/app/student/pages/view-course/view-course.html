@@ -12,7 +12,7 @@
 
   <button class="back-btn" (click)="goBack()">← Back to Courses</button>
 
-  <h1>{{ course?.name }}</h1> 
+  <h1>{{ course?.name }}</h1>
   <p class="description">{{ course?.description }}</p>
 
   <div class="publish-box" *ngIf="course?.name"> <span>Status:
@@ -35,7 +35,7 @@
     </div>
     <div class="card-list">
       <div *ngIf="course?.name && contentVideos.length === 0" class="card" style="padding:12px;">No content yet.</div>
-      
+
       <div *ngFor="let v of contentVideos" class="video-item card">
         <div class="video-row">
           <div class="thumb">
@@ -68,7 +68,7 @@
         </div>
         <div class="assignment-meta">
           <div class="assignment-date">Due: {{ assignment.endDate }}</div>
-          <button class="take-assignment-btn" (click)="takeAssignment(assignment.id)">Take Assignment</button>
+          <button class="take-assignment-btn" (click)="takeAssignment(assignment)">Take Assignment</button>
         </div>
       </div>
     </div>
