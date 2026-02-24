@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { QuizService } from '../../../services/quiz-service'; // Corrected path
 
 @Component({
   selector: 'app-take-quiz',
@@ -16,7 +17,10 @@ export class TakeQuiz {
   score: number | null = null;
   resultJson: any = null;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private quizService: QuizService,
+  ) {
     const nav = this.router.getCurrentNavigation();
     this.quiz = nav?.extras.state?.['quiz'] || null;
   }
@@ -37,11 +41,28 @@ export class TakeQuiz {
     });
 
     this.score = correct;
-    this.resultJson = {
-      quizTitle: this.quiz.questionTitle,
+
+
+    const submissionData = {
+      courseId: Number(this.quiz.courseId),
+      quizId: Number(this.quiz.id),
+      studentId: JSON.parse(localStorage.getItem('user') || '{}').id,
+      questionTitle: this.quiz.questionTitle,
       description: this.quiz.description,
-      questions,
-      score: this.score,
+      answers: questions
     };
+
+
+    this.quizService.submitQuiz(submissionData).subscribe({
+      next: (response: any) => { // Added explicit 'any' type
+        console.log('Quiz submitted successfully', response);
+        this.resultJson = submissionData;
+        alert(`Quiz submitted! Your score: ${this.score} / ${this.quiz.questions.length}`);
+      },
+      error: (err: any) => { // Added explicit 'any' type
+        console.error('Error submitting quiz', err);
+        alert('There was an error submitting your quiz. Please try again.');
+      }
+    });
   }
 }
