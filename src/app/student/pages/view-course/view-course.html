@@ -94,4 +94,20 @@
       </div>
     </div>
   </div>
+
+  <div *ngIf="activeTab === 'content'">
+  <div class="video-list" *ngIf="contentVideos.length > 0; else noContent">
+    <div *ngFor="let video of contentVideos" class="video-item mb-4">
+      <h3>{{ video.title }}</h3>
+      <p>{{ video.description }}</p>
+      <div class="ratio ratio-16x9">
+        <iframe [src]="video.url | safe" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+  <ng-template #noContent>
+    <p class="text-center mt-4">No content videos uploaded for this course yet.</p>
+  </ng-template>
+</div>
+
 </div>

@@ -179,17 +179,19 @@
       </div>
 
       <div *ngFor="let quiz of quizzesList()" class="card" style="padding:16px; margin-bottom:12px;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-          <div style="flex: 1;">
-            <h4 style="margin-top: 0;">{{ quiz.title }}</h4>
-            <p class="muted" style="margin: 8px 0;">{{ quiz.description || 'No description available.' }}</p>
-            <p class="muted" style="margin: 8px 0; font-size: 14px;">Questions: {{ quiz.questions.length }}</p>
+        <a (click)="navigateToViewQuiz()">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="flex: 1;">
+              <h4 style="margin-top: 0;">{{ quiz.title }}</h4>
+              <p class="muted" style="margin: 8px 0;">{{ quiz.description || 'No description available.' }}</p>
+              <p class="muted" style="margin: 8px 0; font-size: 14px;">Questions: {{ quiz.questions.length }}</p>
+            </div>
+            <div style="display:flex; gap:8px; margin-left: 12px;">
+              <button class="btn primary" (click)="navigateToCreateQuiz()">Edit</button>
+              <button class="btn btn-delete" (click)="deleteQuiz(quiz.id)">Delete</button>
+            </div>
           </div>
-          <div style="display:flex; gap:8px; margin-left: 12px;">
-            <button class="btn primary" (click)="navigateToCreateQuiz()">Edit</button>
-            <button class="btn btn-delete" (click)="deleteQuiz(quiz.id)">Delete</button>
-          </div>
-        </div>
+        </a>
       </div>
     </div>
   </div>
