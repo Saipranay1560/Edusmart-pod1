@@ -20,6 +20,7 @@ import { LeaveApplication } from './student/pages/leave-application/leave-applic
 import { LoginComponent } from './login/login';
 import { Signup } from './signup/signup';
 import { ViewQuizInstructor } from './instructor/view-quiz-instructor/view-quiz-instructor';
+import { AssignViewSubmissionComponent } from './instructor/assign-view-submission/assign-view-submission';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -39,6 +40,7 @@ export const routes: Routes = [
         canActivate: [authGuard],
         loadComponent: () => import('./student/pages/courses/courses').then(m => m.Courses)
       },
+
       {
         path: 'student-profile',
         canActivate: [authGuard],
@@ -76,6 +78,7 @@ export const routes: Routes = [
       },
     ]
   },
+  { path: 'assign-view-submission/:id', component: AssignViewSubmissionComponent },
 
   {
     path: 'instructor',

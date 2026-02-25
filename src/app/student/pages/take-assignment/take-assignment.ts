@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AssignmentService } from '../../../services/assignment.service';
 
 @Component({
   selector: 'app-take-assignment',
@@ -16,13 +17,14 @@ export class TakeAssignment {
   loading: boolean = false;
   error: string | null = null;
 
-  // Object to store answers where key is index or question string
+  // Object to store answers where key is the index of the question
   userAnswers: { [key: number]: string } = {};
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private assignmentService: AssignmentService
   ) {
     const nav = this.router.getCurrentNavigation();
     this.assignment = nav?.extras.state?.['assignment'] || null;
@@ -36,7 +38,12 @@ export class TakeAssignment {
     const userJson = localStorage.getItem('user');
     const studentId = userJson ? JSON.parse(userJson).id : null;
 
-    // Create questions_answer_pair
+    if (!studentId) {
+      alert('Student ID not found. Please log in again.');
+      return;
+    }
+
+    // Create questions_answer_pair matching the backend DTO structure
     const questionsAnswerPair = this.assignment.questions.map((q: string, index: number) => {
       return {
         question: q,
@@ -44,23 +51,31 @@ export class TakeAssignment {
       };
     });
 
-    // Construct Result JSON
+    // Construct Result JSON matching SubmissionDTO
     const resultJson = {
       assignment_id: this.assignment.id,
       assignment_title: this.assignment.title,
+      course_id: this.assignment.course?.id || this.assignment.course_id,
       enddate: this.assignment.endDate,
       submitteddate: new Date().toISOString().split('T')[0], // Current date (YYYY-MM-DD)
       questions_answer_pair: questionsAnswerPair,
-      course_id: this.assignment.course.id,
       student_id: studentId
     };
 
-    console.log('Submission Result JSON:', resultJson);
+    console.log('Submitting Result JSON:', resultJson);
 
-    // Alerting the JSON for verification
-    alert('Assignment Submitted! Check console for Result JSON.');
-
-    // Optional: Call your API here
-    // this.http.post('YOUR_API_ENDPOINT', resultJson).subscribe(...)
+    // Call the backend API via AssignmentService
+    this.assignmentService.submitAssignment(resultJson).subscribe({
+      next: (response: any) => {
+        console.log('Assignment submitted successfully:', response);
+        alert('Assignment Submitted Successfully!');
+        // Navigate back to courses or assignments list
+        this.router.navigate(['/student/courses']);
+      },
+      error: (err: any) => {
+        console.error('Error submitting assignment:', err);
+        alert('There was an error submitting your assignment. Please try again.');
+      }
+    });
   }
 }

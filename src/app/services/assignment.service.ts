@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AssignmentService {
   private apiurl = 'http://localhost:1930/api/assignments';
+  private baseUrl = 'http://localhost:1930/api/assignments';
 
   constructor(private http: HttpClient) {}
 
@@ -25,4 +26,14 @@ export class AssignmentService {
   deleteAssignment(courseId: number, assignmentId: number): Observable<any> {
     return this.http.delete(`${this.apiurl}/course/${courseId}/delete/${assignmentId}`, { responseType: 'text' });
   }
+
+  submitAssignment(submissionData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/submit`, submissionData);
+  }
+
+ getSubmissionsByAssignmentId(assignmentId: number): Observable<any[]> {
+  // Hits: http://localhost:1930/api/assignments/submit/123
+  return this.http.get<any[]>(`${this.baseUrl}/submit/${assignmentId}`);
+}
+
 }

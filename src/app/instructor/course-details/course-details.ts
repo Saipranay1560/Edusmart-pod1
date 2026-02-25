@@ -346,6 +346,15 @@ export class CourseDetails implements OnInit {
     this.newQuestion = '';
   }
 
+ viewSubmissions(assignmentId: any) {
+    if (assignmentId) {
+      this.router.navigate(['/assign-view-submission', assignmentId]);
+    } else {
+      console.error("Assignment ID is missing!");
+    }
+  }
+
+
   saveAssignment() {
     const courseId = Number(this.route.snapshot.paramMap.get('id'));
 

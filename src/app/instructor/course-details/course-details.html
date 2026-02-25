@@ -119,6 +119,9 @@
           <div class="assignment-date">Due: {{ assignment.endDate }}</div>
           <div class="assignment-actions">
             <button class="btn" (click)="openAssignmentModal(i)">Modify</button>
+            <button class="btn" (click)="viewSubmissions(assignment.id)" style="background-color: #2196F3; color: white;">
+    View Submissions
+  </button>
             <button class="btn-delete" (click)="deleteAssignment(i)">Delete</button>
           </div>
         </div>
