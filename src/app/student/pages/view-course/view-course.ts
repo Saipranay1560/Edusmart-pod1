@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, from } from 'rxjs';
+import { forkJoin } from 'rxjs';
+import { ContentService } from '../../../services/content-service';
+import { SafePipe } from '../../../pipes/safe-pipe';
 
 @Component({
   selector: 'app-view-course',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SafePipe], // Add SafePipe here to fix NG8004
   templateUrl: './view-course.html',
   styleUrl: './view-course.css',
 })
@@ -15,13 +17,11 @@ export class ViewCourse implements OnInit {
   courseId: string | null = null;
   activeTab: string = 'content';
 
-  // Core Data
   course: any = {};
   contentVideos: any[] = [];
   assignments: any[] = [];
   quizzes: any[] = [];
 
-  // Feedback Messages (REQUIRED to fix your TS2339 errors)
   assignmentSuccessMessage: string | null = null;
   contentSuccessMessage: string | null = null;
   contentErrorMessage: string | null = null;
@@ -29,7 +29,8 @@ export class ViewCourse implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private contentService: ContentService
   ) {}
 
   ngOnInit() {
@@ -43,23 +44,21 @@ export class ViewCourse implements OnInit {
 
   loadAllCourseData(id: string) {
     const courseUrl = `http://localhost:1930/api/courses/course/${id}`;
-    const quizUrl = `http://localhost:1930/api/quizzes/course/${id}/unsolved?studentId=${JSON.parse(localStorage.getItem('user') || '{}').id}`;
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const quizUrl = `http://localhost:1930/api/quizzes/course/${id}/unsolved?studentId=${user.id}`;
     const assignUrl = `http://localhost:1930/api/assignments/course/${id}`;
 
-    // forkJoin fetches all 3 APIs at once
     forkJoin({
       course: this.http.get<any>(courseUrl),
       quizzes: this.http.get<any[]>(quizUrl),
-      assignments: this.http.get<any[]>(assignUrl)
+      assignments: this.http.get<any[]>(assignUrl),
+      videos: this.contentService.getContentByCourseId(+id)
     }).subscribe({
       next: (res) => {
         this.course = res.course;
-        this.contentVideos = res.course.contentVideos || [];
-        console.log("Course Data:", res.quizzes);
-        console.log("Course Data:", res.assignments);
-        console.log("Course Data:", res.course.contentVideos);
         this.quizzes = res.quizzes || [];
         this.assignments = res.assignments || [];
+        this.contentVideos = res.videos || [];
       },
       error: (err) => {
         console.error('Error loading data', err);
@@ -68,17 +67,17 @@ export class ViewCourse implements OnInit {
     });
   }
 
-  goBack() {
-    window.history.back();
-  }
-
-  // Template Helper Methods
+  // FIXED: Added missing methods to solve TS2551 and TS2339
   hasQuizzes(): boolean {
-    return this.quizzes.length > 0;
+    return this.quizzes && this.quizzes.length > 0;
   }
 
   quizzesList(): any[] {
     return this.quizzes;
+  }
+
+  goBack() {
+    window.history.back();
   }
 
   takeAssignment(assignment: any) {

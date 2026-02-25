@@ -19,6 +19,7 @@ import { DashboardComponent } from './admin/pages/dashboard/dashboard';
 import { LeaveApplication } from './student/pages/leave-application/leave-application';
 import { LoginComponent } from './login/login';
 import { Signup } from './signup/signup';
+import { ViewQuizInstructor } from './instructor/view-quiz-instructor/view-quiz-instructor';
 import { AssignViewSubmissionComponent } from './instructor/assign-view-submission/assign-view-submission';
 
 export const routes: Routes = [
@@ -91,6 +92,7 @@ export const routes: Routes = [
       { path: 'attendance', canActivate: [authGuard], component: Attendance },
       { path: 'marks', canActivate: [authGuard], component: Marks },
       { path: 'leave-requests', canActivate: [authGuard], component: LeaveRequests },
+      { path: 'quiz-view', canActivate: [authGuard], loadComponent: () => import('./instructor/view-quiz-instructor/view-quiz-instructor').then(m => m.ViewQuizInstructor)},
       {
         path: 'courses',
         canActivate: [authGuard],

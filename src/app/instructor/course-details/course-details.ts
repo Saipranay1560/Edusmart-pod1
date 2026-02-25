@@ -708,4 +708,8 @@ deleteWholeQuiz() {
       }
     );
   }
+
+  navigateToViewQuiz() {
+    this.router.navigate(['/instructor/quiz-view']);
+  }
 }
