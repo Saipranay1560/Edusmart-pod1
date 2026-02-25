@@ -19,6 +19,7 @@ import { DashboardComponent } from './admin/pages/dashboard/dashboard';
 import { LeaveApplication } from './student/pages/leave-application/leave-application';
 import { LoginComponent } from './login/login';
 import { Signup } from './signup/signup';
+import { AssignViewSubmissionComponent } from './instructor/assign-view-submission/assign-view-submission';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -38,6 +39,7 @@ export const routes: Routes = [
         canActivate: [authGuard],
         loadComponent: () => import('./student/pages/courses/courses').then(m => m.Courses)
       },
+
       {
         path: 'student-profile',
         canActivate: [authGuard],
@@ -75,6 +77,7 @@ export const routes: Routes = [
       },
     ]
   },
+  { path: 'assign-view-submission/:id', component: AssignViewSubmissionComponent },
 
   {
     path: 'instructor',
