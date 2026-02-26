@@ -28,4 +28,8 @@ export class QuizService {
   submitQuiz(submissionData: any): Observable<any> {
     return this.httpClient.post(`${this.baseurl}/submit`, submissionData);
   }
+
+  getQuizSubmissions(quizId: number): Observable<any[]> {
+    return this.httpClient.get<any[]>(`http://localhost:1930/api/quizzes/submit/student/${quizId}`);
+  }
 }
