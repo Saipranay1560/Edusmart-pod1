@@ -1,1 +1,62 @@
-<p>view-quiz-instructor works!</p>
+<div class="container mt-4">
+  <div class="card shadow border-0">
+    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center p-3">
+      <h3 class="mb-0">Quiz Submissions</h3>
+      <button class="btn btn-sm btn-outline-light px-3" onclick="window.history.back()">
+        <i class="bi bi-arrow-left"></i> Back
+      </button>
+    </div>
+    
+    <div class="card-body">
+      @if (isLoading()) {
+        <div class="text-center p-5">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2 text-muted">Fetching student results...</p>
+        </div>
+      } 
+      
+      @else if (errorMessage()) {
+        <div class="alert alert-danger text-center">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      @else {
+        @if (submissions().length > 0) {
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mt-2">
+              <thead class="table-light">
+                <tr>
+                  <th>Student Name</th>
+                  <th>Email</th>
+                  <th class="text-center">Score</th>
+                  <th>Submission Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (sub of submissions(); track sub.id) {
+                  <tr>
+                    <td><strong>{{ sub.student?.name }}</strong></td>
+                    <td>{{ sub.student?.email }}</td>
+                    <td class="text-center">
+                      <span class="badge bg-success fs-6">
+                        {{ sub.score }}
+                      </span>
+                    </td>
+                    <td class="text-muted">{{ sub.submissionDate | date:'medium' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } 
+        @else {
+          <div class="alert alert-info text-center py-4">
+            <i class="bi bi-info-circle me-2"></i>
+            No submissions found for this quiz yet.
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>

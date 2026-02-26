@@ -1,4 +1,5 @@
-<div class="course-details"> <div *ngIf="assignmentSuccessMessage" class="top-alert-success">
+<div class="course-details">
+  <div *ngIf="assignmentSuccessMessage" class="top-alert-success">
     {{ assignmentSuccessMessage }}
   </div>
 
@@ -15,9 +16,10 @@
   <h1>{{ course?.name }}</h1>
   <p class="description">{{ course?.description }}</p>
 
-  <div class="publish-box" *ngIf="course?.name"> <span>Status:
-      <strong [class.published]="course?.published" [class.draft]="!course?.published">
-        {{ course?.published ? 'Published' : 'Draft' }}
+  <div class="publish-box" *ngIf="course?.name">
+    <span>Status:
+      <strong [class.published]="course?.status === 'APPROVED'" [class.draft]="course?.status !== 'APPROVED'">
+        {{ course?.status }}
       </strong>
     </span>
   </div>
@@ -34,19 +36,29 @@
       <h3>Course Content</h3>
     </div>
     <div class="card-list">
-      <div *ngIf="course?.name && contentVideos.length === 0" class="card" style="padding:12px;">No content yet.</div>
-
-      <div *ngFor="let v of contentVideos" class="video-item card">
-        <div class="video-row">
-          <div class="thumb">
-            <img [src]="'https://img.youtube.com/vi/' + v.id + '/hqdefault.jpg'" alt="thumbnail">
-          </div>
-          <div class="meta">
-            <div class="video-title"><label>{{ v.title }}</label></div>
-            <div class="video-desc"><small>{{ v.description }}</small></div>
+      <div *ngIf="contentVideos && contentVideos.length > 0; else noContent">
+        <div *ngFor="let video of contentVideos" class="video-item card">
+          <div class="video-row">
+            <div class="thumb" *ngIf="video.videoId || video.id">
+              <img [src]="'https://img.youtube.com/vi/' + (video.videoId || video.id) + '/hqdefault.jpg'" alt="thumbnail">
+            </div>
+            <div class="meta" style="flex:1">
+              <div class="video-title">
+                <label>{{ video.videoTitle || video.title }}</label>
+              </div>
+              <div class="video-desc">
+                <small>{{ video.description }}</small>
+              </div>
+              <div class="ratio ratio-16x9 mt-2">
+                <iframe [src]="(video.videoUrl || video.url) | safe" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+      <ng-template #noContent>
+        <div class="card" style="padding:12px;">No content videos uploaded for this course yet.</div>
+      </ng-template>
     </div>
   </div>
 
@@ -55,14 +67,16 @@
       <h3>Assignments</h3>
     </div>
     <div class="card-list">
-      <div *ngIf="course?.name && assignments.length === 0" class="card" style="padding:12px;">No assignments available.</div>
+      <div *ngIf="assignments && assignments.length === 0" class="card" style="padding:12px;">
+        No assignments available.
+      </div>
       <div *ngFor="let assignment of assignments" class="assignment-row card">
         <div class="assignment-info">
           <div class="assignment-title">{{ assignment.title }}</div>
           <div class="assignment-desc">
             <strong>Questions:</strong>
             <ul style="margin: 8px 0; padding-left: 20px;">
-              <li *ngFor="let q of assignment.assignmentQuestions">{{ q }}</li>
+              <li *ngFor="let q of assignment.questions">{{ q }}</li>
             </ul>
           </div>
         </div>
@@ -79,35 +93,55 @@
       <h3>Quizzes</h3>
     </div>
     <div class="card-list">
-      <div *ngIf="course?.name && !hasQuizzes()" class="card" style="padding:12px;">
+      <div *ngIf="!hasQuizzes()" class="card" style="padding:12px;">
         <p class="muted">No quizzes available.</p>
       </div>
       <div *ngFor="let quiz of quizzesList()" class="card" style="padding:16px; margin-bottom:12px;">
-        <div style="display: flex; justify-content: space-between;">
-          <div style="flex: 1;">
-            <h4 style="margin-top: 0;">{{ quiz.questionTitle }}</h4>
-            <p >{{ quiz.description || 'No description available.' }}</p>
-            <p style="font-size: 14px;">Questions: {{ quiz.questions?.length || 0 }}</p>
-            <button class="btn btn-primary" (click)="takeQuiz(quiz)">Take Quiz</button>
+        <h4 style="margin-top: 0;">{{ quiz.questionTitle }}</h4>
+        <p>{{ quiz.description || 'No description available.' }}</p>
+        <p style="font-size: 14px;">Questions: {{ quiz.questions?.length || 0 }}</p>
+        <button class="btn btn-primary" (click)="takeQuiz(quiz)">Take Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="activeTab === 'progress'">
+    <div class="card-header">
+      <h3>My Progress</h3>
+    </div>
+    <div class="card" *ngIf="progress; else loadingProgress">
+      <div class="progress-stats mb-3">
+        <div class="d-flex justify-content-between">
+          <span>
+            <strong>{{ progress.completedTasks }}</strong> out of
+            <strong>{{ progress.totalTasks }}</strong> items completed
+          </span>
+          <span class="percentage-label">{{ progress.percentage }}%</span>
+        </div>
+      </div>
+
+      <div class="progress-bar-container">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill"
+               [style.width.%]="progress.percentage || 0"
+               [ngClass]="{
+                 'low-progress': (progress.percentage || 0) < 40,
+                 'mid-progress': (progress.percentage || 0) >= 40 && (progress.percentage || 0) < 100,
+                 'complete-progress': (progress.percentage || 0) === 100
+               }">
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div *ngIf="activeTab === 'content'">
-  <div class="video-list" *ngIf="contentVideos.length > 0; else noContent">
-    <div *ngFor="let video of contentVideos" class="video-item mb-4">
-      <h3>{{ video.title }}</h3>
-      <p>{{ video.description }}</p>
-      <div class="ratio ratio-16x9">
-        <iframe [src]="video.url | safe" frameborder="0" allowfullscreen></iframe>
+      <div class="mt-4" style="color: #666; font-size: 0.9rem;">
+        <p *ngIf="progress.percentage === 100">🎉 Congratulations! You have completed all course requirements.</p>
+        <p *ngIf="progress.percentage !== undefined && progress.percentage < 100">
+          Keep going! Complete your assignments and quizzes to reach 100%.
+        </p>
       </div>
     </div>
+    <ng-template #loadingProgress>
+      <div class="card muted">Calculating your progress...</div>
+    </ng-template>
   </div>
-  <ng-template #noContent>
-    <p class="text-center mt-4">No content videos uploaded for this course yet.</p>
-  </ng-template>
-</div>
-
 </div>

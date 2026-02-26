@@ -1,23 +1,5 @@
 <div class="dashboard-container">
 
-  <header class="overall-stats-card" *ngIf="overall">
-    <div class="stats-info">
-      <div class="stat-group">
-        <span class="stat-label">Total Completion</span>
-        <h2 class="stat-value">
-          {{ overall.totalCompleted }} <small>/ {{ overall.totalAssessments }}</small>
-        </h2>
-        <p class="stat-subtext">Assessments Cleared</p>
-      </div>
-      <div class="percentage-circle">
-        <span class="percentage-number">{{ overall.overallPercentage }}%</span>
-      </div>
-    </div>
-    <div class="master-progress-track">
-      <div class="master-progress-fill" [style.width.%]="overall.overallPercentage"></div>
-    </div>
-  </header>
-
   <div class="enrolled-courses-subsection">
     <h4 class="subsection-title">My Enrolled Courses</h4>
     <div *ngIf="isLoading()" class="loading-spinner">Loading courses...</div>

@@ -174,3 +174,79 @@ h1 {
   text-align: center;
   font-style: italic;
 }
+
+/* ... Keep your existing CSS and add these below ... */
+
+/* Progress Bar Styles */
+.progress-stats {
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.percentage-label {
+  font-weight: bold;
+  color: #3498db;
+}
+
+.progress-bar-container {
+  width: 100%;
+  margin: 15px 0;
+}
+
+.progress-bar-bg {
+  background-color: #ecf0f1;
+  height: 25px;
+  border-radius: 15px;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 15px;
+}
+
+.low-progress {
+  background: linear-gradient(90deg, #e74c3c, #ff7675);
+}
+
+.mid-progress {
+  background: linear-gradient(90deg, #3498db, #54a0ff);
+}
+
+.complete-progress {
+  background: linear-gradient(90deg, #27ae60, #2ecc71);
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+/* Fix for Video Ratios */
+.ratio-16x9 {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  margin-top: 15px;
+}
+
+.ratio-16x9 iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}

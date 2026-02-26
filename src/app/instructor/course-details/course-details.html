@@ -1,15 +1,7 @@
 <div class="course-details">
-  <div *ngIf="assignmentSuccessMessage()" class="top-alert-success">
-    {{ assignmentSuccessMessage() }}
-  </div>
-
-  <div *ngIf="contentSuccessMessage()" class="top-alert-success">
-    {{ contentSuccessMessage() }}
-  </div>
-
-  <div *ngIf="contentErrorMessage()" class="top-alert-error">
-    {{ contentErrorMessage() }}
-  </div>
+  <div *ngIf="assignmentSuccessMessage" class="top-alert-success">{{ assignmentSuccessMessage }}</div>
+  <div *ngIf="contentSuccessMessage" class="top-alert-success">{{ contentSuccessMessage }}</div>
+  <div *ngIf="contentErrorMessage" class="top-alert-error">{{ contentErrorMessage }}</div>
 
   <button class="back-btn" (click)="goBack()">← Back to Courses</button>
 
@@ -34,83 +26,45 @@
     <button (click)="activeTab.set('quiz')" [class.active]="activeTab() === 'quiz'">Quiz</button>
   </div>
 
-  <div *ngIf="activeTab() === 'content'">
-    <div>
-      <div class="card-header">
-        <h3>Course Content</h3>
-        <div>
-          <button class="btn primary" (click)="openContentModal()">Add Video</button>
-        </div>
-      </div>
+  <div *ngIf="activeTab==='content'">
+    <div class="card-header">
+      <h3>Course Content</h3>
+      <button class="btn primary" (click)="openContentModal()">Add Video</button>
     </div>
 
     <div class="card-list">
-      <div *ngIf="contentVideos().length === 0" class="card" style="padding:12px;">No content yet. Add YouTube links above.</div>
-
-      <div *ngFor="let v of contentVideos(); let i = index" class="video-item card">
+      <div *ngIf="contentVideos.length === 0" class="empty-state card">No content yet. Add YouTube links above.</div>
+      <div *ngFor="let v of contentVideos; let i = index" class="video-item card">
         <div class="video-row">
           <div class="thumb">
             <img [src]="'https://img.youtube.com/vi/' + v.id + '/hqdefault.jpg'" alt="thumbnail">
           </div>
-
           <div class="meta">
-            <div class="video-title">
-              <label>{{ v.title }}</label>
-            </div>
-            <div class="video-desc">
-              <small>{{ v.description }}</small>
-            </div>
+            <div class="video-title"><label>{{ v.title }}</label></div>
+            <div class="video-desc"><small>{{ v.description }}</small></div>
           </div>
-
           <div class="actions">
             <button class="btn-danger" (click)="removeContentVideo(i)">Delete</button>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Content Modal -->
-    <div class="modal-backdrop" *ngIf="showContentModal()" (click)="closeContentModal()"></div>
-    <div class="modal" *ngIf="showContentModal()" role="dialog" aria-modal="true">
-      <div class="modal-content">
-        <button class="modal-close" aria-label="Close" (click)="closeContentModal()">×</button>
-        <h3>Add YouTube Video</h3>
-
-        <label>Video Title</label>
-        <input type="text" [ngModel]="newVideoTitle()" (ngModelChange)="newVideoTitle.set($event)" placeholder="Enter video title" />
-
-        <label>Add YouTube Video URL</label>
-        <input type="text" [ngModel]="newVideoUrl()" (ngModelChange)="newVideoUrl.set($event)" placeholder="https://youtu.be/... or https://www.youtube.com/watch?v=..." />
-
-        <div class="modal-actions">
-          <button class="btn-primary" (click)="addContentVideo()" [disabled]="isSavingContent()">
-            {{ isSavingContent() ? 'Adding...' : 'Add Video' }}
-          </button>
-          <button class="btn" (click)="closeContentModal()" [disabled]="isSavingContent()">Cancel</button>
-        </div>
-      </div>
-    </div>
   </div>
 
-  <div *ngIf="activeTab() === 'assignments'">
-    <div>
-      <div class="card-header">
-        <h3>Assignments</h3>
-        <div>
-          <button class="btn primary" (click)="openAssignmentModal()">Add Assignment</button>
-        </div>
-      </div>
+  <div *ngIf="activeTab==='assignments'">
+    <div class="card-header">
+      <h3>Assignments</h3>
+      <button class="btn primary" (click)="openAssignmentModal()">Add Assignment</button>
     </div>
 
     <div class="card-list">
-      <div *ngIf="assignments().length === 0" class="card" style="padding:12px;">No assignments yet. Click Add Assignment to create one.</div>
-
-      <div *ngFor="let assignment of assignments(); let i = index" class="assignment-row card">
+      <div *ngIf="assignments.length === 0" class="empty-state card">No assignments yet.</div>
+      <div *ngFor="let assignment of assignments; let i = index" class="assignment-row card">
         <div class="assignment-info">
           <div class="assignment-title">{{ assignment.title }}</div>
           <div class="assignment-desc">
             <strong>Questions:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
+            <ul>
               <li *ngFor="let q of assignment.assignmentQuestions">{{ q }}</li>
             </ul>
           </div>
@@ -127,76 +81,34 @@
         </div>
       </div>
     </div>
-
-    <!-- Assignment Modal -->
-    <div class="modal-backdrop" *ngIf="showAssignmentModal()" (click)="closeAssignmentModal()"></div>
-    <div class="modal" *ngIf="showAssignmentModal()" role="dialog" aria-modal="true">
-      <div class="modal-content">
-        <button class="modal-close" aria-label="Close" (click)="closeAssignmentModal()">×</button>
-        <h3>{{ editingAssignmentIndex() !== null ? 'Edit Assignment' : 'Add Assignment' }}</h3>
-
-        <label>Title</label>
-        <input type="text" [ngModel]="assignForm().title" (ngModelChange)="updateAssignmentFormTitle($event)" placeholder="Assignment title" />
-
-        <label>End Date</label>
-        <input type="date" [ngModel]="assignForm().endDate" (ngModelChange)="updateAssignmentFormEndDate($event)" class="date-picker" />
-
-        <label>Assignment Questions</label>
-        <div style="margin-bottom: 12px;">
-          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-            <input type="text" [ngModel]="newQuestion()" (ngModelChange)="newQuestion.set($event)" placeholder="Enter a question" />
-            <button class="btn primary" (click)="addQuestionToAssignment()" style="white-space: nowrap;">Add Question</button>
-          </div>
-
-          <div *ngIf="assignForm().assignmentQuestions.length > 0" style="border: 1px solid #ddd; padding: 8px; border-radius: 4px;">
-            <div *ngFor="let q of assignForm().assignmentQuestions; let i = index" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 8px; background: #f5f5f5; border-radius: 3px;">
-              <span>{{ i + 1 }}. {{ q }}</span>
-              <button class="btn-danger" style="padding: 4px 8px; font-size: 12px;" (click)="removeQuestionFromAssignment(i)">Remove</button>
-            </div>
-          </div>
-
-          <p *ngIf="assignForm().assignmentQuestions.length === 0" style="color: #999; font-size: 12px;">No questions added yet</p>
-        </div>
-
-        <div class="modal-actions">
-          <button class="btn-primary" (click)="saveAssignment()">Save</button>
-          <button class="btn" (click)="closeAssignmentModal()">Cancel</button>
-        </div>
-      </div>
-    </div>
   </div>
 
-  <div *ngIf="activeTab() === 'quiz'">
-    <div class="card">
-      <div class="card-header">
-        <h3>Quizzes</h3>
-        <div>
-          <button class="btn primary" (click)="navigateToCreateQuiz()">Create New Quiz</button>
-        </div>
-      </div>
+  <div *ngIf="activeTab === 'quiz'">
+    <div class="card-header">
+      <h3>Quizzes</h3>
+      <button class="btn primary" (click)="navigateToCreateQuiz()">Create New Quiz</button>
     </div>
 
     <div class="card-list">
-      <div *ngIf="!hasQuizzes()" class="card" style="padding:12px;">
+      <div *ngIf="!hasQuizzes()" class="empty-state card">
         <p class="muted">No quizzes yet. Click Create New Quiz to add one.</p>
       </div>
 
-      <div *ngFor="let quiz of quizzesList()" class="card" style="padding:16px; margin-bottom:12px;">
-        <a (click)="navigateToViewQuiz()">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <div style="flex: 1;">
-              <h4 style="margin-top: 0;">{{ quiz.title }}</h4>
-              <p class="muted" style="margin: 8px 0;">{{ quiz.description || 'No description available.' }}</p>
-              <p class="muted" style="margin: 8px 0; font-size: 14px;">Questions: {{ quiz.questions.length }}</p>
-            </div>
-            <div style="display:flex; gap:8px; margin-left: 12px;">
-              <button class="btn primary" (click)="navigateToCreateQuiz()">Edit</button>
-              <button class="btn btn-delete" (click)="deleteQuiz(quiz.id)">Delete</button>
-            </div>
-          </div>
-        </a>
+      <div *ngFor="let quiz of quizzesList()" class="quiz-card card">
+        <div class="quiz-info">
+          <h4>{{ quiz.title }}</h4>
+          <p class="muted">{{ quiz.description || 'No description available.' }}</p>
+          <span class="badge">Questions: {{ quiz.questions.length }}</span>
+        </div>
+        
+        <div class="quiz-actions">
+          <button class="btn btn-results" [routerLink]="['/instructor/view-quiz', quiz.id]">
+            View Student Results
+          </button>
+          <button class="btn btn-edit" (click)="navigateToCreateQuiz()">Edit</button>
+          <button class="btn btn-delete" (click)="deleteQuiz(quiz.id)">Delete</button>
+        </div>
       </div>
     </div>
   </div>
-
 </div>
