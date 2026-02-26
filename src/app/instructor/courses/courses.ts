@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -13,14 +13,14 @@ import { Course } from '../../models/courses';
   styleUrls: ['./courses.css']
 })
 export class Courses implements OnInit {
-  courses: Course[] = [];
-  newCourse: Course = {
+  courses = signal<Course[]>([]);
+  newCourse = signal<Course>({
     id: 0,
     name: '',
     description: '',
     status: 'Pending'
-  };
-  showCreateModal: boolean = false;
+  });
+  showCreateModal = signal<boolean>(false);
 
   constructor(private courseService: CourseService) {}
 
@@ -30,7 +30,7 @@ export class Courses implements OnInit {
 
   loadCourses() {
     this.courseService.getCourses().subscribe((courses: Course[]) => {
-      this.courses = courses;
+      this.courses.set(courses);
     });
   }
 
@@ -46,33 +46,33 @@ export class Courses implements OnInit {
   }
 
   addCourse() {
-    if (!this.newCourse.name || !this.newCourse.description) return;
+    const currentCourse = this.newCourse();
+    if (!currentCourse.name || !currentCourse.description) return;
     const courseData = {
-      name: this.newCourse.name,
-      description: this.newCourse.description,
-      status: this.newCourse.status,
+      name: currentCourse.name,
+      description: currentCourse.description,
+      status: currentCourse.status,
       instructorId: this.getInstructorId()
     };
     this.courseService.addCourse(courseData).subscribe({
       next: () => {
-        this.newCourse = {
+        this.newCourse.set({
           id: 0,
           name: '',
           description: '',
           status: 'Pending'
-        };
+        });
         this.closeNewCourse();
         this.loadCourses();
       }
     });
   }
-
   openNewCourse() {
-    this.showCreateModal = true;
+    this.showCreateModal.set(true);
   }
 
   closeNewCourse() {
-    this.showCreateModal = false;
+    this.showCreateModal.set(false);
   }
 
   publishCourse(course: Course) {

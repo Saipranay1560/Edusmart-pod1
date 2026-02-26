@@ -65,7 +65,7 @@ export class ViewCourse implements OnInit {
     const courseUrl = `http://localhost:1930/api/courses/course/${id}`;
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const quizUrl = `http://localhost:1930/api/quizzes/course/${id}/unsolved?studentId=${user.id}`;
-    const assignUrl = `http://localhost:1930/api/assignments/course/${id}`;
+    const assignUrl = `http://localhost:1930/api/assignments/unsolved?courseId=${id}&studentId=${user.id}`;
 
     forkJoin({
       course: this.http.get<any>(courseUrl),

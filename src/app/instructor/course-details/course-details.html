@@ -5,25 +5,25 @@
 
   <button class="back-btn" (click)="goBack()">← Back to Courses</button>
 
-  <h1>{{ course.name }}</h1>
-  <p class="description">{{ course.description }}</p>
+  <h1>{{ course().name }}</h1>
+  <p class="description">{{ course().description }}</p>
 
   <div class="publish-box">
     <span>Status:
-      <strong [class.published]="course.published" [class.draft]="!course.published">
-        {{ course.published ? 'Published' : 'Draft' }}
+      <strong [class.published]="course().published" [class.draft]="!course().published">
+        {{ course().published ? 'Published' : 'Draft' }}
       </strong>
     </span>
     <button (click)="togglePublish()">
-      {{ course.published ? 'Unpublish' : 'Publish Course' }}
+      {{ course().published ? 'Unpublish' : 'Publish Course' }}
     </button>
   </div>
 
   <div class="tabs">
-    <button (click)="activeTab='content'" [class.active]="activeTab==='content'">Content</button>
-    <button (click)="activeTab='assignments'" [class.active]="activeTab==='assignments'">Assignments</button>
-    <button (click)="activeTab='progress'" [class.active]="activeTab==='progress'">Progress</button>
-    <button (click)="activeTab='quiz'" [class.active]="activeTab==='quiz'">Quiz</button>
+    <button (click)="activeTab.set('content')" [class.active]="activeTab() === 'content'">Content</button>
+    <button (click)="activeTab.set('assignments')" [class.active]="activeTab() === 'assignments'">Assignments</button>
+    <button (click)="activeTab.set('progress')" [class.active]="activeTab() === 'progress'">Progress</button>
+    <button (click)="activeTab.set('quiz')" [class.active]="activeTab() === 'quiz'">Quiz</button>
   </div>
 
   <div *ngIf="activeTab==='content'">

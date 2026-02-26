@@ -31,9 +31,15 @@ export class AssignmentService {
     return this.http.post(`${this.baseUrl}/submit`, submissionData);
   }
 
- getSubmissionsByAssignmentId(assignmentId: number): Observable<any[]> {
-  // Hits: http://localhost:1930/api/assignments/submit/123
-  return this.http.get<any[]>(`${this.baseUrl}/submit/${assignmentId}`);
-}
+  getSubmissionsByAssignmentId(assignmentId: number): Observable<any[]> {
+    // Hits: http://localhost:1930/api/assignments/submit/123
+    return this.http.get<any[]>(`${this.baseUrl}/submit/${assignmentId}`);
+  }
+
+  addScoretoSubmission(submissionId: number,score: number): Observable<any> {
+    return this.http.put(`${this.baseUrl}/submit/give_score`, {assignmentSubId: submissionId, score: score});
+  }
+
+
 
 }
