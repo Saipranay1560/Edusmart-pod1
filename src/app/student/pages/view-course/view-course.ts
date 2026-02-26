@@ -1,21 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 import { ContentService } from '../../../services/content-service';
 import { SafePipe } from '../../../pipes/safe-pipe';
+import { ProgressService } from '../../../services/progress';
+import { StudentProgress } from '../../../models/progress.model';
 
 @Component({
   selector: 'app-view-course',
   standalone: true,
-  imports: [CommonModule, SafePipe], // Add SafePipe here to fix NG8004
+  imports: [CommonModule, SafePipe,NgIf],
   templateUrl: './view-course.html',
   styleUrl: './view-course.css',
 })
 export class ViewCourse implements OnInit {
   courseId: string | null = null;
   activeTab: string = 'content';
+
+  progress?: StudentProgress;
 
   course: any = {};
   contentVideos: any[] = [];
@@ -30,7 +34,8 @@ export class ViewCourse implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router,
-    private contentService: ContentService
+    private contentService: ContentService,
+    private progressService: ProgressService,
   ) {}
 
   ngOnInit() {
@@ -38,8 +43,22 @@ export class ViewCourse implements OnInit {
       this.courseId = params['id'];
       if (this.courseId) {
         this.loadAllCourseData(this.courseId);
+        this.loadProgress(); // Call progress loading on init
       }
     });
+  }
+
+  loadProgress() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const studentId = user.id; // Corrected to use user object ID consistent with your app
+    const courseId = Number(this.courseId);
+
+    if (studentId && courseId) {
+      this.progressService.getCourseProgress(studentId, courseId).subscribe({
+        next: (data) => this.progress = data,
+        error: (err) => console.error('Error fetching progress', err)
+      });
+    }
   }
 
   loadAllCourseData(id: string) {
@@ -67,7 +86,6 @@ export class ViewCourse implements OnInit {
     });
   }
 
-  // FIXED: Added missing methods to solve TS2551 and TS2339
   hasQuizzes(): boolean {
     return this.quizzes && this.quizzes.length > 0;
   }
