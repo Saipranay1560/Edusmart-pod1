@@ -1,0 +1,72 @@
+/* 1. Header Visibility & Spacing */
+.card-header {
+  background-color: #1a1a1a !important; /* Deep neutral for contrast */
+  padding: 1.5rem 2rem !important;
+  border: none;
+}
+
+.card-header h3 {
+  color: #ffffff !important;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* 2. THE ALIGNMENT FIX (Crucial) */
+/* This ensures data is perfectly justified under the headings */
+.table thead th, 
+.table tbody td {
+  padding: 1.25rem 2rem !important;
+  text-align: left !important; /* Forces Name, Email, and Date to the left */
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Specifically align the Score column to the center for balance */
+.text-center {
+  text-align: center !important;
+}
+
+/* 3. Minimalist Score Pill */
+.badge.bg-success {
+  background-color: #f0fdf4 !important; /* Very soft green tint */
+  color: #166534 !important; /* Dark green text */
+  border: 1px solid #dcfce7;
+  font-weight: 600;
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  display: inline-block;
+  min-width: 40px;
+}
+
+/* 4. Minimalist Button */
+.btn-outline-light {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-color: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+}
+
+.btn-outline-light:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+/* 5. Clean Typography */
+.table thead th {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: #fafafa;
+}
+
+.table tbody td strong {
+  color: #111;
+  font-weight: 600;
+}
+
+.text-muted {
+  color: #666 !important;
+  font-size: 0.9rem;
+}
