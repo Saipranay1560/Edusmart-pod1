@@ -1,27 +1,41 @@
 <div class="view-submissions-container" style="padding: 20px;">
   <button class="back-btn" (click)="goBack()" style="margin-bottom: 20px;">← Back</button>
 
-  <h2>Submissions for Assignment ID: {{ assignmentId }}</h2>
+  <h2>Submissions for Assignment ID: {{ assignmentId() }}</h2>
 
-  <div *ngIf="loading">Loading submissions...</div>
+  <div *ngIf="loading()">Loading submissions...</div>
 
-  <div *ngIf="!loading && submissions.length === 0" class="card" style="padding: 20px;">
+  <div *ngIf="!loading() && submissions().length === 0" class="card" style="padding: 20px;">
     No submissions found for this assignment.
   </div>
 
-  <div class="submission-list" *ngIf="!loading && submissions.length > 0">
+  <div class="submission-list" *ngIf="!loading() && submissions().length > 0">
     <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
       <thead style="background-color: #f5f5f5; text-align: left;">
         <tr>
           <th style="padding: 12px; border-bottom: 1px solid #ddd;">User ID</th>
           <th style="padding: 12px; border-bottom: 1px solid #ddd;">Submission Date</th>
+          <th style="padding: 12px; border-bottom: 1px solid #ddd;">Score</th>
           <th style="padding: 12px; border-bottom: 1px solid #ddd;">Content / Link</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let sub of submissions">
+        <tr *ngFor="let sub of submissions()">
           <td style="padding: 12px; border-bottom: 1px solid #eee;">{{ sub.studentId }}</td>
           <td style="padding: 12px; border-bottom: 1px solid #eee;">{{ sub.submittedDate | date:'medium' }}</td>
+          <td style="padding: 12px; border-bottom: 1px solid #eee;">
+            <!-- score column -->
+            <div *ngIf="!sub.editing">
+              <span *ngIf="sub.score != null">{{ sub.score }}</span>
+              <span *ngIf="sub.score == null">--</span>
+              <button class="btn" style="margin-left:8px;" (click)="editScore(sub)">Add/Edit</button>
+            </div>
+            <div *ngIf="sub.editing">
+              <input type="number" [(ngModel)]="sub.draftScore" min="0" max="50" style="width:60px;" />
+              <button class="btn" (click)="saveScore(sub)">Save</button>
+              <button class="btn" (click)="cancelEdit(sub)">Cancel</button>
+            </div>
+          </td>
           <td style="padding: 12px; border-bottom: 1px solid #eee;">
             <div *ngFor="let answer of sub.questionsAnswerPair">
                 <p><strong>Q:</strong> {{answer.question}} <br> <strong>A:</strong> {{answer.answer}}</p>
@@ -32,5 +46,4 @@
       </tbody>
     </table>
   </div>
-  <button>Hello</button>
 </div>
