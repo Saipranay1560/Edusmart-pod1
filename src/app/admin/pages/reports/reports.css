@@ -1,112 +1,144 @@
+/* Page Container */
 .page-container {
- padding: 24px;
- background: #f4f6f9;
- min-height: 100vh;
+  padding: 24px;
+  background: #f4f6f9;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
+
+/* Header Section */
 .page-header {
- display: flex;
- justify-content: space-between;
- align-items: center;
- margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
+
 .page-header h2 {
- font-size: 22px;
- font-weight: 600;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  color: #111827;
 }
+
 .page-header p {
- color: #6b7280;
+  color: #6b7280;
+  margin: 4px 0 0 0;
 }
-/* Download button */
+
+/* Download Button */
 .download-btn {
- background: #2563eb;
- color: #fff;
- border: none;
- padding: 10px 16px;
- border-radius: 8px;
- cursor: pointer;
- font-size: 14px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease;
 }
+
 .download-btn:hover {
- background: #1e4fd8;
+  background: #1e4fd8;
 }
-/* Card */
+
+/* Card Styling */
 .card {
- background: #ffffff;
- border-radius: 12px;
- padding: 20px;
- box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  background: #ffffff;
+  border-radius: 12px; /* Set to 12px as requested */
+  padding: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
-/* Table */
-.report-table {
- width: 100%;
- border-collapse: collapse;
-}
-.report-table th {
- text-align: left;
- padding: 12px;
- font-size: 14px;
- border-bottom: 1px solid #e5e7eb;
-}
-.report-table td {
- padding: 12px;
- font-size: 14px;
- border-bottom: 1px solid #e5e7eb;
-}
-/* Grades */
-.grade {
- padding: 4px 10px;
- border-radius: 999px;
- font-size: 12px;
- font-weight: 600;
-}
-.grade.a {
- background: #dcfce7;
- color: #166534;
-}
-.grade.b {
- background: #e0e7ff;
- color: #3730a3;
-}
-.grade.c {
- background: #fee2e2;
- color: #991b1b;
-}
-/* Empty state */
-.empty {
- text-align: center;
- padding: 20px;
- color: #9ca3af;
-}
+
 .chart-card {
- margin-bottom: 24px;
+  margin-bottom: 24px;
 }
+
 .chart-card h3 {
- margin-bottom: 12px;
- font-weight: 600;
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
 }
+
+/* Table Styling */
 .report-table {
- width: 100%;
- border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
-.report-table th,
+
+.report-table th {
+  text-align: left;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  border-bottom: 1px solid #e5e7eb;
+}
+
 .report-table td {
- padding: 12px;
- text-align: left;
+  padding: 16px 12px;
+  font-size: 14px;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
 }
+
+.report-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Student Name Emphasis */
+.report-table td strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* Grade Pills */
 .grade {
- padding: 4px 10px;
- border-radius: 12px;
- font-weight: 600;
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px; /* Set to 12px as requested */
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  min-width: 32px;
 }
+
 .grade.a {
- background: #bbf7d0;
- color: #065f46;
+  background: #dcfce7;
+  color: #166534;
 }
+
 .grade.b {
- background: #dbeafe;
- color: #1e40af;
+  background: #e0e7ff;
+  color: #3730a3;
 }
+
 .grade.c {
- background: #fecaca;
- color: #7f1d1d;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Empty State */
+.empty {
+  text-align: center;
+  padding: 40px !important;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Responsive Table Container */
+@media (max-width: 768px) {
+  .card {
+    overflow-x: auto;
+  }
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
 }

@@ -1,59 +1,50 @@
 <div class="page-container">
-<!-- Header -->
-<div class="page-header">
-<div>
-<h2>Reports</h2>
-<p>Performance analytics and grade sheets</p>
-</div>
-<button class="download-btn" (click)="downloadReport()">
-     Download Report
-</button>
-</div>
-<!-- 📈 PERFORMANCE LINE GRAPH -->
-<div class="card chart-card">
-<h3>Student Performance Trend</h3>
-<canvas id="performanceChart"></canvas>
-</div>
+  <div class="page-header">
+    <div>
+      <h2>Reports</h2>
+      <p>Performance analytics and course progress</p>
+    </div>
+    <button class="download-btn" (click)="downloadReport()">Download CSV</button>
+  </div>
 
-<!-- Card -->
-<div class="card">
-<table class="report-table">
-<thead>
-<tr>
-<th>Student</th>
-<th>Course</th>
-<th>Assessment</th>
-<th>Score</th>
-<th>Grade</th>
-<th>Completion</th>
-<th>Date</th>
-</tr>
-</thead>
-<tbody>
-<tr *ngFor="let r of reports">
-<td>{{ r.studentName }}</td>
-<td>{{ r.courseName }}</td>
-<td>{{ r.assessmentType }}</td>
-<td>{{ r.score }}/{{ r.maxScore }}</td>
-<td>
-<span
-             class="grade"
-             [class.a]="r.grade === 'A'"
-             [class.b]="r.grade === 'B'"
-             [class.c]="r.grade === 'C'"
->
-             {{ r.grade }}
-</span>
-</td>
-<td>{{ r.completionRate }}</td>
-<td>{{ r.date }}</td>
-</tr>
-<tr *ngIf="!reports.length">
-<td colspan="7" class="empty">
-           No reports available
-</td>
-</tr>
-</tbody>
-</table>
-</div>
+  <div class="card chart-card">
+    <h3>Course Progress Overview</h3>
+    <canvas id="performanceChart"></canvas>
+  </div>
+
+  <div class="card">
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th>Student ID</th>
+          <th>Student Name</th>
+          <th>Course ID</th>
+          <th>Course Name</th>
+          <th>Progress</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (r of reports(); track r.courseId) {
+          <tr>
+            <td>{{ r.studentId }}</td>
+            <td><strong>{{ r.studentName }}</strong></td>
+            <td>{{ r.courseId }}</td>
+            <td>{{ r.courseName }}</td>
+            <td>
+              <div class="progress-wrapper">
+                <span class="progress-label">{{ r.progressPercentage }}%</span>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill" [style.width.%]="r.progressPercentage > 100 ? 100 : r.progressPercentage"></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="empty">No reports available from server</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 </div>

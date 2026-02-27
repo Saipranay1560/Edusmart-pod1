@@ -1,121 +1,91 @@
+import { Component, OnInit, AfterViewInit, signal, effect, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { ReportsService } from '../../../services/reports.service';
+
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-reports',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './reports.html',
   styleUrl: './reports.css',
 })
-export class Reports {
-   reports = [
-   {
-     studentName: 'John Doe',
-     courseName: 'Angular Fundamentals',
-     assessmentType: 'Quiz',
-     score: 85,
-     maxScore: 100,
-     grade: 'A',
-     completionRate: '95%',
-     date: '12 Jan 2026'
-   },
-   {
-     studentName: 'Jane Smith',
-     courseName: 'Data Science Basics',
-     assessmentType: 'Exam',
-     score: 72,
-     maxScore: 100,
-     grade: 'B',
-     completionRate: '88%',
-     date: '10 Jan 2026'
-   },
-   {
-     studentName: 'Rahul Kumar',
-     courseName: 'AI & ML',
-     assessmentType: 'Exam',
-     score: 60,
-     maxScore: 100,
-     grade: 'C',
-     completionRate: '80%',
-     date: '08 Jan 2026'
-   }
- ];
- downloadReport() {
-   const header = [
-     'Student',
-     'Course',
-     'Assessment',
-     'Score',
-     'Max Score',
-     'Grade',
-     'Completion Rate',
-     'Date'
-   ];
-   const rows = this.reports.map(r => [
-     r.studentName,
-     r.courseName,
-     r.assessmentType,
-     r.score,
-     r.maxScore,
-     r.grade,
-     r.completionRate,
-     r.date
-   ]);
-   let csvContent =
-     header.join(',') +
-     '\n' +
-     rows.map(row => row.join(',')).join('\n');
-   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-   const url = URL.createObjectURL(blob);
-   const link = document.createElement('a');
-   link.href = url;
-   link.setAttribute('download', 'Grade_Report.csv');
-   document.body.appendChild(link);
-   link.click();
-   document.body.removeChild(link);
- }
+export class Reports implements OnInit, AfterViewInit {
+  // Using Signals for data state
+  reports = signal<any[]>([]);
+  chart: any;
+
+  constructor(private reportsService: ReportsService) {
+    // Effect runs automatically whenever 'reports' signal changes
+    effect(() => {
+      this.updateChart(this.reports());
+    });
+  }
+
+  ngOnInit(): void {
+    this.fetchReportData();
+  }
+
+  fetchReportData() {
+    this.reportsService.getAllReports().subscribe({
+      next: (data) => {
+        console.log('Fetched reports:', data);
+        this.reports.set(data); // Updating the signal
+      },
+      error: (err) => console.error('Error fetching reports:', err)
+    });
+  }
+
+  downloadReport() {
+    const data = this.reports();
+    if (data.length === 0) return;
+
+    const header = ['Student', 'Course', 'Progress %'];
+    const rows = data.map(r => [
+      r.studentName, 
+      r.courseName, 
+      r.progressPercentage
+    ]);
+    
+    let csvContent = header.join(',') + '\n' + rows.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Grade_Report.csv');
+    link.click();
+  }
+
   ngAfterViewInit(): void {
-   this.loadChart();
- }
- loadChart() {
-   new Chart('performanceChart', {
-     type: 'line',
-     data: {
-       labels: ['8 Jan', '10 Jan', '12 Jan'],
-       datasets: [
-         {
-           label: 'Average Score',
-           data: [60, 72, 85],
-           borderColor: '#2563eb',
-           backgroundColor: 'rgba(37, 99, 235, 0.15)',
-           tension: 0.4,
-           fill: true,
-           pointRadius: 5
-         }
-       ]
-     },
-     options: {
-       responsive: true,
-       plugins: {
-         legend: {
-           display: true
-         }
-       },
-       scales: {
-         y: {
-           beginAtZero: true,
-           max: 100,
-           title: {
-             display: true,
-             text: 'Score'
-           }
-         }
-       }
-     }
-   });
- }
+    this.initChart();
+  }
 
+  initChart() {
+    this.chart = new Chart('performanceChart', {
+      type: 'bar', // Changed to bar as it fits course progress better
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Progress Percentage',
+          data: [],
+          backgroundColor: '#2563eb',
+          borderRadius: 5
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
 
+  updateChart(data: any[]) {
+    if (this.chart && data.length > 0) {
+      this.chart.data.labels = data.map(r => r.courseName);
+      this.chart.data.datasets[0].data = data.map(r => r.progressPercentage);
+      this.chart.update();
+    }
+  }
 }
