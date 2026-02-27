@@ -1,5 +1,7 @@
 export interface LeaveRequest {
-  student: string;
+  id?: number;
+  studentId: number;
+  leaveDate: string;
   reason: string;
-  status: string;
+  studentName?: string; // Used for GET responses
 }

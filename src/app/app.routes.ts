@@ -4,12 +4,11 @@ import { Student } from './student/student';
 import { Instructor } from './instructor/instructor';
 import { Admin } from './admin/admin';
 import { authGuard } from './auth-guard';
-import { LeaveRequests } from './instructor/leave-requests/leave-requests';
+import { LeaveRequestsComponent } from './instructor/leave-requests/leave-requests';
 import { Marks } from './instructor/marks/marks';
 import { Attendance } from './instructor/attendance/attendance';
 import { Students } from './instructor/students/students';
 import { Dashboard } from './instructor/dashboard/dashboard';
-import { Fees } from './student/pages/fees/fees';
 import { StudentProfile } from './student/pages/student-profile/student-profile';
 import { CoursesComponent } from './admin/pages/courses/courses';
 import { EnrollmentsComponent } from './admin/pages/enrollments/enrollments';
@@ -52,11 +51,6 @@ export const routes: Routes = [
         loadComponent: () => import('./student/pages/assessment-quiz/assessment-quiz').then(m => m.AssessmentQuiz)
       },
       {
-        path: 'fees',
-        canActivate: [authGuard],
-        component: Fees
-      },
-      {
         path: 'leave-application',
         canActivate: [authGuard],
         component: LeaveApplication
@@ -92,7 +86,7 @@ export const routes: Routes = [
       { path: 'attendance', canActivate: [authGuard], component: Attendance },
       { path: 'view-quiz/:id', component: ViewQuizInstructor },
       { path: 'marks', canActivate: [authGuard], component: Marks },
-      { path: 'leave-requests', canActivate: [authGuard], component: LeaveRequests },
+      { path: 'leave-requests', canActivate: [authGuard], component: LeaveRequestsComponent },
       { path: 'quiz-view', canActivate: [authGuard], loadComponent: () => import('./instructor/view-quiz-instructor/view-quiz-instructor').then(m => m.ViewQuizInstructor)},
       {
         path: 'courses',

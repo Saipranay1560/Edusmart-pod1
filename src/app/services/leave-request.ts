@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { LeaveRequest } from '../models/leave-request';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeaveRequestService {
-  leaveRequests: LeaveRequest[] = [
-    { student: 'Rahul', reason: 'Medical', status: 'Pending' },
-    { student: 'Sneha', reason: 'Personal', status: 'Pending' }
-  ];
+  private apiUrl = 'http://localhost:1930/api/leaves'; // Matches server.port in application.properties
 
-  approve(req: LeaveRequest) {
-    req.status = 'Approved';
+  constructor(private http: HttpClient) {}
+
+  // POST: /api/leaves/apply
+  applyLeave(request: LeaveRequest): Observable<LeaveRequest> {
+    return this.http.post<LeaveRequest>(`${this.apiUrl}/apply`, request);
   }
 
-  reject(req: LeaveRequest) {
-    req.status = 'Rejected';
+  // GET: /api/leaves/all
+  getAllLeaves(): Observable<LeaveRequest[]> {
+    return this.http.get<LeaveRequest[]>(`${this.apiUrl}/all`);
   }
 }
