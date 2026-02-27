@@ -1,26 +1,31 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { LeaveRequestService } from '../../services/leave-request';
- 
+import { LeaveRequest } from '../../models/leave-request';
+import { NgForm } from '@angular/forms';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+
 @Component({
   selector: 'app-leave-requests',
+  imports:[NgFor,NgIf,CommonModule  ],
   templateUrl: './leave-requests.html',
-  imports :[CommonModule,FormsModule],
   styleUrls: ['./leave-requests.css']
 })
-export class LeaveRequests {
-  constructor(public leaveRequestService: LeaveRequestService) {}
+export class LeaveRequestsComponent implements OnInit {
+  // Use an array to store the data fetched from the backend
+  requests: LeaveRequest[] = [];
 
-  get leaveRequests() {
-    return this.leaveRequestService.leaveRequests;
+  constructor(private leaveRequestService: LeaveRequestService) {}
+
+  ngOnInit() {
+    this.loadLeaves();
   }
 
-  approve(req: any) {
-    this.leaveRequestService.approve(req);
+  loadLeaves() {
+    this.leaveRequestService.getAllLeaves().subscribe({
+      next: (data) => this.requests = data,
+      error: (err) => console.error('Could not load leaves', err)
+    });
   }
 
-  reject(req: any) {
-    this.leaveRequestService.reject(req);
-  }
+ 
 }

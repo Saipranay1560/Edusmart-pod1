@@ -1,46 +1,41 @@
-<h2>Leave Requests</h2>
- 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Student</th>
-      <th>Reason</th>
-      <th>Status</th>
-      <th>Action</th>
-    </tr>
-  </thead>
- 
-  <tbody>
-    <tr *ngFor="let req of leaveRequests">
-      <td>{{ req.student }}</td>
-      <td>{{ req.reason }}</td>
- 
-      <td>
-        <span
-          [ngClass]="{
-            'status-pending': req.status === 'Pending',
-            'status-approved': req.status === 'Approved',
-            'status-rejected': req.status === 'Rejected'
-          }">
-          {{ req.status }}
-        </span>
-      </td>
- 
-      <td>
-        <button
-          class="approve"
-          (click)="approve(req)"
-          [disabled]="req.status !== 'Pending'">
-          Approve
-        </button>
- 
-        <button
-          class="reject"
-          (click)="reject(req)"
-          [disabled]="req.status !== 'Pending'">
-          Reject
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="leave-requests-container">
+  <div class="page-header">
+    <h2 class="page-title">Leave Requests</h2>
+    <p class="page-subtitle">Review and manage student absence applications.</p>
+  </div>
+
+  <div class="requests-grid">
+    <div *ngIf="requests.length === 0" class="empty-state">
+      <span class="material-icons">event_available</span>
+      <p>No pending leave requests at the moment.</p>
+    </div>
+
+    <div *ngFor="let req of requests" class="request-card">
+      <div class="card-header">
+        <div class="student-info">
+  <div class="avatar">
+    {{ req.studentName ? req.studentName.charAt(0) : '?' }}
+  </div>
+
+  <div>
+    <h4 class="student-name">{{ req.studentName || 'Unknown Student' }}</h4>
+
+    <span class="request-date" *ngIf="req.leaveDate">
+      {{ req.leaveDate | date:'fullDate' }}
+    </span>
+  </div>
+</div>
+       
+      </div>
+
+      <div class="card-body">
+        <label class="info-label">Reason for Leave</label>
+        <p class="reason-text">{{ req.reason }}</p>
+      </div>
+
+      <div class="card-actions">
+
+      </div>
+    </div>
+  </div>
+</div>

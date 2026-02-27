@@ -5,25 +5,33 @@
   </div>
 
   <div class="content-container">
-    <div *ngIf="!isSubmitted; else successMessage" class="application-card">
+    <div *ngIf="!isSubmitted(); else successMessage" class="application-card">
       <div class="form-body">
+
         <div class="form-section">
           <label class="input-label" for="leaveDate">Proposed Leave Date</label>
           <div class="input-wrapper">
-            <input type="date" id="leaveDate" [(ngModel)]="leaveDate" [min]="today" class="custom-input">
+            <input type="date" id="leaveDate" [ngModel]="leaveDate()" (ngModelChange)="leaveDate.set($event)" [min]="today()" class="custom-input">
             <small class="input-hint">Select the first day of your absence.</small>
           </div>
         </div>
 
-        <div class="form-section mt-4">
-          <label class="input-label" for="reason">Justification / Reason</label>
-          <textarea id="reason" [(ngModel)]="reason" class="custom-textarea" rows="5"
-                    placeholder="Provide a brief explanation for your absence..."></textarea>
+        <div class="form-section mt-4" *ngIf="leaveDate()">
+          <label class="input-label" for="leaveType">Leave Category</label>
+          <select id="leaveType" name="leaveType" [ngModel]="leaveType()" (ngModelChange)="leaveType.set($event)" class="custom-input">
+  <option value="" disabled selected>Select a reason...</option>
+  <option value="Sick Leave">Sick Leave</option>
+  <option value="Family Function">Family Function</option>
+  <option value="Medical Appointment">Medical Appointment</option>
+  <option value="Other">Other</option>
+</select>
         </div>
 
+
+
         <div class="form-footer">
-          <button (click)="onSubmit()" class="primary-submit-btn">
-            Submit Application
+          <button (click)="onSubmit()" [disabled]="isProcessing()" class="primary-submit-btn">
+            {{ isProcessing() ? 'Submitting...' : 'Submit Application' }}
           </button>
         </div>
       </div>
@@ -35,10 +43,12 @@
           <span class="material-icons">check</span>
         </div>
         <h3 class="success-title">Application Received</h3>
-        <p class="success-text">Your request for <strong>{{ leaveDate | date:'mediumDate' }}</strong> has been logged. You will be notified once the instructor reviews it.</p>
+        <p class="success-text">
+          Your <strong>{{ leaveType() }}</strong> request for <strong>{{ leaveDate() | date:'mediumDate' }}</strong> has been logged.
+        </p>
 
         <div class="success-footer">
-          <button (click)="isSubmitted = false; leaveDate=''; reason=''" class="secondary-btn">
+          <button (click)="resetForm()" class="secondary-btn">
             Create New Request
           </button>
         </div>
