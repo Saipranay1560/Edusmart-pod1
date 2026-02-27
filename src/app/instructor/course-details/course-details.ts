@@ -7,6 +7,7 @@ import { AssignmentService } from '../../services/assignment.service';
 import { CourseService } from '../../services/course-service';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { EnrollmentService } from '../../services/enrollment.service';
 
 @Component({
   selector: 'app-course-details',
@@ -81,8 +82,25 @@ export class CourseDetails implements OnInit {
     private quizService: QuizService,
     private contentService: ContentService,
     private assignmentService: AssignmentService,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private enrollmentService: EnrollmentService
   ) {}
+
+
+    loadEnrolledStudents(courseId: number): void {
+    // Use the actual course ID from your signal/object
+
+    this.enrollmentService.getStudentsByCourse(courseId).subscribe({
+      next: (data) => {
+        console.log(`Received enrolled students for course ID ${courseId}:`, data);
+        this.enrolledStudents = data;
+        console.log('Enrolled students loaded:', this.enrolledStudents);
+      },
+     error: (err) => console.error('Error fetching students', err)
+    });
+  }
+
+  enrolledStudents: any[] = [];
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -94,6 +112,8 @@ export class CourseDetails implements OnInit {
         this.loadQuizzes(Number(courseId));
         // load content data for this course from API
         this.loadContent(Number(courseId));
+        this.loadEnrolledStudents(Number(courseId));
+
         // load assignments for this course from API
         this.loadAssignments(Number(courseId));
       }

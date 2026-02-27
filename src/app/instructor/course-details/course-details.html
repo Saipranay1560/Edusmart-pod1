@@ -166,6 +166,19 @@
     </div>
   </div>
 
+  <div *ngIf="activeTab() === 'progress'">
+    <div class="card">
+      <div class="card-header">
+        <h3>Enrolled Students</h3>
+      </div>
+      <div class="card-body">
+        <ul *ngFor="let student of enrolledStudents" class="student-list">
+          <li>{{student.studentId}} - {{ student.name }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <div *ngIf="activeTab() === 'quiz'">
     <div class="card">
       <div class="card-header">
