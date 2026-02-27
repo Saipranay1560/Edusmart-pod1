@@ -12,7 +12,13 @@ export class EnrollmentService {
     return this.http.post(`${this.baseUrl}/request`, { studentId, courseId });
   }
 
-  getPendingEnrollments() {
-    return this.http.get<any[]>('http://localhost:1930/api/enrollments/PENDING');
+  getPendingEnrollments(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/PENDING`);
   }
+
+  // New function added below
+  getStudentsByCourse(courseId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/course/${courseId}/students`);
+  }
+
 }
