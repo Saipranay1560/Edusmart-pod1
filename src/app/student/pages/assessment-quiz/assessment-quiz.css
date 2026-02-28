@@ -1,5 +1,0 @@
-.questions { display: grid; gap: var(--space-3); margin: var(--space-3) 0; }
-.question { border: 1px dashed var(--border); }
-.question p { margin: 0 0 6px; font-weight: 600; }
-.option { display: block; margin: 4px 0; padding: 4px 0; }
-.secure-controls { display: flex; gap: 8px; margin-bottom: 12px; }

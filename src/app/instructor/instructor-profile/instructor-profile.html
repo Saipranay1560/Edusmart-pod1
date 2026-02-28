@@ -1,0 +1,32 @@
+<div class="profile-container">
+  <div class="profile-card" *ngIf="!loading() && instructor()">
+    <div class="profile-header">
+      <div class="avatar">
+        {{ instructor().studentName?.charAt(0) }}
+      </div>
+      <h2>Instructor Profile</h2>
+    </div>
+
+    <div class="profile-body">
+      <div class="info-group">
+        <label>Full Name</label>
+        <p>{{ instructor().studentName }}</p>
+      </div>
+
+      <div class="info-group">
+        <label>Instructor ID</label>
+        <p>#{{ instructor().studentId }}</p>
+      </div>
+
+      <div class="info-group">
+        <label>Email Address</label>
+        <p>{{ instructor().studentEmail }}</p>
+      </div>
+
+      <div class="badge">Verified Instructor</div>
+    </div>
+  </div>
+
+  <div class="status-msg" *ngIf="loading()">Loading profile...</div>
+  <div class="status-msg error" *ngIf="error()">{{ error() }}</div>
+</div>

@@ -5,10 +5,6 @@ import { Instructor } from './instructor/instructor';
 import { Admin } from './admin/admin';
 import { authGuard } from './auth-guard';
 import { LeaveRequestsComponent } from './instructor/leave-requests/leave-requests';
-import { Marks } from './instructor/marks/marks';
-import { Attendance } from './instructor/attendance/attendance';
-import { Students } from './instructor/students/students';
-import { Dashboard } from './instructor/dashboard/dashboard';
 import { StudentProfile } from './student/pages/student-profile/student-profile';
 import { CoursesComponent } from './admin/pages/courses/courses';
 import { EnrollmentComponent } from './admin/pages/enrollments/enrollments';
@@ -20,6 +16,7 @@ import { LoginComponent } from './login/login';
 import { Signup } from './signup/signup';
 import { ViewQuizInstructor } from './instructor/view-quiz-instructor/view-quiz-instructor';
 import { AssignViewSubmissionComponent } from './instructor/assign-view-submission/assign-view-submission';
+import { InstructorProfile } from './instructor/instructor-profile/instructor-profile';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -44,11 +41,6 @@ export const routes: Routes = [
         path: 'student-profile',
         canActivate: [authGuard],
         component: StudentProfile
-      },
-      {
-        path: 'assessment-quiz/:id',
-        canActivate: [authGuard],
-        loadComponent: () => import('./student/pages/assessment-quiz/assessment-quiz').then(m => m.AssessmentQuiz)
       },
       {
         path: 'leave-application',
@@ -80,12 +72,9 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { role: 'instructor' },
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', canActivate: [authGuard], component: Dashboard },
-      { path: 'students', canActivate: [authGuard], component: Students },
-      { path: 'attendance', canActivate: [authGuard], component: Attendance },
+      { path: '', redirectTo: 'profile', pathMatch: 'full' },
+      { path: 'profile', canActivate: [authGuard],component: InstructorProfile },
       { path: 'view-quiz/:id', component: ViewQuizInstructor },
-      { path: 'marks', canActivate: [authGuard], component: Marks },
       { path: 'leave-requests', canActivate: [authGuard], component: LeaveRequestsComponent },
       { path: 'quiz-view', canActivate: [authGuard], loadComponent: () => import('./instructor/view-quiz-instructor/view-quiz-instructor').then(m => m.ViewQuizInstructor)},
       {

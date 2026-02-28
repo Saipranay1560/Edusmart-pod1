@@ -37,7 +37,6 @@
         <th>Title</th>
         <th>Description</th>
         <th>Status</th>
-        <th>Actions</th>
       </tr>
     </thead>
 
@@ -63,13 +62,6 @@
             *ngIf="course.status === 'Pending'"
             (click)="publishCourse(course)">
             Publish
-          </button>
-
-          <button
-            class="btn danger"
-            *ngIf="course.status !== 'Rejected'"
-            (click)="archiveCourse(course)">
-            Archive
           </button>
         </td>
       </tr>

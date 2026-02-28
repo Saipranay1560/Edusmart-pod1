@@ -13,4 +13,8 @@ export class ReportsService {
         return this.httpClient.get(`${this.baseurl}/all-students`);
     }
 
+    getDashboardData(): Observable<any> {
+        return this.httpClient.get(`${this.baseurl}/dashboard`);
+    }
+
 }
