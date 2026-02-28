@@ -1,47 +1,46 @@
-<div class="page-container">
-<!-- Page Header -->
-<div class="page-header">
-<h2>Assessments</h2>
-<p>Monitor quizzes & exams created by instructors</p>
-</div>
-<!-- Assessments Table -->
-<div class="card">
-<table class="assessment-table">
-<thead>
-<tr>
-<th>Assessment</th>
-<th>Course</th>
-<th>Type</th>
-<th>Start Date</th>
-<th>End Date</th>
-<th>Max Score</th>
-<th>Actions</th>
-</tr>
-</thead>
-<tbody>
-<tr *ngFor="let a of assessments">
-<td>
-<strong>{{ a.title }}</strong>
-<div class="sub-text">{{ a.createdBy }}</div>
-</td>
-<td>{{ a.course }}</td>
-<td>
-<span class="badge" [class.quiz]="a.type === 'QUIZ'"
-                              [class.exam]="a.type === 'EXAM'">
-             {{ a.type }}
-</span>
-</td>
-<td>{{ a.startDate | date }}</td>
-<td>{{ a.endDate | date:'mediumDate' }}</td>
-<td>{{ a.maxScore }}</td>
-<td class="actions">
-<button class="btn view"
-                   (click)="view(a.assessmentId)">
-             View
-</button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div class="dashboard-container">
+  <div class="header-section">
+    <div>
+      <h1>Quiz Management</h1>
+      <p class="subtitle">Showing {{ totalCount() }} active quizzes</p>
+    </div>
+    <div class="search-box">
+      <i class="search-icon">🔍</i>
+      <input 
+        type="text" 
+        placeholder="Search quizzes..." 
+        (input)="onSearch($event)"
+      />
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Fetching your quizzes...</p>
+    </div>
+  } @else {
+    <div class="quiz-grid">
+      @for (quiz of quizzes(); track quiz) {
+        <div class="quiz-card">
+          <div class="quiz-icon">📝</div>
+          <div class="quiz-content">
+            <h3>{{ quiz.questionTitle }}</h3>
+            <span class="course-badge">{{ quiz.course.name }}</span>
+          </div>
+          <div class="quiz-actions">
+            <button class="btn-primary" (click)="viewQuiz(quiz.id)">
+              View Details
+            </button>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <p>No quizzes found matching your search.</p>
+        </div>
+      }
+    </div>
+  }
 </div>

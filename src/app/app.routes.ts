@@ -11,7 +11,7 @@ import { Students } from './instructor/students/students';
 import { Dashboard } from './instructor/dashboard/dashboard';
 import { StudentProfile } from './student/pages/student-profile/student-profile';
 import { CoursesComponent } from './admin/pages/courses/courses';
-import { EnrollmentsComponent } from './admin/pages/enrollments/enrollments';
+import { EnrollmentComponent } from './admin/pages/enrollments/enrollments';
 import { AssessmentsComponent } from './admin/pages/assessments/assessments';
 import { Reports } from './admin/pages/reports/reports';
 import { DashboardComponent } from './admin/pages/dashboard/dashboard';
@@ -115,9 +115,11 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', canActivate: [authGuard], component: DashboardComponent },
       { path: 'courses', canActivate: [authGuard], component: CoursesComponent },
-      { path: 'enrollments', canActivate: [authGuard], component: EnrollmentsComponent },
+      { path: 'enrollments', canActivate: [authGuard], component: EnrollmentComponent },
       { path: 'assessments', canActivate: [authGuard], component: AssessmentsComponent },
       { path: 'reports', canActivate: [authGuard], component: Reports },
+      { path: 'view-quiz/:id', component: ViewQuizInstructor },
+    { path: 'view-assignment/:id', component: AssignViewSubmissionComponent }
     ]
   }
 ];
