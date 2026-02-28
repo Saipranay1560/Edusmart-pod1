@@ -1,7 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { DataService } from '../../services/data';
 import { Course, Subject, OverallProgress } from '../../shared';
 import { CourseService } from '../../../services/course-service';
 import { EnrollmentService } from '../../../services/enrollment.service';
@@ -11,7 +10,7 @@ import { AuthService } from '../../../auth.service';
   selector: 'app-courses',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './courses.html',
+  templateUrl: './courses.html', 
   styleUrls: ['./courses.css']
 })
 export class Courses implements OnInit {
@@ -22,7 +21,6 @@ export class Courses implements OnInit {
   isLoading= signal<boolean>(false);
 
   constructor(
-    private data: DataService,
     private courseService: CourseService,
     private enrollmentService: EnrollmentService,
     private authService: AuthService,
@@ -36,7 +34,6 @@ export class Courses implements OnInit {
   // Inside Courses Component
   refreshDashboard() {
     this.isLoading.set(true);
-    this.overall = this.data.getOverallProgress();
     // Load approved courses from backend via CourseService
 
     const userId = this.authService.getUser();
@@ -112,17 +109,9 @@ export class Courses implements OnInit {
       }
     });
 
-    const enrolledIds = new Set(this.data.getSubjects().map(s => s.id));
-    this.enrolledSubjects = this.data.getSubjects()
-      .filter(s => enrolledIds.has(s.id))
-      .map(subject => ({
-        ...subject,
-        assessments: this.data.getAssessmentsBySubject(subject.id)
-      }));
   }
 
   toggleEnroll(course: Course) {
-    this.data.toggleEnroll(course.id, !course.enrolled);
     this.refreshDashboard();
   }
 
@@ -141,10 +130,6 @@ export class Courses implements OnInit {
         alert('Failed to enroll: ' + (err.error?.message || err.message));
       }
     });
-  }
-
-  getAttemptCount(asmtId: string): number {
-    return this.data.getAttemptCount(asmtId);
   }
 
   viewEnrolledCourse(courseId: number) {

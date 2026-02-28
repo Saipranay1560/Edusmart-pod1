@@ -5,7 +5,7 @@
 <div class="icon">👥</div>
 <div class="info">
 <p class="label">Total Users</p>
-<h2>1,245</h2>
+<h2>{{ dashboardStats().total_users }}</h2>
 <span>Students & Instructors</span>
 </div>
 </div>
@@ -13,7 +13,7 @@
 <div class="icon">📚</div>
 <div class="info">
 <p class="label">Total Courses</p>
-<h2>86</h2>
+<h2>{{ dashboardStats().total_courses}}</h2>
 <span>Active Courses</span>
 </div>
 </div>
@@ -21,7 +21,7 @@
 <div class="icon">🎓</div>
 <div class="info">
 <p class="label">Active Enrollments</p>
-<h2>3,420</h2>
+<h2>{{ dashboardStats().total_enrollments }}</h2>
 <span>Currently Learning</span>
 </div>
 </div>
@@ -29,7 +29,7 @@
 <div class="icon">📝</div>
 <div class="info">
 <p class="label">Assessments</p>
-<h2>312</h2>
+<h2>{{ dashboardStats().assessments }}</h2>
 <span>Quizzes & Exams</span>
 </div>
 </div>
@@ -70,7 +70,7 @@
 <p>Performance analytics</p>
 </button>
 
- 
+
 </div>
 </section>
  </div>
