@@ -1,144 +1,184 @@
-/* Page Container */
+/* Base Container */
 .page-container {
-  padding: 24px;
-  background: #f4f6f9;
+  padding: 2.5rem;
+  background-color: #f8fafc;
   min-height: 100vh;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
 /* Header Section */
 .page-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  align-items: flex-end;
+  margin-bottom: 2rem;
 }
 
 .page-header h2 {
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.025em;
   margin: 0;
-  color: #111827;
 }
 
 .page-header p {
-  color: #6b7280;
-  margin: 4px 0 0 0;
+  color: #64748b;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
 }
 
-/* Download Button */
+/* Download Button Modern Style */
 .download-btn {
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
+  background: #ffffff;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+  padding: 10px 20px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
-  transition: background 0.2s ease;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .download-btn:hover {
-  background: #1e4fd8;
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
 }
 
-/* Card Styling */
+/* Card General Styling */
 .card {
   background: #ffffff;
-  border-radius: 12px; /* Set to 12px as requested */
-  padding: 20px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  margin-bottom: 2rem;
 }
 
-.chart-card {
-  margin-bottom: 24px;
+.chart-section {
+  padding: 1.5rem;
 }
 
-.chart-card h3 {
-  margin-bottom: 16px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #374151;
+.chart-section h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 1.5rem;
 }
 
-/* Table Styling */
+/* Table Design */
 .report-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .report-table th {
-  text-align: left;
-  padding: 12px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #6b7280;
+  background: #f8fafc;
+  padding: 1rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
   text-transform: uppercase;
-  letter-spacing: 0.025em;
-  border-bottom: 1px solid #e5e7eb;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .report-table td {
-  padding: 16px 12px;
-  font-size: 14px;
-  color: #374151;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #f8fafc;
   vertical-align: middle;
 }
 
-.report-table tbody tr:last-child td {
-  border-bottom: none;
+/* Student & Course UI */
+.student-info {
+  display: flex;
+  flex-direction: column;
 }
 
-/* Student Name Emphasis */
-.report-table td strong {
-  color: #111827;
-  font-weight: 600;
+.student-id {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  font-weight: 500;
 }
 
-/* Grade Pills */
-.grade {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 12px; /* Set to 12px as requested */
-  font-size: 12px;
-  font-weight: 600;
+.course-tag {
+  background: #f1f5f9;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+/* Minimal Progress Bar */
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progress-bar-bg {
+  flex-grow: 1;
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.percentage-text {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #334155;
+  min-width: 40px;
+}
+
+/* Grade & Progress Dynamic Colors */
+.a { background-color: #10b981; color: #065f46; } /* Emerald */
+.b { background-color: #3b82f6; color: #1e3a8a; } /* Blue */
+.c { background-color: #f59e0b; color: #78350f; } /* Amber */
+.d { background-color: #ef4444; color: #7f1d1d; } /* Rose */
+
+/* Grade Pill specifically */
+.grade-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+/* Emerald Grade A Background override for pill */
+.grade-pill.a { background: #dcfce7; color: #166534; }
+.grade-pill.b { background: #dbeafe; color: #1e40af; }
+.grade-pill.c { background: #fef3c7; color: #92400e; }
+.grade-pill.d { background: #fee2e2; color: #991b1b; }
+
+.text-center { text-align: center; }
+
+/* Empty State Styling */
+.empty-state {
   text-align: center;
-  min-width: 32px;
+  padding: 4rem !important;
+  color: #94a3b8;
 }
 
-.grade.a {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.grade.b {
-  background: #e0e7ff;
-  color: #3730a3;
-}
-
-.grade.c {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-/* Empty State */
-.empty {
-  text-align: center;
-  padding: 40px !important;
-  color: #9ca3af;
-  font-style: italic;
-}
-
-/* Responsive Table Container */
-@media (max-width: 768px) {
-  .card {
-    overflow-x: auto;
-  }
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
+.empty-img {
+  width: 80px;
+  opacity: 0.5;
+  margin-bottom: 1rem;
 }

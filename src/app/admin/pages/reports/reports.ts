@@ -58,6 +58,14 @@ export class Reports implements OnInit, AfterViewInit {
     link.click();
   }
 
+  // Inside your Reports class
+getGrade(progress: number): string {
+  if (progress >= 75) return 'A';
+  if (progress >= 50) return 'B';
+  if (progress >= 25) return 'C';
+  return 'D';
+}
+
   ngAfterViewInit(): void {
     this.initChart();
   }

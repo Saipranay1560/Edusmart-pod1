@@ -25,7 +25,7 @@
 </a>
 <a routerLink="/admin/assessments" routerLinkActive="active" class="menu-item">
 <i class="fa-solid fa-clipboard-check"></i>
-<span *ngIf="isSidebarOpen">Assessments</span>
+<span *ngIf="isSidebarOpen">Quiz</span>
 </a>
 <a routerLink="/admin/reports" routerLinkActive="active" class="menu-item">
 <i class="fa-solid fa-chart-line"></i>
@@ -70,12 +70,7 @@
 <!-- PAGE CONTENT -->
 <div class="page-content">
 <router-outlet></router-outlet>
-<h2 class="page-title">Overview</h2>
-<div class="dashboard-grid">
-<div class="card">Card 1</div>
-<div class="card">Card 2</div>
-<div class="card">Card 3</div>
-</div>
+
 </div>
 <!-- FOOTER -->
 <footer class="footer">
