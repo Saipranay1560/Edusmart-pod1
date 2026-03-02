@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { LeaveRequestService } from '../../services/leave-request';
 import { LeaveRequest } from '../../models/leave-request';
 import { NgForm } from '@angular/forms';
@@ -12,7 +12,7 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 })
 export class LeaveRequestsComponent implements OnInit {
   // Use an array to store the data fetched from the backend
-  requests: LeaveRequest[] = [];
+  requests=signal<LeaveRequest[]>([]);
 
   constructor(private leaveRequestService: LeaveRequestService) {}
 
@@ -22,10 +22,10 @@ export class LeaveRequestsComponent implements OnInit {
 
   loadLeaves() {
     this.leaveRequestService.getAllLeaves().subscribe({
-      next: (data) => this.requests = data,
+      next: (data) => this.requests.set(data),
       error: (err) => console.error('Could not load leaves', err)
     });
   }
 
- 
+
 }

@@ -6,11 +6,10 @@
 
   <div class="requests-grid">
     <div *ngIf="requests.length === 0" class="empty-state">
-      <span class="material-icons">event_available</span>
-      <p>No pending leave requests at the moment.</p>
+      
     </div>
 
-    <div *ngFor="let req of requests" class="request-card">
+    <div *ngFor="let req of requests()" class="request-card">
       <div class="card-header">
         <div class="student-info">
   <div class="avatar">
@@ -25,7 +24,7 @@
     </span>
   </div>
 </div>
-       
+
       </div>
 
       <div class="card-body">
