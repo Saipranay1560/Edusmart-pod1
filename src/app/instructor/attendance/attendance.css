@@ -1,0 +1,191 @@
+/* attendance.css */
+:host {
+  --primary: #6366f1; /* Indigo 500 */
+  --primary-hover: #4f46e5;
+  --success: #10b981; /* Emerald 500 */
+  --danger: #ef4444; /* Rose 500 */
+  --bg-subtle: #f8fafc;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-light: #e2e8f0;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 12px -2px rgba(0,0,0,0.08);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.attendance-container {
+  padding: 2.5rem 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: var(--bg-subtle);
+  min-height: 100vh;
+}
+
+/* Header Section */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  border: 1px solid white;
+  box-shadow: var(--shadow-md);
+}
+
+.header h2 {
+  font-size: 1.5rem;
+  color: var(--text-main);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+/* Stats and Inputs */
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.stats span {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.stats strong {
+  color: var(--success);
+  font-size: 1.1rem;
+}
+
+input[type="date"] {
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input[type="date"]:focus {
+  border-color: var(--primary);
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: white;
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+}
+
+.btn:hover {
+  background: var(--bg-subtle);
+  border-color: var(--text-muted);
+}
+
+/* Student Grid */
+.student-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.student-card {
+  background: white;
+  padding: 1.75rem;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: row; /* Horizontal layout for a more modern feel */
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border-light);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.student-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.student-card.present {
+  border-color: var(--success);
+  background: #f0fdf4; /* Very light success green */
+}
+
+/* Student Info */
+.info .id {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.info .name {
+  display: block;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-main);
+  margin-top: 2px;
+}
+
+/* Card Button */
+.student-card button {
+  padding: 0.6rem 1.25rem;
+  border-radius: 10px;
+  border: 1.5px solid var(--border-light);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: white;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.student-card.present button {
+  background: var(--success);
+  color: white;
+  border-color: var(--success);
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+}
+
+.student-card button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Bottom Save Button */
+.save-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 3rem;
+  padding: 1.1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.save-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.save-btn:active {
+  transform: translateY(0px);
+}

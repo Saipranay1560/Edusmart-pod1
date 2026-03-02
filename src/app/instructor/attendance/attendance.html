@@ -1,0 +1,62 @@
+<div class="attendance-container">
+  <header class="header">
+    <div class="title-section">
+      <h2>Mark Attendance</h2>
+    </div>
+
+    <div class="stats">
+      <div class="attendance-counter">
+        <span>Present: <strong>{{ presentCount() }}</strong></span>
+      </div>
+
+      <div class="date-picker">
+        <input 
+          type="date" 
+          [value]="selectedDate()" 
+          (change)="selectedDate.set($any($event).target.value)"
+          aria-label="Select date"
+        >
+      </div>
+
+      <div class="action-group">
+        <button class="btn" (click)="viewAttendanceForDate()">
+          View Records
+        </button>
+        <button 
+          class="btn" 
+          (click)="enterMarkMode()" 
+          *ngIf="viewMode()"
+        >
+          Edit Mode
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="student-grid" aria-label="Student list">
+    <div 
+      *ngFor="let student of attendanceService.studentsSignal(); let i = index" 
+      class="student-card" 
+      [class.present]="student.present"
+    >
+      <div class="info">
+        <span class="id">Student ID {{ student.studentId }}</span>
+        <span class="name">{{ student.studentName }}</span>
+      </div>
+
+      <button 
+        (click)="toggleAttendance(student.studentId)" 
+        [disabled]="viewMode()"
+        [attr.aria-pressed]="student.present"
+      >
+        {{ student.present ? '✓ Present' : '✕ Absent' }}
+      </button>
+    </div>
+  </main>
+
+  <footer *ngIf="!viewMode()">
+    <button class="save-btn" (click)="saveAttendance()">
+      Confirm & Save Attendance
+    </button>
+  </footer>
+</div>

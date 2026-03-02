@@ -1,13 +1,11 @@
-export interface AttendanceRecord {
+// src/app/models/attendance.model.ts
+export interface AttendanceDTO {
   studentId: number;
-  studentName: string;
-  name?: string; // alias for template compatibility
-  date: string;
-  status: 'Present' | 'Absent' | 'Late' | 'Pending';
+  studentName?: string; // Optional: used for display in the instructor view
+  courseId: number;
+  instructorId?: number;
+  date?: string;        // Formatted as YYYY-MM-DD
+  present: boolean;
 }
 
-export interface AttendanceHistory {
-  studentId: number;
-  studentName: string;
-  records: AttendanceRecord[];
-}
+

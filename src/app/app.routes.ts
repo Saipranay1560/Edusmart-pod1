@@ -10,6 +10,7 @@ import { CoursesComponent } from './admin/pages/courses/courses';
 import { EnrollmentComponent } from './admin/pages/enrollments/enrollments';
 import { AssessmentsComponent } from './admin/pages/assessments/assessments';
 import { Reports } from './admin/pages/reports/reports';
+import { AttendanceComponent } from './instructor/attendance/attendance';
 import { DashboardComponent } from './admin/pages/dashboard/dashboard';
 import { LeaveApplication } from './student/pages/leave-application/leave-application';
 import { LoginComponent } from './login/login';
@@ -76,6 +77,7 @@ export const routes: Routes = [
       { path: 'profile', canActivate: [authGuard],component: InstructorProfile },
       { path: 'view-quiz/:id', component: ViewQuizInstructor },
       { path: 'leave-requests', canActivate: [authGuard], component: LeaveRequestsComponent },
+      { path: 'attendance', canActivate: [authGuard], component: AttendanceComponent },
       { path: 'quiz-view', canActivate: [authGuard], loadComponent: () => import('./instructor/view-quiz-instructor/view-quiz-instructor').then(m => m.ViewQuizInstructor)},
       {
         path: 'courses',
