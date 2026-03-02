@@ -1,32 +1,34 @@
-// src/app/services/attendance.service.ts
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AttendanceDTO } from '../models/attendance.model';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class AttendanceService {
+export class AttendanceClientService {
   private apiUrl = 'http://localhost:1930/api/attendance';
-  
-  // Signal to hold the list of students for the view
+
   studentsSignal = signal<AttendanceDTO[]>([]);
 
   constructor(private http: HttpClient) {}
 
   loadStudents(courseId: number) {
     this.http.get<AttendanceDTO[]>(`${this.apiUrl}/course/${courseId}/students`)
-      .subscribe(data => this.studentsSignal.set(data));
+      .subscribe(data => this.studentsSignal.set(data || []));
+  }
+
+  viewAttendance(courseId: number, date: string): Observable<AttendanceDTO[]> {
+    const obs = this.http.get<AttendanceDTO[]>(`${this.apiUrl}/course/${courseId}/view?date=${encodeURIComponent(date)}`);
+    obs.subscribe({
+      next: (data) => this.studentsSignal.set(data || []),
+      error: (err) => {
+        console.error('Failed to load historical attendance', err);
+        this.studentsSignal.set([]);
+      }
+    });
+    return obs;
   }
 
   submitAttendance(attendanceData: AttendanceDTO[]): Observable<any> {
-    console.log('Submitting attendance data:', attendanceData);
     return this.http.post(`${this.apiUrl}/mark-bulk`, attendanceData, { responseType: 'text' });
   }
-
 }
-  /**
-   * Fetch historical attendance for a given course and date and update the signal.
-   */
-  
-  
-
