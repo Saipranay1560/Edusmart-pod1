@@ -127,6 +127,25 @@ p, h2,span {
  padding: 20px;
  border-radius: 12px;
 }
+
+/* pie chart card styles */
+.pie-card {
+  margin-top: 30px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+}
+.pie-card .card-header h3 {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.pie-card .chart-wrapper.minimalist {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 240px;
+}
 table {
  width: 100%;
  border-collapse: collapse;
