@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CourseService, Course } from '../../../services/course-service';
 
 @Component({
@@ -13,7 +13,7 @@ import { CourseService, Course } from '../../../services/course-service';
   styleUrls: ['./courses.css']
 })
 export class CoursesComponent implements OnInit {
-  constructor(private courseService: CourseService) {}
+  constructor(private courseService: CourseService, private router: Router) {}
 
   // expose courses to template as a getter so template can use `courses`
   get courses() {
@@ -32,4 +32,10 @@ export class CoursesComponent implements OnInit {
   rejectCourse(course: Course) {
     this.courseService.updateStatus(course.id, 'REJECTED').subscribe();
   }
+
+  goToCourse(courseId: number) {
+    this.router.navigate(['/admin/view', courseId]);
+
+  }
+
 }

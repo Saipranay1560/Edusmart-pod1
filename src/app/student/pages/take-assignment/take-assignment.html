@@ -1,40 +1,86 @@
-<div class="container mt-4">
-  <div *ngIf="loading" class="alert alert-info text-center">Loading Questions...</div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-
-  <div *ngIf="!loading && assignment">
-    <div class="card shadow">
-      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-        <div>
-          <h3 class="mb-0">{{ assignment.title }}</h3>
-          <small>End Date: {{ assignment.endDate }}</small>
-        </div>
-      </div>
-
-      <div class="card-body">
-        <div *ngFor="let question of assignment.questions; let i = index" class="mb-4 border-bottom pb-3">
-          <h5 class="question-title">
-            <span class="badge bg-secondary me-2">Q{{ i + 1 }}</span>
-            {{ question }}
-          </h5>
-          <textarea
-            class="form-control"
-            rows="3"
-            placeholder="Type your answer here..."
-            [(ngModel)]="userAnswers[i]">
-          </textarea>
-        </div>
-      </div>
-
-      <div class="card-footer bg-light text-end">
-        <button class="btn btn-success px-4" (click)="submitAssignment()">
-          Submit Assignment
-        </button>
+<div class="assignment-page" *ngIf="assignment">
+  <header class="assignment-nav">
+    <div class="nav-content">
+      <button class="btn-exit" (click)="router.navigate(['/student/view-course', assignment.course_id])">
+        <span class="icon">✕</span> Exit Workspace
+      </button>
+      <div class="save-status">
+        <span class="dot"></span> Draft Auto-saved
       </div>
     </div>
-  </div>
+  </header>
 
-  <div *ngIf="!loading && !assignment && !error" class="text-center mt-5">
-    <p class="text-muted">No Assignment Loaded</p>
+  <div class="workspace">
+    <aside class="info-sidebar">
+      <div class="info-card">
+        <span class="tag">Assignment</span>
+        <h1>{{ assignment.title }}</h1>
+
+        <div class="deadline-box">
+          <label>Deadline</label>
+          <div class="date">{{ assignment.endDate | date:'fullDate' }}</div>
+        </div>
+
+        <div class="meta-stats">
+          <div class="stat">
+            <span class="stat-val">{{ assignment.questions.length }}</span>
+            <span class="stat-label">Questions</span>
+          </div>
+          <div class="stat">
+            <span class="stat-val">{{ (userAnswers | keyvalue).length }}</span>
+            <span class="stat-label">Answered</span>
+          </div>
+        </div>
+
+        <button class="btn-submit-main" (click)="submitAssignment()">
+          Submit Final Version
+        </button>
+      </div>
+    </aside>
+
+    <main class="writing-canvas">
+      <div class="canvas-header">
+        <h2>Submission Portal</h2>
+        <p>Please provide detailed responses. Your work will be graded based on clarity and completeness.</p>
+      </div>
+
+      <div class="questions-container">
+        <div class="question-block" *ngFor="let question of assignment.questions; let i = index">
+          <div class="q-head">
+            <span class="q-number">Task {{ i + 1 }}</span>
+          </div>
+          <h3 class="q-text">{{ question }}</h3>
+
+          <div class="textarea-wrapper">
+            <textarea
+              placeholder="Start typing your response here..."
+              [(ngModel)]="userAnswers[i]"
+              (input)="userAnswers[i] = $any($event.target).value"
+              rows="8">
+            </textarea>
+            <div class="char-count" *ngIf="userAnswers[i]">
+              {{ userAnswers[i].length }} characters
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-cta">
+        <div class="divider"></div>
+        <p>Finished all tasks?</p>
+        <button class="btn-submit-outline" (click)="submitAssignment()">
+          Review & Submit Work
+        </button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="full-page-state" *ngIf="!assignment && !loading">
+  <div class="state-content">
+    <div class="state-icon">📄</div>
+    <h3>No Assignment Data</h3>
+    <p>Please return to the course page and try again.</p>
+    <button class="btn-primary" (click)="router.navigate(['/student/courses'])">Back to Dashboard</button>
   </div>
 </div>

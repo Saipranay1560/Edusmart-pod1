@@ -1,147 +1,119 @@
-<div class="course-details">
-  <div *ngIf="assignmentSuccessMessage" class="top-alert-success">
-    {{ assignmentSuccessMessage }}
+<div class="app-view-container">
+  <div class="global-progress-bar" *ngIf="progress">
+    <div class="fill" [style.width.%]="progress.percentage || 0"></div>
   </div>
 
-  <div *ngIf="contentSuccessMessage" class="top-alert-success">
-    {{ contentSuccessMessage }}
-  </div>
+  <header class="course-header">
+    <div class="header-content">
+      <button class="back-pill" (click)="goBack()">
+        <span>←</span> Back to Dashboard
+      </button>
 
-  <div *ngIf="contentErrorMessage" class="top-alert-error">
-    {{ contentErrorMessage }}
-  </div>
-
-  <button class="back-btn" (click)="goBack()">← Back to Courses</button>
-
-  <h1>{{ course?.name }}</h1>
-  <p class="description">{{ course?.description }}</p>
-
-  <div class="publish-box" *ngIf="course?.name">
-    <span>Status:
-      <strong [class.published]="course?.status === 'APPROVED'" [class.draft]="course?.status !== 'APPROVED'">
-        {{ course?.status }}
-      </strong>
-    </span>
-  </div>
-
-  <div class="tabs">
-    <button (click)="activeTab='content'" [class.active]="activeTab==='content'">Content</button>
-    <button (click)="activeTab='assignments'" [class.active]="activeTab==='assignments'">Assignments</button>
-    <button (click)="activeTab='progress'" [class.active]="activeTab==='progress'">Progress</button>
-    <button (click)="activeTab='quiz'" [class.active]="activeTab==='quiz'">Quiz</button>
-  </div>
-
-  <div *ngIf="activeTab==='content'">
-    <div class="card-header">
-      <h3>Course Content</h3>
+      <div class="title-section">
+        <div class="status-badge" [class.approved]="course?.status === 'APPROVED'">
+          {{ course?.status || 'DRAFT' }}
+        </div>
+        <h1>{{ course?.name || 'Loading Course...' }}</h1>
+        <p class="description">{{ course?.description }}</p>
+      </div>
     </div>
-    <div class="card-list">
-      <div *ngIf="contentVideos && contentVideos.length > 0; else noContent">
-        <div *ngFor="let video of contentVideos" class="video-item card">
-          <div class="video-row">
-            <div class="thumb" *ngIf="video.videoId || video.id">
-              <img [src]="'https://img.youtube.com/vi/' + (video.videoId || video.id) + '/hqdefault.jpg'" alt="thumbnail">
+  </header>
+
+  <div class="course-layout">
+    <aside class="sidebar">
+      <nav class="nav-pills">
+        <button (click)="activeTab='content'" [class.active]="activeTab==='content'">
+          <span class="icon">📺</span> Course Content
+        </button>
+        <button (click)="activeTab='assignments'" [class.active]="activeTab==='assignments'">
+          <span class="icon">📝</span> Assignments
+          <span class="badge" *ngIf="assignments.length">{{ assignments.length }}</span>
+        </button>
+        <button (click)="activeTab='quiz'" [class.active]="activeTab==='quiz'">
+          <span class="icon">🧠</span> Quizzes
+          <span class="badge" *ngIf="quizzes.length">{{ quizzes.length }}</span>
+        </button>
+        <button (click)="activeTab='progress'" [class.active]="activeTab==='progress'">
+          <span class="icon">📈</span> Your Progress
+        </button>
+      </nav>
+    </aside>
+
+    <main class="content-area">
+      <div class="alert success" *ngIf="assignmentSuccessMessage || contentSuccessMessage">
+        {{ assignmentSuccessMessage || contentSuccessMessage }}
+      </div>
+      <div class="alert error" *ngIf="contentErrorMessage">
+        {{ contentErrorMessage }}
+      </div>
+
+      <section *ngIf="activeTab==='content'" class="fade-in">
+        <h2 class="section-title">Video Modules</h2>
+        <div class="video-grid" *ngIf="contentVideos.length; else noContent">
+          <div *ngFor="let video of contentVideos" class="video-card">
+            <div class="video-player">
+              <iframe [src]="(video.videoUrl || video.url) | safe" frameborder="0" allowfullscreen></iframe>
             </div>
-            <div class="meta" style="flex:1">
-              <div class="video-title">
-                <label>{{ video.videoTitle || video.title }}</label>
-              </div>
-              <div class="video-desc">
-                <small>{{ video.description }}</small>
-              </div>
-              <div class="ratio ratio-16x9 mt-2">
-                <iframe [src]="(video.videoUrl || video.url) | safe" frameborder="0" allowfullscreen></iframe>
-              </div>
+            <div class="video-body">
+              <h3>{{ video.videoTitle || video.title }}</h3>
+              <p>{{ video.description }}</p>
             </div>
           </div>
         </div>
-      </div>
-      <ng-template #noContent>
-        <div class="card" style="padding:12px;">No content videos uploaded for this course yet.</div>
-      </ng-template>
-    </div>
-  </div>
+      </section>
 
-  <div *ngIf="activeTab==='assignments'">
-    <div class="card-header">
-      <h3>Assignments</h3>
-    </div>
-    <div class="card-list">
-      <div *ngIf="assignments && assignments.length === 0" class="card" style="padding:12px;">
-        No assignments available.
-      </div>
-      <div *ngFor="let assignment of assignments" class="assignment-row card">
-        <div class="assignment-info">
-          <div class="assignment-title">{{ assignment.title }}</div>
-          <div class="assignment-desc">
-            <strong>Questions:</strong>
-            <ul style="margin: 8px 0; padding-left: 20px;">
-              <li *ngFor="let q of assignment.questions">{{ q }}</li>
-            </ul>
+      <section *ngIf="activeTab==='assignments'" class="fade-in">
+        <h2 class="section-title">Course Assignments</h2>
+        <div class="list-stack" *ngIf="assignments.length; else noAssignments">
+          <div *ngFor="let assignment of assignments" class="action-card">
+            <div class="card-info">
+              <h3>{{ assignment.title }}</h3>
+              <div class="due-date">Due: {{ assignment.endDate }}</div>
+              <ul class="question-preview">
+                <li *ngFor="let q of assignment.questions | slice:0:2">{{ q }}</li>
+              </ul>
+            </div>
+            <button class="btn-action" (click)="takeAssignment(assignment)">Begin Task</button>
           </div>
         </div>
-        <div class="assignment-meta">
-          <div class="assignment-date">Due: {{ assignment.endDate }}</div>
-          <button class="take-assignment-btn" (click)="takeAssignment(assignment)">Take Assignment</button>
-        </div>
-      </div>
-    </div>
-  </div>
+      </section>
 
-  <div *ngIf="activeTab === 'quiz'">
-    <div class="card-header">
-      <h3>Quizzes</h3>
-    </div>
-    <div class="card-list">
-      <div *ngIf="!hasQuizzes()" class="card" style="padding:12px;">
-        <p class="muted">No quizzes available.</p>
-      </div>
-      <div *ngFor="let quiz of quizzesList()" class="card" style="padding:16px; margin-bottom:12px;">
-        <h4 style="margin-top: 0;">{{ quiz.questionTitle }}</h4>
-        <p>{{ quiz.description || 'No description available.' }}</p>
-        <p style="font-size: 14px;">Questions: {{ quiz.questions?.length || 0 }}</p>
-        <button class="btn btn-primary" (click)="takeQuiz(quiz)">Take Quiz</button>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="activeTab === 'progress'">
-    <div class="card-header">
-      <h3>My Progress</h3>
-    </div>
-    <div class="card" *ngIf="progress; else loadingProgress">
-      <div class="progress-stats mb-3">
-        <div class="d-flex justify-content-between">
-          <span>
-            <strong>{{ progress.completedTasks }}</strong> out of
-            <strong>{{ progress.totalTasks }}</strong> items completed
-          </span>
-          <span class="percentage-label">{{ progress.percentage }}%</span>
-        </div>
-      </div>
-
-      <div class="progress-bar-container">
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill"
-               [style.width.%]="progress.percentage || 0"
-               [ngClass]="{
-                 'low-progress': (progress.percentage || 0) < 40,
-                 'mid-progress': (progress.percentage || 0) >= 40 && (progress.percentage || 0) < 100,
-                 'complete-progress': (progress.percentage || 0) === 100
-               }">
+      <section *ngIf="activeTab==='quiz'" class="fade-in">
+        <h2 class="section-title">Knowledge Checks</h2>
+        <div class="list-stack" *ngIf="hasQuizzes(); else noQuizzes">
+          <div *ngFor="let quiz of quizzesList()" class="action-card quiz-card">
+            <div class="card-info">
+              <h3>{{ quiz.questionTitle }}</h3>
+              <p>{{ quiz.description || 'Test your knowledge on this module.' }}</p>
+              <span class="meta-tag">{{ quiz.questions?.length || 0 }} Questions</span>
+            </div>
+            <button class="btn-action" (click)="takeQuiz(quiz)">Start Quiz</button>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="mt-4" style="color: #666; font-size: 0.9rem;">
-        <p *ngIf="progress.percentage === 100">🎉 Congratulations! You have completed all course requirements.</p>
-        <p *ngIf="progress.percentage !== undefined && progress.percentage < 100">
-          Keep going! Complete your assignments and quizzes to reach 100%.
-        </p>
-      </div>
-    </div>
-    <ng-template #loadingProgress>
-      <div class="card muted">Calculating your progress...</div>
-    </ng-template>
+      <section *ngIf="activeTab === 'progress'" class="fade-in">
+        <h2 class="section-title">Learning Milestone</h2>
+        <div class="progress-hero" *ngIf="progress; else loadingProgress">
+          <div class="stat-circle">
+            <svg viewBox="0 0 36 36" class="circular-chart">
+              <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path class="circle" [style.stroke-dasharray]="progress.percentage + ', 100'" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <text x="18" y="20.35" class="percentage">{{ progress.percentage }}%</text>
+            </svg>
+          </div>
+          <div class="stat-details">
+            <h3>Overall Completion</h3>
+            <p>You have finished <strong>{{ progress.completedTasks }}</strong> out of <strong>{{ progress.totalTasks }}</strong> items.</p>
+            <div class="celebration" *ngIf="progress.percentage === 100">🎓 Course Completed!</div>
+          </div>
+        </div>
+      </section>
+
+      <ng-template #noContent><div class="empty-state">No videos found.</div></ng-template>
+      <ng-template #noAssignments><div class="empty-state">No pending assignments.</div></ng-template>
+      <ng-template #noQuizzes><div class="empty-state">No quizzes available.</div></ng-template>
+      <ng-template #loadingProgress><div class="empty-state">Calculating...</div></ng-template>
+    </main>
   </div>
 </div>

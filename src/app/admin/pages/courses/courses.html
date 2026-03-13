@@ -1,27 +1,52 @@
 <div class="page-container">
-<h2>Course Review</h2>
-<p class="subtitle">Review and approve instructor-created courses</p>
-<div class="course-grid">
-<div class="course-card" *ngFor="let course of courses">
-<div class="card-header">
-<h3>{{ course.name }}</h3>
-<span class="status" [ngClass]="course.status.toLowerCase()">
-         {{ course.status }}
-</span>
-</div>
-<p class="category">{{ course.category }}</p>
-<div class="details">
+  <header class="page-header">
+    <div>
+      <h2>Course Review</h2>
+      <p class="subtitle">Review and approve instructor-created courses</p>
+    </div>
+    <div class="stats-mini">
+      Total Courses: <strong>{{ courses.length }}</strong>
+    </div>
+  </header>
 
-</div>
-<p class="description">{{ course.description }}</p>
-<div class="actions" *ngIf="course.status === 'PENDING'">
-<button class="approve" (click)="approveCourse(course)">
-         Approve
-</button>
-<button class="reject" (click)="rejectCourse(course)">
-         Reject
-</button>
-</div>
-</div>
-</div>
+  <div class="course-grid">
+    <div class="course-card" *ngFor="let course of courses" (click)="goToCourse(course.id)">
+
+      <div class="card-header">
+        <div class="title-section">
+          <span class="category-tag">{{ course.category }}</span>
+          <h3>{{ course.name }}</h3>
+        </div>
+        <span class="status-badge" [ngClass]="course.status.toLowerCase()">
+          {{ course.status }}
+        </span>
+      </div>
+
+      <div class="card-body">
+        <p class="description">{{ course.description }}</p>
+
+        <div class="course-meta">
+          <div class="meta-item">
+            <span class="label">ID:</span>
+            <span>#{{ course.id }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="actions" *ngIf="course.status === 'PENDING'">
+          <button class="btn btn-reject" (click)="$event.stopPropagation(); rejectCourse(course)">
+            Reject
+          </button>
+          <button class="btn btn-approve" (click)="$event.stopPropagation(); approveCourse(course)">
+            Approve Course
+          </button>
+        </div>
+        <div class="view-hint" *ngIf="course.status !== 'PENDING'">
+          View Details →
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>

@@ -106,6 +106,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', canActivate: [authGuard], component: DashboardComponent },
       { path: 'courses', canActivate: [authGuard], component: CoursesComponent },
+      { path: 'view/:id', canActivate: [authGuard], loadComponent: () => import('./admin/pages/view/view').then(m => m.View) },
       { path: 'enrollments', canActivate: [authGuard], component: EnrollmentComponent },
       { path: 'assessments', canActivate: [authGuard], component: AssessmentsComponent },
       { path: 'reports', canActivate: [authGuard], component: Reports },
