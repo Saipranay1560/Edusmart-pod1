@@ -42,7 +42,11 @@
     <div class="card-toolbar">
        <div class="search-box">
          <i class="fas fa-search"></i>
-         <input type="text" placeholder="Search by student or course...">
+         <input 
+           type="text" 
+           placeholder="Search by student or course..." 
+           [(ngModel)]="searchTerm"
+           (input)="onSearch()">
        </div>
     </div>
 
@@ -57,7 +61,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let enrollment of enrollments">
+          <tr *ngFor="let enrollment of filteredEnrollments">
             <td class="student-cell">
               <div class="avatar">{{ enrollment.studentName.charAt(0) }}</div>
               <span>{{ enrollment.studentName }}</span>
@@ -68,6 +72,11 @@
               <span class="pill-badge" [ngClass]="enrollment.status.toLowerCase()">
                 {{ enrollment.status }}
               </span>
+            </td>
+          </tr>
+          <tr *ngIf="filteredEnrollments.length === 0">
+            <td colspan="4" class="text-center" style="padding: 20px; color: #666;">
+              No enrollments found matching "{{ searchTerm }}"
             </td>
           </tr>
         </tbody>

@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { EnrollmentService, EnrollmentResponse } from '../../../services/enrolladmin';
-import { CommonModule, NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-enrollment',
-  imports: [FormsModule,CommonModule],
+  standalone: true, // Ensuring standalone if needed
+  imports: [FormsModule, CommonModule],
   templateUrl: './enrollments.html',
   styleUrls: ['./enrollments.css']
 })
 export class EnrollmentComponent implements OnInit {
   enrollments: EnrollmentResponse[] = [];
-  
+  filteredEnrollments: EnrollmentResponse[] = []; // Array to show in the table
+  searchTerm: string = ''; 
+
   // Dashboard Stats
   totalEnrollments: number = 0;
   activeCount: number = 0;
@@ -28,10 +31,25 @@ export class EnrollmentComponent implements OnInit {
       next: (data) => {
         console.log('Enrollments loaded:', data);
         this.enrollments = data;
+        this.filteredEnrollments = data; // Initially, show all
         this.calculateStats();
       },
       error: (err) => console.error('Failed to load enrollments', err)
     });
+  }
+
+  // This function triggers every time the user types
+  onSearch(): void {
+    const term = this.searchTerm.toLowerCase().trim();
+    
+    if (!term) {
+      this.filteredEnrollments = this.enrollments;
+    } else {
+      this.filteredEnrollments = this.enrollments.filter(e => 
+        e.studentName.toLowerCase().includes(term) || 
+        e.courseName.toLowerCase().includes(term)
+      );
+    }
   }
 
   calculateStats(): void {
