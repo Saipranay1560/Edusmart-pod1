@@ -1,58 +1,150 @@
-.dashboard-container { padding: 2rem; max-width: 1300px; margin: 0 auto; background: #f9fafb; }
+/* Layout Core */
+.dashboard-wrapper {
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
 
-/* Top Progress Header */
-.overall-stats-card {
+.dashboard-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+  padding: 4rem 2rem 6rem; /* Extra bottom padding for the overlap */
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-text h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.header-text p {
+  color: #94a3b8;
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.header-stats {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.stat-num { font-size: 1.5rem; font-weight: 700; display: block; }
+.stat-label { font-size: 0.75rem; text-transform: uppercase; color: #cbd5e0; }
+
+/* The Overlap Magic */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.hero-section {
   background: white;
   border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  margin-top: -3.5rem; /* Pulls the section into the header */
+  border: 1px solid #e2e8f0;
   margin-bottom: 3rem;
-  border: 1px solid #edf2f7;
 }
-.stats-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-.stat-label { color: #718096; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-.stat-value { font-size: 2.5rem; margin: 0.5rem 0; color: #1a202c; }
-.stat-value small { font-size: 1rem; color: #a0aec0; }
-.percentage-circle {
-  width: 80px; height: 80px; border: 6px solid #e2e8f0; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  border-top-color: #38b2ac; font-weight: 700; color: #38b2ac; font-size: 1.2rem;
+
+/* Card Styling */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
-.master-progress-track { height: 12px; background: #edf2f7; border-radius: 10px; overflow: hidden; }
-.master-progress-fill { height: 100%; background: linear-gradient(90deg, #38b2ac, #3182ce); border-radius: 10px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
 
-/* Subject Cards */
-.subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
-.subject-card { background: white; border-radius: 12px; padding: 1.5rem; border: 1px solid #e2e8f0; }
-.subject-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-.subject-badge { background: #ebf8ff; color: #2b6cb0; padding: 4px 10px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; }
+.course-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
 
-.assessment-hub { background: #f7fafc; border-radius: 8px; padding: 1rem; }
-.hub-label { font-size: 0.8rem; font-weight: 700; color: #4a5568; text-transform: uppercase; margin-bottom: 0.75rem; }
-.asmt-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #edf2f7; }
-.asmt-row:last-child { border-bottom: none; }
-.take-btn { background: #38b2ac; color: white; padding: 6px 16px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600; }
-.status-badge { color: #38b2ac; font-weight: 700; font-size: 0.85rem; }
+.enrolled-card {
+  border-top: 4px solid #2563eb;
+}
 
-/* Available Courses */
-.course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-.course-item { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.25rem; display: flex; flex-direction: column; }
-.mode-tag { font-size: 0.7rem; background: #805ad5; color: white; padding: 2px 8px; border-radius: 4px; width: fit-content; margin-bottom: 10px; }
-.enroll-btn { margin-top: 1rem; background: transparent; border: 2px solid #3182ce; color: #3182ce; padding: 8px; border-radius: 6px; cursor: pointer; font-weight: 700; transition: 0.2s; }
-.enroll-btn:hover { background: #3182ce; color: white; }
-/* Existing enroll-btn styles... */
+.card-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
 
-.enroll-btn:disabled {
-  background: #edf2f7;
-  border-color: #cbd5e0;
-  color: #a0aec0;
+.status-indicator {
+  font-size: 0.7rem;
+  background: #dcfce7;
+  color: #166534;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.card-body h3 {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 1.25rem;
+  color: #1e293b;
+}
+
+.card-body p {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Buttons */
+.card-footer {
+  padding: 0 1.5rem 1.5rem;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
+}
+
+.btn-primary { background: #2563eb; color: white; }
+.btn-primary:hover { background: #1d4ed8; }
+
+.btn-outline {
+  background: white;
+  border: 1.5px solid #e2e8f0;
+  color: #475569;
+}
+
+.btn-outline:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.btn-pending {
+  background: #f1f5f9;
+  color: #94a3b8;
   cursor: not-allowed;
 }
 
-.pending-btn {
-  background-color: #e9ecef !important;
-  border: 1px solid #ced4da !important;
-  color: #495057 !important;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+/* Discovery Section Titles */
+.discovery-title {
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
 }

@@ -1,32 +1,44 @@
-<div class="profile-container">
-  <div class="profile-card" *ngIf="!loading() && instructor()">
-    <div class="profile-header">
-      <div class="avatar">
-        {{ instructor().studentName?.charAt(0) }}
-      </div>
-      <h2>Instructor Profile</h2>
-    </div>
-
-    <div class="profile-body">
-      <div class="info-group">
-        <label>Full Name</label>
-        <p>{{ instructor().studentName }}</p>
-      </div>
-
-      <div class="info-group">
-        <label>Instructor ID</label>
-        <p>#{{ instructor().studentId }}</p>
-      </div>
-
-      <div class="info-group">
-        <label>Email Address</label>
-        <p>{{ instructor().studentEmail }}</p>
-      </div>
-
-      <div class="badge">Verified Instructor</div>
-    </div>
+<div class="wide-page-wrapper">
+  <div class="status-overlay" *ngIf="loading()">
+    <div class="spinner"></div>
+    <p>Loading Faculty Data...</p>
   </div>
 
-  <div class="status-msg" *ngIf="loading()">Loading profile...</div>
-  <div class="status-msg error" *ngIf="error()">{{ error() }}</div>
+  <div class="profile-rect-card" *ngIf="!loading() && instructor()">
+    <header class="rect-header">
+      <div class="header-main-info">
+        <div class="rect-avatar">
+          {{ instructor().studentName?.charAt(0) }}
+        </div>
+        <div class="header-text-block">
+          <div class="name-status">
+            <h2>{{ instructor().studentName }}</h2>
+            <span class="v-badge">✓ Verified Instructor</span>
+          </div>
+          <p class="role-desc">Faculty of Academic Excellence</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="rect-body">
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="item-label">Instructor ID</span>
+          <span class="item-value">#{{ instructor().studentId }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="item-label">Email Address</span>
+          <span class="item-value email">{{ instructor().studentEmail }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="item-label">Account Status</span>
+          <span class="item-value">Full Access</span>
+        </div>
+
+        
+      </div>
+    </div>
+  </div>
 </div>

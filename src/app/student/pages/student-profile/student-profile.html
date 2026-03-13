@@ -1,48 +1,66 @@
-<div class="profile-page-container">
-  <div *ngIf="loading()" class="status-msg">Loading profile...</div>
-  <div *ngIf="errorMessage" class="status-msg error">{{ errorMessage }}</div>
+<div class="profile-container">
+  <div *ngIf="loading()" class="status-overlay">
+    <div class="spinner"></div>
+    <p>Loading your profile...</p>
+  </div>
 
-  <ng-container *ngIf="user">
-    <div class="profile-header-card">
-      <div class="header-main">
-        <div class="avatar-placeholder">
+  <div *ngIf="errorMessage" class="error-banner">
+    <span class="error-icon">⚠️</span> {{ errorMessage }}
+  </div>
+
+  <ng-container *ngIf="user()">
+    <header class="profile-header">
+      <div class="header-content">
+        <div class="avatar-box">
           {{ user().studentName.charAt(0) }}
         </div>
-        <div class="header-info">
-          <h2 class="user-display-name">{{ user().studentName }}</h2>
-          <p class="user-role-badge">Student</p>
+        <div class="user-meta">
+          <h1 class="user-name">{{ user().studentName }}</h1>
+          <div class="badge-row">
+            <span class="role-tag">Student</span>
+            <span class="status-pill active">
+              <span class="dot"></span> Online
+            </span>
+          </div>
         </div>
       </div>
-      <div class="header-status">
-        <span class="status-pill active">
-          <span class="dot"></span> Active
-        </span>
+      <div class="header-id-watermark">
+        #{{ user().studentId }}
       </div>
-    </div>
+    </header>
 
     <div class="details-grid">
-      <div class="info-card">
-        <div class="card-title">Account Details</div>
-
-        <div class="detail-item">
-          <label>Student ID</label>
-          <span class="detail-value">#{{ user().studentId }}</span>
+      <section class="info-card">
+        <div class="card-title">
+          <span class="title-icon">🆔</span> Account Details
         </div>
-
-        <div class="detail-item">
-          <label>Full Name</label>
-          <span class="detail-value">{{ user().studentName }}</span>
+        <div class="card-body">
+          <div class="data-row">
+            <label>Registration Number</label>
+            <p class="data-text">STU-{{ user().studentId }}</p>
+          </div>
+          <div class="data-row">
+            <label>Full Legal Name</label>
+            <p class="data-text">{{ user().studentName }}</p>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div class="info-card">
-        <div class="card-title">Contact Information</div>
-
-        <div class="detail-item">
-          <label>Email Address</label>
-          <span class="detail-value highlight">{{ user().studentEmail }}</span>
+      <section class="info-card">
+        <div class="card-title">
+          <span class="title-icon">📧</span> Contact Information
         </div>
-      </div>
+        <div class="card-body">
+          <div class="data-row">
+            <label>Primary Email Address</label>
+            <p class="data-text highlight">{{ user().studentEmail }}</p>
+          </div>
+          <div class="data-row">
+            <label>Last Login</label>
+            <p class="data-text">Today (Synced)</p>
+          </div>
+        </div>
+      </section>
     </div>
   </ng-container>
 </div>

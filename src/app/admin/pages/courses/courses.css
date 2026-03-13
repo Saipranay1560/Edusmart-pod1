@@ -1,82 +1,173 @@
+:host {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --bg-page: #f8fafc;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+}
+
 .page-container {
- padding: 24px;
+  padding: 40px;
+  background-color: var(--bg-page);
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
 }
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 20px;
+}
+
 h2 {
- margin-bottom: 4px;
+  color: var(--text-main);
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0;
 }
+
 .subtitle {
- color: #6b7280;
- margin-bottom: 20px;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
+
+/* Grid Layout */
 .course-grid {
- display: grid;
- grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
- gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
 }
+
+/* Card Styling */
 .course-card {
- background: #ffffff;
- border-radius: 12px;
- padding: 18px;
- box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
 }
+
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-color: var(--primary);
+}
+
+/* Header Section */
 .card-header {
- display: flex;
- justify-content: space-between;
- align-items: center;
+  padding: 24px 24px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
+
+.category-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
 .card-header h3 {
- margin: 0;
- font-size: 18px;
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-main);
+  line-height: 1.4;
 }
-.status {
- padding: 4px 10px;
- border-radius: 20px;
- font-size: 12px;
- font-weight: 600;
+
+/* Status Badges */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
 }
-.status.pending {
- background: #fef3c7;
- color: #92400e;
+
+.status-badge.pending { background: #fef3c7; color: #92400e; }
+.status-badge.approved { background: #dcfce7; color: #166534; }
+.status-badge.rejected { background: #fee2e2; color: #991b1b; }
+
+/* Body Section */
+.card-body {
+  padding: 0 24px 20px;
+  flex-grow: 1;
 }
-.status.approved {
- background: #d1fae5;
- color: #065f46;
-}
-.status.rejected {
- background: #fee2e2;
- color: #991b1b;
-}
-.category {
- font-size: 14px;
- color: #2563eb;
- margin: 6px 0;
-}
-.details p {
- margin: 4px 0;
- font-size: 14px;
-}
+
 .description {
- font-size: 14px;
- color: #374151;
- margin: 10px 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
+
+.course-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.label { font-weight: 600; color: var(--text-main); margin-right: 4px; }
+
+/* Footer & Actions */
+.card-footer {
+  padding: 16px 24px;
+  background: #f8fafc;
+  border-top: 1px solid #f1f5f9;
+}
+
 .actions {
- display: flex;
- gap: 10px;
- margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 12px;
 }
-button {
- padding: 8px 14px;
- border-radius: 6px;
- border: none;
- cursor: pointer;
- font-weight: 500;
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
 }
-button.approve {
- background: #2563eb;
- color: #fff;
+
+.btn-approve {
+  background: var(--primary);
+  color: white;
 }
-button.reject {
- background: #e5e7eb;
- color: #374151;
+
+.btn-approve:hover { background: var(--primary-hover); }
+
+.btn-reject {
+  background: white;
+  color: var(--text-main);
+  border: 1px solid #e2e8f0;
+}
+
+.btn-reject:hover { background: #fee2e2; color: var(--danger); border-color: var(--danger); }
+
+.view-hint {
+  text-align: right;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
 }

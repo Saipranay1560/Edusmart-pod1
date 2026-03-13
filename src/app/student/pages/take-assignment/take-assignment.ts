@@ -23,7 +23,7 @@ export class TakeAssignment {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private router: Router,
+    public router: Router,
     private assignmentService: AssignmentService
   ) {
     const nav = this.router.getCurrentNavigation();

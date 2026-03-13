@@ -10,7 +10,7 @@ import { AuthService } from '../../../auth.service';
   selector: 'app-courses',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './courses.html', 
+  templateUrl: './courses.html',
   styleUrls: ['./courses.css']
 })
 export class Courses implements OnInit {
@@ -92,7 +92,7 @@ export class Courses implements OnInit {
           description: item.description || '',
           credits: item.credits || 0,
           enrolled: !!item.enrolled,
-          status: (item.status || 'available') as any,
+          status: (item.status || 'PENDING') as any,
           schedule: item.schedule || []
         }));
 

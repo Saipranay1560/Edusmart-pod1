@@ -1,44 +1,73 @@
-<div class="dashboard-container">
-
-  <div class="enrolled-courses-subsection">
-    <h4 class="subsection-title">My Enrolled Courses</h4>
-    <div *ngIf="isLoading()" class="loading-spinner">Loading courses...</div>
-    <div class="course-grid" *ngIf="!isLoading() && enrolledCourses().length > 0">
-      <div class="course-item" *ngFor="let c of enrolledCourses()">
-        <div class="course-content">
-          <h5>{{ c.title }}</h5>
-          <p>{{ c.description }}</p>
+<div class="dashboard-wrapper">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1>Learning Dashboard</h1>
+        <p>Welcome back! Here is a summary of your current progress.</p>
+      </div>
+      <div class="header-stats" *ngIf="enrolledCourses().length > 0">
+        <div class="stat-item">
+          <span class="stat-num">{{ enrolledCourses().length }}</span>
+          <span class="stat-label">Active Courses</span>
         </div>
-        <button class="enroll-btn enrolled-btn" (click)="viewEnrolledCourse(c.id)">
-          View Course
-        </button>
       </div>
     </div>
-    <div *ngIf="!isLoading() && enrolledCourses().length === 0" class="empty-message">
-      <p>No enrolled courses yet. Explore available programs below!</p>
-    </div>
-  </div>
+  </header>
 
-  <section class="discovery-section">
-    <h3 class="section-title">Available Programs</h3>
-    <div *ngIf="isLoading()" class="loading-spinner">Loading programs...</div>
-    <div class="course-grid" *ngIf="!isLoading() && availableCourses().length > 0">
-      <div class="course-item" *ngFor="let c of availableCourses()">
-        <div class="course-content">
-          <h5>{{ c.title }}</h5>
-          <p>{{ c.description }}</p>
-        </div>
-
-        <button class="enroll-btn"
-                [disabled]="c.status === 'pending'"
-                [class.pending-btn]="c.status === 'pending'"
-                (click)="enrollInCourse(c)">
-          {{ c.status === 'pending' ? 'Pending Approval' : 'Enroll Now' }}
-        </button>
+  <main class="dashboard-container">
+    <section class="dashboard-section hero-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="icon">🎓</span> My Enrolled Courses
+        </h2>
       </div>
-    </div>
-    <div *ngIf="!isLoading() && availableCourses().length === 0" class="empty-message">
-      <p>No available programs at this time.</p>
-    </div>
-  </section>
+
+      <div *ngIf="isLoading()" class="loader-container">
+        <div class="spinner"></div>
+      </div>
+
+      <div class="course-grid" *ngIf="!isLoading() && enrolledCourses().length > 0">
+        <div class="course-card enrolled-card" *ngFor="let c of enrolledCourses()">
+          <div class="card-body">
+            <span class="status-indicator">Active</span>
+            <h3>{{ c.title }}</h3>
+            <p>{{ c.description }}</p>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-primary" (click)="viewEnrolledCourse(c.id)">
+              Continue Learning
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!isLoading() && enrolledCourses().length === 0" class="empty-state-mini">
+        <p>You aren't enrolled in any courses yet. Check the catalog below!</p>
+      </div>
+    </section>
+
+    <section class="discovery-container">
+      <h3 class="discovery-title">Explore New Programs</h3>
+      <div class="course-grid">
+        <div class="course-card discovery-card" *ngFor="let c of availableCourses()">
+          <div class="card-body">
+            <div class="card-meta">
+              
+            </div>
+            <h3>{{ c.title }}</h3>
+            <p>{{ c.description }}</p>
+          </div>
+          <div class="card-footer">
+            <button class="btn"
+                    [disabled]="c.status === 'pending'"
+                    [class.btn-pending]="c.status === 'pending'"
+                    [class.btn-outline]="c.status !== 'pending'"
+                    (click)="enrollInCourse(c)">
+              {{ c.status === 'pending' ? 'Pending Approval' : 'Enroll Now' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </div>

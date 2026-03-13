@@ -1,58 +1,91 @@
-<div class="leave-application-wrapper">
-  <div class="page-header">
-    <h2 class="page-title">Leave Request</h2>
-    <p class="page-subtitle">Submit your absence request for review by the academic department.</p>
-  </div>
+<div class="leave-container">
+  <header class="leave-header">
+    <div class="header-content">
+      <span class="badge-new">New Request</span>
+      <h1>Leave Application</h1>
+      <p>Fill out the details below to notify the faculty of your upcoming absence.</p>
+    </div>
+  </header>
 
-  <div class="content-container">
-    <div *ngIf="!isSubmitted(); else successMessage" class="application-card">
-      <div class="form-body">
+  <div class="leave-layout">
+    <div class="form-card" *ngIf="!isSubmitted(); else successState">
+      <div class="form-grid">
 
-        <div class="form-section">
-          <label class="input-label" for="leaveDate">Proposed Leave Date</label>
-          <div class="input-wrapper">
-            <input type="date" id="leaveDate" [ngModel]="leaveDate()" (ngModelChange)="leaveDate.set($event)" [min]="today()" class="custom-input">
-            <small class="input-hint">Select the first day of your absence.</small>
+        <div class="input-group">
+          <label class="label-main">
+            <span class="icon">📅</span> Proposed Date
+          </label>
+          <input
+            type="date"
+            [ngModel]="leaveDate()"
+            (ngModelChange)="leaveDate.set($event)"
+            [min]="today()"
+            class="input-field"
+          >
+          <p class="helper-text">Applications must be submitted at least 24h in advance.</p>
+        </div>
+
+        <div class="input-group" [class.disabled]="!leaveDate()">
+          <label class="label-main">
+            <span class="icon">🏷️</span> Leave Category
+          </label>
+          <div class="select-wrapper">
+            <select
+              [ngModel]="leaveType()"
+              (ngModelChange)="leaveType.set($event)"
+              class="input-field select-field"
+              [disabled]="!leaveDate()"
+            >
+              <option value="" disabled selected>Choose a reason...</option>
+              <option value="Sick Leave">Medical / Sick Leave</option>
+              <option value="Family Function">Family Event</option>
+              <option value="Medical Appointment">Planned Checkup</option>
+              <option value="Other">Other / Emergency</option>
+            </select>
           </div>
         </div>
 
-        <div class="form-section mt-4" *ngIf="leaveDate()">
-          <label class="input-label" for="leaveType">Leave Category</label>
-          <select id="leaveType" name="leaveType" [ngModel]="leaveType()" (ngModelChange)="leaveType.set($event)" class="custom-input">
-  <option value="" disabled selected>Select a reason...</option>
-  <option value="Sick Leave">Sick Leave</option>
-  <option value="Family Function">Family Function</option>
-  <option value="Medical Appointment">Medical Appointment</option>
-  <option value="Other">Other</option>
-</select>
-        </div>
 
 
+      </div>
 
-        <div class="form-footer">
-          <button (click)="onSubmit()" [disabled]="isProcessing()" class="primary-submit-btn">
-            {{ isProcessing() ? 'Submitting...' : 'Submit Application' }}
-          </button>
-        </div>
+      <div class="form-actions">
+        <button
+          class="btn-submit"
+          (click)="onSubmit()"
+          [disabled]="isProcessing() || !leaveType()"
+        >
+          <span *ngIf="!isProcessing()">Send Application</span>
+          <div class="spinner" *ngIf="isProcessing()"></div>
+        </button>
       </div>
     </div>
 
-    <ng-template #successMessage>
-      <div class="success-card">
-        <div class="success-icon-circle">
-          <span class="material-icons">check</span>
-        </div>
-        <h3 class="success-title">Application Received</h3>
-        <p class="success-text">
-          Your <strong>{{ leaveType() }}</strong> request for <strong>{{ leaveDate() | date:'mediumDate' }}</strong> has been logged.
-        </p>
+    <ng-template #successState>
+      <div class="success-wrapper animate-in">
+        <div class="confetti-icon">✉️</div>
+        <h2>Application Sent!</h2>
+        <p>Your request for <strong>{{ leaveDate() | date:'fullDate' }}</strong> has been forwarded to your department head.</p>
 
-        <div class="success-footer">
-          <button (click)="resetForm()" class="secondary-btn">
-            Create New Request
-          </button>
+        <div class="summary-box">
+          <div class="summary-item">
+            <span>Status</span>
+            <span class="status-pill">Pending Review</span>
+          </div>
+          <div class="summary-item">
+            <span>Type</span>
+            <span class="type-text">{{ leaveType() }}</span>
+          </div>
         </div>
+
+        <button class="btn-reset" (click)="resetForm()">
+          Apply for another date
+        </button>
       </div>
     </ng-template>
+
+    <aside class="help-panel" *ngIf="!isSubmitted()">
+      
+    </aside>
   </div>
 </div>

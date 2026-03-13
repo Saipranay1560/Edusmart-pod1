@@ -1,127 +1,189 @@
-/* Container & Typography */
-div[ngIf="quiz"] {
-  max-width: 700px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #ffffff;
+:host {
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
+  --bg-subtle: #f9fafb;
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --white: #ffffff;
+  --border: #e5e7eb;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.quiz-container {
+  max-width: 850px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+}
+
+/* Header */
+.quiz-header {
+  background: var(--white);
+  padding: 2.5rem;
   border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  border: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
 }
 
-h2 {
-  color: #1a1a1a;
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
-  font-weight: 800;
+.category-tag {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-p {
-  color: #666;
-  margin-bottom: 2.5rem;
-  line-height: 1.6;
+.quiz-header h1 {
+  font-size: 1.75rem;
+  color: var(--text-main);
+  margin: 0.5rem 0;
 }
 
-/* Question Section */
-h4 {
-  color: #2d3436;
-  font-size: 1.1rem;
-  margin: 2rem 0 1rem 0;
-  font-weight: 600;
-}
-
-/* Radio Button "Card" Styling */
-div[ngFor="let opt of q.options"] {
-  margin-bottom: 10px;
-}
-
-input[type="radio"] {
-  appearance: none;
-  background-color: #fff;
+.quiz-header p {
+  color: var(--text-muted);
   margin: 0;
-  font: inherit;
-  color: #4e73df;
-  width: 1.15em;
-  height: 1.15em;
-  border: 2px solid #cbd5e0;
-  border-radius: 50%;
-  transform: translateY(0.25em);
-  cursor: pointer;
-  display: inline-grid;
-  place-content: center;
-  transition: all 0.2s ease-in-out;
 }
 
-input[type="radio"]::before {
-  content: "";
-  width: 0.65em;
-  height: 0.65em;
-  border-radius: 50%;
-  transform: scale(0);
-  transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em #4e73df;
-}
-
-input[type="radio"]:checked {
-  border-color: #4e73df;
-}
-
-input[type="radio"]:checked::before {
-  transform: scale(1);
-}
-
-/* Label/Text next to radio */
-input[type="radio"] + label,
-div[ngFor="let opt of q.options"] {
-  padding: 12px 16px;
-  border: 2px solid #edf2f7;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: block; /* Makes the whole row clickable */
-}
-
-div[ngFor="let opt of q.options"]:hover {
-  background-color: #f8faff;
-  border-color: #4e73df;
-}
-
-/* Submit Button */
-button {
-  width: 100%;
-  background: #4e73df;
-  color: white;
-  border: none;
-  padding: 14px;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-top: 2rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-button:hover {
-  background: #2e59d9;
-}
-
-/* Results Section */
-div[ngIf="score !== null"] {
-  max-width: 700px;
-  margin: 2rem auto;
+.meta-item {
   text-align: center;
-  padding: 2rem;
-  background: #f0fff4;
-  border: 2px solid #c6f6d5;
-  border-radius: 16px;
+  background: var(--bg-subtle);
+  padding: 1rem;
+  border-radius: 12px;
+  min-width: 100px;
 }
 
-pre {
-  background: #1a202c;
-  color: #a0aec0;
-  padding: 1rem;
-  border-radius: 8px;
-  text-align: left;
-  font-size: 0.85rem;
-  overflow-x: auto;
+.meta-item .label { display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
+.meta-item .value { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+
+/* Questions */
+.questions-stack { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.question-card {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
 }
+
+.q-number { color: var(--primary); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.75rem; }
+
+.question-card h3 {
+  font-size: 1.25rem;
+  color: var(--text-main);
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+/* Options Interaction */
+.options-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.option-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-item:hover {
+  background: var(--bg-subtle);
+  border-color: #d1d5db;
+}
+
+.option-item.selected {
+  border-color: var(--primary);
+  background: #f5f3ff;
+}
+
+.hidden-radio { display: none; }
+
+.radio-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+  margin-right: 12px;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.option-item.selected .radio-custom {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.option-item.selected .radio-custom::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: var(--white);
+  border-radius: 50%;
+}
+
+.option-text { font-weight: 500; color: #374151; }
+.option-item.selected .option-text { color: var(--primary); }
+
+/* Footer */
+.quiz-footer { margin-top: 3rem; }
+
+.submit-btn {
+  width: 100%;
+  padding: 1.25rem;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submit-btn:hover { background: var(--primary-dark); }
+
+/* Results */
+.result-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+}
+
+.result-card {
+  background: var(--white);
+  padding: 4rem;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+  max-width: 500px;
+}
+
+.result-icon { font-size: 4rem; margin-bottom: 1.5rem; }
+
+.score-display { margin: 2rem 0; }
+.current-score { font-size: 4rem; font-weight: 900; color: var(--primary); }
+.total-score { font-size: 1.5rem; color: var(--text-muted); }
+
+.result-actions { display: flex; gap: 1rem; margin-top: 2rem; }
+.btn-primary, .btn-secondary {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary { background: var(--primary); color: white; border: none; }
+.btn-secondary { background: white; color: var(--text-muted); border: 1px solid var(--border); }
+
+.fade-in { animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }

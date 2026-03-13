@@ -1,0 +1,94 @@
+<div class="app-view-container">
+
+  <header class="course-header">
+    <div class="header-content">
+      <button class="back-pill" (click)="goBack()">
+        <span>←</span> Back to Dashboard
+      </button>
+
+      <div class="title-section">
+        <div class="status-badge" [class.approved]="course()?.status === 'APPROVED'">
+          {{ course()?.status || 'DRAFT' }}
+        </div>
+        <h1>{{ course()?.name || 'Loading Course...' }}</h1>
+        <p class="description">{{ course()?.description }}</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout">
+    <aside>
+      <nav class="nav-pills">
+        <button (click)="setActiveTab('content')" [class.active]="activeTab() === 'content'">
+          <span class="icon">📺</span> Course Content
+        </button>
+        <button (click)="setActiveTab('assignments')" [class.active]="activeTab() === 'assignments'">
+          <span class="icon">📝</span> Assignments
+          <span class="badge" *ngIf="assignments().length">{{ assignments().length }}</span>
+        </button>
+        <button (click)="setActiveTab('quiz')" [class.active]="activeTab() === 'quiz'">
+          <span class="icon">🧠</span> Quizzes
+          <span class="badge" *ngIf="quizzes().length">{{ quizzes().length }}</span>
+        </button>
+      </nav>
+    </aside>
+
+    <main class="content-area">
+      <div class="alert success" *ngIf="assignmentSuccessMessage() || contentSuccessMessage()">
+        {{ assignmentSuccessMessage() || contentSuccessMessage() }}
+      </div>
+      <div class="alert error" *ngIf="contentErrorMessage()">
+        {{ contentErrorMessage() }}
+      </div>
+
+      <section *ngIf="activeTab() === 'content'" class="fade-in">
+        <h2 class="section-title">Video Modules</h2>
+        <div class="video-grid" *ngIf="contentVideos().length; else noContent">
+          <div *ngFor="let video of contentVideos()" class="video-card">
+            <div class="video-player">
+              <iframe [src]="(video.videoUrl || video.url) | safe" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="video-body">
+              <h3>{{ video.videoTitle || video.title }}</h3>
+              <p>{{ video.description }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section *ngIf="activeTab() === 'assignments'" class="fade-in">
+        <h2 class="section-title">Course Assignments</h2>
+        <div class="list-stack" *ngIf="assignments().length; else noAssignments">
+          <div *ngFor="let assignment of assignments()" class="action-card">
+            <div class="card-info">
+              <h3>{{ assignment.title }}</h3>
+              <div class="due-date">Due: {{ assignment.endDate }}</div>
+              <ul class="question-preview">
+                <li *ngFor="let q of assignment.questions">Q - {{ q }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section *ngIf="activeTab() === 'quiz'" class="fade-in">
+        <h2 class="section-title">Knowledge Checks</h2>
+        <div class="list-stack" *ngIf="hasQuizzes(); else noQuizzes">
+          <div *ngFor="let quiz of quizzesList()" class="action-card quiz-card">
+            <div class="card-info">
+              <h3>{{ quiz.questionTitle }}</h3>
+              <p>{{ quiz.description || 'Test your knowledge.' }}</p>
+              <span class="meta-tag">{{ quiz.questions?.length || 0 }} Questions</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <ng-template #noContent><div class="empty-state">No videos found.</div></ng-template>
+      <ng-template #noAssignments><div class="empty-state">No pending assignments.</div></ng-template>
+      <ng-template #noQuizzes><div class="empty-state">No quizzes available.</div></ng-template>
+      <ng-template #loadingProgress><div class="empty-state">Calculating...</div></ng-template>
+    </main>
+  </div>
+</div>
