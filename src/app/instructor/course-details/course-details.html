@@ -16,17 +16,6 @@
   <h1>{{ course().name }}</h1>
   <p class="description">{{ course().description }}</p>
 
-  <div class="publish-box">
-    <span>Status:
-      <strong [class.published]="course().published" [class.draft]="!course().published">
-        {{ course().published ? 'Published' : 'Draft' }}
-      </strong>
-    </span>
-    <button (click)="togglePublish()">
-      {{ course().published ? 'Unpublish' : 'Publish Course' }}
-    </button>
-  </div>
-
   <div class="tabs">
     <button (click)="activeTab.set('content')" [class.active]="activeTab() === 'content'">Content</button>
     <button (click)="activeTab.set('assignments')" [class.active]="activeTab() === 'assignments'">Assignments</button>
